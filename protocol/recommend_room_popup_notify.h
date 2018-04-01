@@ -26,59 +26,63 @@ namespace protocol {
     class Recommend_room_popup_notify : public Protocol {
     public:
         Recommend_room_popup_notify() : r(linkerProtocol::RecommendRoomPopupNotify()) {};
+
         explicit Recommend_room_popup_notify(const linkerProtocol::RecommendRoomPopupNotify &us) : r(us) {};
+
         const linkerProtocol::RecommendRoomPopupNotify &get_recommend_room_popup_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Array>("rooms")) {
-	auto rs = o.get<jsonxx::Array>("rooms");
-	for (size_t i = 0; i < rs.size(); i++) {
-		auto j = rs.get<jsonxx::Object>(i);
-		Recommend_room_popup_room k;
-		k.from_json(j);
-		uint8_t buf[k.get_recommend_room_popup_room().ByteSize()];
-		k.get_recommend_room_popup_room().SerializeToArray(buf, k.get_recommend_room_popup_room().ByteSize());
+            if (o.has<jsonxx::Array>("rooms")) {
+                auto rs = o.get<jsonxx::Array>("rooms");
+                for (size_t i = 0; i < rs.size(); i++) {
+                    auto j = rs.get<jsonxx::Object>(i);
+                    Recommend_room_popup_room k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_recommend_room_popup_room().ByteSize()];
+                    k.get_recommend_room_popup_room().SerializeToArray(buf,
+                                                                       k.get_recommend_room_popup_room().ByteSize());
 
-		auto m = this->r.add_rooms();
-		m->ParseFromArray(buf, k.get_recommend_room_popup_room().ByteSize());
-	}
-}
+                    auto m = this->r.add_rooms();
+                    m->ParseFromArray(buf, k.get_recommend_room_popup_room().ByteSize());
+                }
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
 
-std::stringstream rooms_stream;
-rooms_stream << "[";
-for (int32_t i = 0; i < this->r.rooms_size(); i++) {
-	rooms_stream << Recommend_room_popup_room(this->r.rooms(i)).to_jsonstr();
-	if (i != this->r.rooms_size() - 1) {
-		rooms_stream << ",";
-	}
-}
-rooms_stream << "]";
-ss << "\"rooms\":" << rooms_stream.str();
-ss << "}";
-return ss.str();
+            std::stringstream rooms_stream;
+            rooms_stream << "[";
+            for (int32_t i = 0; i < this->r.rooms_size(); i++) {
+                rooms_stream << Recommend_room_popup_room(this->r.rooms(i)).to_jsonstr();
+                if (i != this->r.rooms_size() - 1) {
+                    rooms_stream << ",";
+                }
+            }
+            rooms_stream << "]";
+            ss << "\"rooms\":" << rooms_stream.str();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RecommendRoomPopupNotify r;
     };

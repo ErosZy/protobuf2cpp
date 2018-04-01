@@ -25,34 +25,37 @@ namespace protocol {
     class Room_ad_excl_cateid : public Protocol {
     public:
         Room_ad_excl_cateid() : r(linkerProtocol::RoomAdExclCateid()) {};
+
         explicit Room_ad_excl_cateid(const linkerProtocol::RoomAdExclCateid &us) : r(us) {};
+
         const linkerProtocol::RoomAdExclCateid &get_room_ad_excl_cateid() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("cateid")) {
-	this->r.set_cateid(int32_t(o.get<jsonxx::Number>("cateid")));
-}
+            if (o.has<jsonxx::Number>("cateid")) {
+                this->r.set_cateid(int32_t(o.get<jsonxx::Number>("cateid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"cateid\":"<< this->r.cateid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"cateid\":" << this->r.cateid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomAdExclCateid r;
     };

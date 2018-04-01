@@ -26,13 +26,16 @@ namespace protocol {
     class User_attr_notify : public Protocol {
     public:
         User_attr_notify() : u(linkerProtocol::UserAttrNotify()) {};
+
         explicit User_attr_notify(const linkerProtocol::UserAttrNotify &us) : u(us) {};
+
         const linkerProtocol::UserAttrNotify &get_user_attr_notify() const { return this->u; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->u.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->u.ByteSize()];
             this->u.SerializeToArray(ptr, this->u.ByteSize());
             return std::make_shared<Buffer>(ptr, this->u.ByteSize());
@@ -40,50 +43,50 @@ namespace protocol {
 
         virtual void from_json(jsonxx::Object &o) {
             if (o.has<jsonxx::Object>("user")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("user");
-	User u;
-	u.from_json(info);
+                jsonxx::Object info = o.get<jsonxx::Object>("user");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->u.set_allocated_user(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->u.set_allocated_user(_u);
+            }
 
-if(o.has<jsonxx::Number>("diamond")) {
-	this->u.set_diamond(int32_t(o.get<jsonxx::Number>("diamond")));
-}
+            if (o.has<jsonxx::Number>("diamond")) {
+                this->u.set_diamond(int32_t(o.get<jsonxx::Number>("diamond")));
+            }
 
-if(o.has<jsonxx::Number>("starlight")) {
-	this->u.set_starlight(int32_t(o.get<jsonxx::Number>("starlight")));
-}
+            if (o.has<jsonxx::Number>("starlight")) {
+                this->u.set_starlight(int32_t(o.get<jsonxx::Number>("starlight")));
+            }
 
-if(o.has<jsonxx::Number>("fight")) {
-	this->u.set_fight(int32_t(o.get<jsonxx::Number>("fight")));
-}
+            if (o.has<jsonxx::Number>("fight")) {
+                this->u.set_fight(int32_t(o.get<jsonxx::Number>("fight")));
+            }
 
-if(o.has<jsonxx::Number>("seed")) {
-	this->u.set_seed(int32_t(o.get<jsonxx::Number>("seed")));
-}
+            if (o.has<jsonxx::Number>("seed")) {
+                this->u.set_seed(int32_t(o.get<jsonxx::Number>("seed")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
+            ss << "{";
 
-User u_0(this->u.user());
-ss << "\"user\":" << u_0.to_jsonstr() << ",";
-ss << "\"diamond\":"<< this->u.diamond() << ",";
-ss << "\"starlight\":"<< this->u.starlight() << ",";
-ss << "\"fight\":"<< this->u.fight() << ",";
-ss << "\"seed\":"<< this->u.seed();
-ss << "}";
-return ss.str();
+            User u_0(this->u.user());
+            ss << "\"user\":" << u_0.to_jsonstr() << ",";
+            ss << "\"diamond\":" << this->u.diamond() << ",";
+            ss << "\"starlight\":" << this->u.starlight() << ",";
+            ss << "\"fight\":" << this->u.fight() << ",";
+            ss << "\"seed\":" << this->u.seed();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::UserAttrNotify u;
     };

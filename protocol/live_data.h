@@ -25,74 +25,77 @@ namespace protocol {
     class Live_data : public Protocol {
     public:
         Live_data() : l(linkerProtocol::LiveData()) {};
+
         explicit Live_data(const linkerProtocol::LiveData &us) : l(us) {};
+
         const linkerProtocol::LiveData &get_live_data() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("online")) {
-	this->l.set_online(int32_t(o.get<jsonxx::Number>("online")));
-}
+            if (o.has<jsonxx::Number>("online")) {
+                this->l.set_online(int32_t(o.get<jsonxx::Number>("online")));
+            }
 
-if(o.has<jsonxx::Number>("starlight")) {
-	this->l.set_starlight(int32_t(o.get<jsonxx::Number>("starlight")));
-}
+            if (o.has<jsonxx::Number>("starlight")) {
+                this->l.set_starlight(int32_t(o.get<jsonxx::Number>("starlight")));
+            }
 
-if(o.has<jsonxx::Number>("fight")) {
-	this->l.set_fight(int32_t(o.get<jsonxx::Number>("fight")));
-}
+            if (o.has<jsonxx::Number>("fight")) {
+                this->l.set_fight(int32_t(o.get<jsonxx::Number>("fight")));
+            }
 
-if(o.has<jsonxx::Number>("status")) {
-	this->l.set_status(int32_t(o.get<jsonxx::Number>("status")));
-}
+            if (o.has<jsonxx::Number>("status")) {
+                this->l.set_status(int32_t(o.get<jsonxx::Number>("status")));
+            }
 
-if(o.has<jsonxx::Number>("views")) {
-	this->l.set_views(int32_t(o.get<jsonxx::Number>("views")));
-}
+            if (o.has<jsonxx::Number>("views")) {
+                this->l.set_views(int32_t(o.get<jsonxx::Number>("views")));
+            }
 
-if(o.has<jsonxx::Number>("duration")) {
-	this->l.set_duration(int32_t(o.get<jsonxx::Number>("duration")));
-}
+            if (o.has<jsonxx::Number>("duration")) {
+                this->l.set_duration(int32_t(o.get<jsonxx::Number>("duration")));
+            }
 
-if(o.has<jsonxx::Number>("maxOnline")) {
-	this->l.set_maxonline(int32_t(o.get<jsonxx::Number>("maxOnline")));
-}
+            if (o.has<jsonxx::Number>("maxOnline")) {
+                this->l.set_maxonline(int32_t(o.get<jsonxx::Number>("maxOnline")));
+            }
 
-if(o.has<jsonxx::Boolean>("isRectify")) {
-	this->l.set_isrectify((o.get<jsonxx::Boolean>("isRectify")));
-}
+            if (o.has<jsonxx::Boolean>("isRectify")) {
+                this->l.set_isrectify((o.get<jsonxx::Boolean>("isRectify")));
+            }
 
-if(o.has<jsonxx::Number>("onlineNobleman")) {
-	this->l.set_onlinenobleman(int32_t(o.get<jsonxx::Number>("onlineNobleman")));
-}
+            if (o.has<jsonxx::Number>("onlineNobleman")) {
+                this->l.set_onlinenobleman(int32_t(o.get<jsonxx::Number>("onlineNobleman")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"online\":"<< this->l.online() << ",";
-ss << "\"starlight\":"<< this->l.starlight() << ",";
-ss << "\"fight\":"<< this->l.fight() << ",";
-ss << "\"status\":"<< this->l.status() << ",";
-ss << "\"views\":"<< this->l.views() << ",";
-ss << "\"duration\":"<< this->l.duration() << ",";
-ss << "\"maxOnline\":"<< this->l.maxonline() << ",";
-ss << "\"isRectify\":"<< this->l.isrectify() << ",";
-ss << "\"onlineNobleman\":"<< this->l.onlinenobleman();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"online\":" << this->l.online() << ",";
+            ss << "\"starlight\":" << this->l.starlight() << ",";
+            ss << "\"fight\":" << this->l.fight() << ",";
+            ss << "\"status\":" << this->l.status() << ",";
+            ss << "\"views\":" << this->l.views() << ",";
+            ss << "\"duration\":" << this->l.duration() << ",";
+            ss << "\"maxOnline\":" << this->l.maxonline() << ",";
+            ss << "\"isRectify\":" << this->l.isrectify() << ",";
+            ss << "\"onlineNobleman\":" << this->l.onlinenobleman();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LiveData l;
     };

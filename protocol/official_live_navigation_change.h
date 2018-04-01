@@ -25,44 +25,48 @@ namespace protocol {
     class Official_live_navigation_change : public Protocol {
     public:
         Official_live_navigation_change() : o(linkerProtocol::OfficialLiveNavigationChange()) {};
+
         explicit Official_live_navigation_change(const linkerProtocol::OfficialLiveNavigationChange &us) : o(us) {};
-        const linkerProtocol::OfficialLiveNavigationChange &get_official_live_navigation_change() const { return this->o; }
+
+        const linkerProtocol::OfficialLiveNavigationChange &
+        get_official_live_navigation_change() const { return this->o; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->o.ByteSize()];
             this->o.SerializeToArray(ptr, this->o.ByteSize());
             return std::make_shared<Buffer>(ptr, this->o.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("srcOwid")) {
-	this->o.set_srcowid(int32_t(o.get<jsonxx::Number>("srcOwid")));
-}
+            if (o.has<jsonxx::Number>("srcOwid")) {
+                this->o.set_srcowid(int32_t(o.get<jsonxx::Number>("srcOwid")));
+            }
 
-if(o.has<jsonxx::Number>("destOwid")) {
-	this->o.set_destowid(int32_t(o.get<jsonxx::Number>("destOwid")));
-}
+            if (o.has<jsonxx::Number>("destOwid")) {
+                this->o.set_destowid(int32_t(o.get<jsonxx::Number>("destOwid")));
+            }
 
-if(o.has<jsonxx::String>("streamUrl")) {
-	this->o.set_streamurl((o.get<jsonxx::String>("streamUrl")));
-}
+            if (o.has<jsonxx::String>("streamUrl")) {
+                this->o.set_streamurl((o.get<jsonxx::String>("streamUrl")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"srcOwid\":"<< this->o.srcowid() << ",";
-ss << "\"destOwid\":"<< this->o.destowid() << ",";
-ss << "\"streamUrl\":"<< "\"" << this->o.streamurl() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"srcOwid\":" << this->o.srcowid() << ",";
+            ss << "\"destOwid\":" << this->o.destowid() << ",";
+            ss << "\"streamUrl\":" << "\"" << this->o.streamurl() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::OfficialLiveNavigationChange o;
     };

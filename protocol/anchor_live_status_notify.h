@@ -25,39 +25,42 @@ namespace protocol {
     class Anchor_live_status_notify : public Protocol {
     public:
         Anchor_live_status_notify() : a(linkerProtocol::AnchorLiveStatusNotify()) {};
+
         explicit Anchor_live_status_notify(const linkerProtocol::AnchorLiveStatusNotify &us) : a(us) {};
+
         const linkerProtocol::AnchorLiveStatusNotify &get_anchor_live_status_notify() const { return this->a; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->a.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->a.ByteSize()];
             this->a.SerializeToArray(ptr, this->a.ByteSize());
             return std::make_shared<Buffer>(ptr, this->a.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->a.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->a.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("type")) {
-	this->a.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->a.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->a.owid() << ",";
-ss << "\"type\":"<< this->a.type();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->a.owid() << ",";
+            ss << "\"type\":" << this->a.type();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::AnchorLiveStatusNotify a;
     };

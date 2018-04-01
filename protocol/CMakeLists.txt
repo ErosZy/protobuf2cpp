@@ -1,115 +1,115 @@
 add_library(protocol
-            protocol.h
-            user.h
-anchor_live.h
-live_data.h
-room_attr.h
-retetion_attr.h
-login_req.h
-login_resp.h
-room_join_req.h
-room_join_resp.h
-room_join_notify_up.h
-room_leave_req.h
-chat_up.h
-text_attribe.h
-bag_up.h
-bag_notify.h
-chat_notify.h
-gift_up.h
-gift_notify.h
-zan_up.h
-zan_notify.h
-manager_notify.h
-room_update_notify.h
-room_guard_notify.h
-anchor_live_status_notify.h
-shared_notify.h
-followed_notify.h
-red_envelope_notify.h
-user_attr_notify.h
-user_level_up_notify.h
-kickout_notify.h
-link_apply.h
-link_cancel.h
-link_close.h
-link_notify.h
-link_accept.h
-link_broadcast.h
-banner_notify.h
-anchor_live_info.h
-official_live_status_notify.h
-official_live_like_up.h
-official_live_like_notify.h
-anchor_indicate_notify.h
-official_live_navigation_change.h
-challenge_task.h
-challenge_task_status.h
-challenge_bet.h
-challenge_award.h
-global_msg.h
-ext.h
-giftbox_done.h
-dialog_notify.h
-dialog_button.h
-map_entry.h
-guess_update.h
-guess_subject.h
-guess_item.h
-guess_owner_award.h
-guess_win.h
-guess_award.h
-honor_level_up.h
-friend_status.h
-rectify_room_notify.h
-option_detail.h
-vote_notify.h
-nobleman_ban_notify.h
-nobleman_ext.h
-room_join_notify.h
-noble_list_notify.h
-nobleman_confer_notify.h
-horn.h
-link_gift_pk_apply.h
-link_gift_pk_refuse.h
-link_gift_pk_accept.h
-link_gift_pk_notify.h
-gift_pk_user_info.h
-link_gift_pk_end.h
-nobleman_recommend_notify.h
-fit_level_up_global_msg_notify.h
-client_type_map.h
-room_lot_start.h
-room_lot_attrs.h
-room_lot_result_notify.h
-room_lot_result.h
-room_lot_win_user.h
-room_lot_gift_attr.h
-room_ad_push.h
-room_ad_attr.h
-room_ad_excl_owid.h
-room_ad_excl_cateid.h
-room_svr_weekly_star_notify.h
-blessingbag_info.h
-blessingbag_notify.h
-blessingbag_global_msg_notify.h
-blessingbag_ext.h
-blessingbag_finish_notify.h
-double_eleven_lottery_notify.h
-double_eleven_lottery_draw_list.h
-double_eleven_lottery_prize_list.h
-double_eleven_lottery_best_assist_list.h
-double_eleven_lottery_send_notify.h
-room_lot_charge_value_notify.h
-online_view2_change_notify.h
-online_view2_change_list_notify.h
-red_packet_start.h
-lpl_recommand_room_ending_popup_notify.h
-lpl_recommand_room_ending_popup_notify_item.h
-cash_packet_notify.h
-room_chat_ban_mode_update_notify.h
-recommend_room_popup_room.h
-recommend_room_popup_notify.h
-gift_effect_notify.h
-)
+        protocol.h
+        user.h
+        anchor_live.h
+        live_data.h
+        room_attr.h
+        retetion_attr.h
+        login_req.h
+        login_resp.h
+        room_join_req.h
+        room_join_resp.h
+        room_join_notify_up.h
+        room_leave_req.h
+        chat_up.h
+        text_attribe.h
+        bag_up.h
+        bag_notify.h
+        chat_notify.h
+        gift_up.h
+        gift_notify.h
+        zan_up.h
+        zan_notify.h
+        manager_notify.h
+        room_update_notify.h
+        room_guard_notify.h
+        anchor_live_status_notify.h
+        shared_notify.h
+        followed_notify.h
+        red_envelope_notify.h
+        user_attr_notify.h
+        user_level_up_notify.h
+        kickout_notify.h
+        link_apply.h
+        link_cancel.h
+        link_close.h
+        link_notify.h
+        link_accept.h
+        link_broadcast.h
+        banner_notify.h
+        anchor_live_info.h
+        official_live_status_notify.h
+        official_live_like_up.h
+        official_live_like_notify.h
+        anchor_indicate_notify.h
+        official_live_navigation_change.h
+        challenge_task.h
+        challenge_task_status.h
+        challenge_bet.h
+        challenge_award.h
+        global_msg.h
+        ext.h
+        giftbox_done.h
+        dialog_notify.h
+        dialog_button.h
+        map_entry.h
+        guess_update.h
+        guess_subject.h
+        guess_item.h
+        guess_owner_award.h
+        guess_win.h
+        guess_award.h
+        honor_level_up.h
+        friend_status.h
+        rectify_room_notify.h
+        option_detail.h
+        vote_notify.h
+        nobleman_ban_notify.h
+        nobleman_ext.h
+        room_join_notify.h
+        noble_list_notify.h
+        nobleman_confer_notify.h
+        horn.h
+        link_gift_pk_apply.h
+        link_gift_pk_refuse.h
+        link_gift_pk_accept.h
+        link_gift_pk_notify.h
+        gift_pk_user_info.h
+        link_gift_pk_end.h
+        nobleman_recommend_notify.h
+        fit_level_up_global_msg_notify.h
+        client_type_map.h
+        room_lot_start.h
+        room_lot_attrs.h
+        room_lot_result_notify.h
+        room_lot_result.h
+        room_lot_win_user.h
+        room_lot_gift_attr.h
+        room_ad_push.h
+        room_ad_attr.h
+        room_ad_excl_owid.h
+        room_ad_excl_cateid.h
+        room_svr_weekly_star_notify.h
+        blessingbag_info.h
+        blessingbag_notify.h
+        blessingbag_global_msg_notify.h
+        blessingbag_ext.h
+        blessingbag_finish_notify.h
+        double_eleven_lottery_notify.h
+        double_eleven_lottery_draw_list.h
+        double_eleven_lottery_prize_list.h
+        double_eleven_lottery_best_assist_list.h
+        double_eleven_lottery_send_notify.h
+        room_lot_charge_value_notify.h
+        online_view2_change_notify.h
+        online_view2_change_list_notify.h
+        red_packet_start.h
+        lpl_recommand_room_ending_popup_notify.h
+        lpl_recommand_room_ending_popup_notify_item.h
+        cash_packet_notify.h
+        room_chat_ban_mode_update_notify.h
+        recommend_room_popup_room.h
+        recommend_room_popup_notify.h
+        gift_effect_notify.h
+        )
 set_target_properties(protocol PROPERTIES LINKER_LANGUAGE CXX)

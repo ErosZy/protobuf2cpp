@@ -25,34 +25,37 @@ namespace protocol {
     class Anchor_live_info : public Protocol {
     public:
         Anchor_live_info() : a(linkerProtocol::AnchorLiveInfo()) {};
+
         explicit Anchor_live_info(const linkerProtocol::AnchorLiveInfo &us) : a(us) {};
+
         const linkerProtocol::AnchorLiveInfo &get_anchor_live_info() const { return this->a; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->a.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->a.ByteSize()];
             this->a.SerializeToArray(ptr, this->a.ByteSize());
             return std::make_shared<Buffer>(ptr, this->a.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("catagory")) {
-	this->a.set_catagory(int32_t(o.get<jsonxx::Number>("catagory")));
-}
+            if (o.has<jsonxx::Number>("catagory")) {
+                this->a.set_catagory(int32_t(o.get<jsonxx::Number>("catagory")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"catagory\":"<< this->a.catagory();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"catagory\":" << this->a.catagory();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::AnchorLiveInfo a;
     };

@@ -25,39 +25,42 @@ namespace protocol {
     class Room_lot_gift_attr : public Protocol {
     public:
         Room_lot_gift_attr() : r(linkerProtocol::RoomLotGiftAttr()) {};
+
         explicit Room_lot_gift_attr(const linkerProtocol::RoomLotGiftAttr &us) : r(us) {};
+
         const linkerProtocol::RoomLotGiftAttr &get_room_lot_gift_attr() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::String>("name")) {
-	this->r.set_name((o.get<jsonxx::String>("name")));
-}
+            if (o.has<jsonxx::String>("name")) {
+                this->r.set_name((o.get<jsonxx::String>("name")));
+            }
 
-if(o.has<jsonxx::String>("img")) {
-	this->r.set_img((o.get<jsonxx::String>("img")));
-}
+            if (o.has<jsonxx::String>("img")) {
+                this->r.set_img((o.get<jsonxx::String>("img")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"name\":"<< "\"" << this->r.name() << "\"" << ",";
-ss << "\"img\":"<< "\"" << this->r.img() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"name\":" << "\"" << this->r.name() << "\"" << ",";
+            ss << "\"img\":" << "\"" << this->r.img() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomLotGiftAttr r;
     };

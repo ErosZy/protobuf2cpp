@@ -26,13 +26,16 @@ namespace protocol {
     class Gift_pk_user_info : public Protocol {
     public:
         Gift_pk_user_info() : g(linkerProtocol::GiftPkUserInfo()) {};
+
         explicit Gift_pk_user_info(const linkerProtocol::GiftPkUserInfo &us) : g(us) {};
+
         const linkerProtocol::GiftPkUserInfo &get_gift_pk_user_info() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
@@ -40,35 +43,35 @@ namespace protocol {
 
         virtual void from_json(jsonxx::Object &o) {
             if (o.has<jsonxx::Object>("user")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("user");
-	User u;
-	u.from_json(info);
+                jsonxx::Object info = o.get<jsonxx::Object>("user");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->g.set_allocated_user(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->g.set_allocated_user(_u);
+            }
 
-if(o.has<jsonxx::Number>("score")) {
-	this->g.set_score(int32_t(o.get<jsonxx::Number>("score")));
-}
+            if (o.has<jsonxx::Number>("score")) {
+                this->g.set_score(int32_t(o.get<jsonxx::Number>("score")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
+            ss << "{";
 
-User u_0(this->g.user());
-ss << "\"user\":" << u_0.to_jsonstr() << ",";
-ss << "\"score\":"<< this->g.score();
-ss << "}";
-return ss.str();
+            User u_0(this->g.user());
+            ss << "\"user\":" << u_0.to_jsonstr() << ",";
+            ss << "\"score\":" << this->g.score();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GiftPkUserInfo g;
     };

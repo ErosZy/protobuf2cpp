@@ -25,39 +25,42 @@ namespace protocol {
     class Online_view2_change_notify : public Protocol {
     public:
         Online_view2_change_notify() : o(linkerProtocol::OnlineView2ChangeNotify()) {};
+
         explicit Online_view2_change_notify(const linkerProtocol::OnlineView2ChangeNotify &us) : o(us) {};
+
         const linkerProtocol::OnlineView2ChangeNotify &get_online_view2_change_notify() const { return this->o; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->o.ByteSize()];
             this->o.SerializeToArray(ptr, this->o.ByteSize());
             return std::make_shared<Buffer>(ptr, this->o.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->o.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->o.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("online2")) {
-	this->o.set_online2(int32_t(o.get<jsonxx::Number>("online2")));
-}
+            if (o.has<jsonxx::Number>("online2")) {
+                this->o.set_online2(int32_t(o.get<jsonxx::Number>("online2")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->o.owid() << ",";
-ss << "\"online2\":"<< this->o.online2();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->o.owid() << ",";
+            ss << "\"online2\":" << this->o.online2();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::OnlineView2ChangeNotify o;
     };

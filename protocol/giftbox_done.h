@@ -25,44 +25,47 @@ namespace protocol {
     class Giftbox_done : public Protocol {
     public:
         Giftbox_done() : g(linkerProtocol::GiftboxDone()) {};
+
         explicit Giftbox_done(const linkerProtocol::GiftboxDone &us) : g(us) {};
+
         const linkerProtocol::GiftboxDone &get_giftbox_done() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("type")) {
-	this->g.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->g.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if(o.has<jsonxx::Number>("boxid")) {
-	this->g.set_boxid(int32_t(o.get<jsonxx::Number>("boxid")));
-}
+            if (o.has<jsonxx::Number>("boxid")) {
+                this->g.set_boxid(int32_t(o.get<jsonxx::Number>("boxid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->g.owid() << ",";
-ss << "\"type\":"<< this->g.type() << ",";
-ss << "\"boxid\":"<< this->g.boxid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->g.owid() << ",";
+            ss << "\"type\":" << this->g.type() << ",";
+            ss << "\"boxid\":" << this->g.boxid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GiftboxDone g;
     };

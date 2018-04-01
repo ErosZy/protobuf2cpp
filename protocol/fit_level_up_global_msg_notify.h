@@ -26,84 +26,87 @@ namespace protocol {
     class Fit_level_up_global_msg_notify : public Protocol {
     public:
         Fit_level_up_global_msg_notify() : f(linkerProtocol::FitLevelUpGlobalMsgNotify()) {};
+
         explicit Fit_level_up_global_msg_notify(const linkerProtocol::FitLevelUpGlobalMsgNotify &us) : f(us) {};
+
         const linkerProtocol::FitLevelUpGlobalMsgNotify &get_fit_level_up_global_msg_notify() const { return this->f; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->f.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->f.ByteSize()];
             this->f.SerializeToArray(ptr, this->f.ByteSize());
             return std::make_shared<Buffer>(ptr, this->f.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("uid")) {
-	this->f.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
-}
+            if (o.has<jsonxx::Number>("uid")) {
+                this->f.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
+            }
 
-if(o.has<jsonxx::String>("nickname")) {
-	this->f.set_nickname((o.get<jsonxx::String>("nickname")));
-}
+            if (o.has<jsonxx::String>("nickname")) {
+                this->f.set_nickname((o.get<jsonxx::String>("nickname")));
+            }
 
-if(o.has<jsonxx::Number>("owid")) {
-	this->f.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->f.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("level")) {
-	this->f.set_level(int32_t(o.get<jsonxx::Number>("level")));
-}
+            if (o.has<jsonxx::Number>("level")) {
+                this->f.set_level(int32_t(o.get<jsonxx::Number>("level")));
+            }
 
-if(o.has<jsonxx::String>("name")) {
-	this->f.set_name((o.get<jsonxx::String>("name")));
-}
+            if (o.has<jsonxx::String>("name")) {
+                this->f.set_name((o.get<jsonxx::String>("name")));
+            }
 
-if (o.has<jsonxx::Object>("targetMap")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("targetMap");
-	Client_type_map c;
-	c.from_json(info);
+            if (o.has<jsonxx::Object>("targetMap")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("targetMap");
+                Client_type_map c;
+                c.from_json(info);
 
-	auto _c = new linkerProtocol::ClientTypeMap();
-	uint8_t buf[c.get_client_type_map().ByteSize()];
-	c.get_client_type_map().SerializeToArray(buf, c.get_client_type_map().ByteSize());
-	_c->ParseFromArray(buf, c.get_client_type_map().ByteSize());
-	this->f.set_allocated_targetmap(_c);
-}
+                auto _c = new linkerProtocol::ClientTypeMap();
+                uint8_t buf[c.get_client_type_map().ByteSize()];
+                c.get_client_type_map().SerializeToArray(buf, c.get_client_type_map().ByteSize());
+                _c->ParseFromArray(buf, c.get_client_type_map().ByteSize());
+                this->f.set_allocated_targetmap(_c);
+            }
 
-if(o.has<jsonxx::String>("validTime")) {
-	this->f.set_validtime((o.get<jsonxx::String>("validTime")));
-}
+            if (o.has<jsonxx::String>("validTime")) {
+                this->f.set_validtime((o.get<jsonxx::String>("validTime")));
+            }
 
-if(o.has<jsonxx::Number>("number")) {
-	this->f.set_number(int32_t(o.get<jsonxx::Number>("number")));
-}
+            if (o.has<jsonxx::Number>("number")) {
+                this->f.set_number(int32_t(o.get<jsonxx::Number>("number")));
+            }
 
-if(o.has<jsonxx::String>("owNickName")) {
-	this->f.set_ownickname((o.get<jsonxx::String>("owNickName")));
-}
+            if (o.has<jsonxx::String>("owNickName")) {
+                this->f.set_ownickname((o.get<jsonxx::String>("owNickName")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"uid\":"<< this->f.uid() << ",";
-ss << "\"nickname\":"<< "\"" << this->f.nickname() << "\"" << ",";
-ss << "\"owid\":"<< this->f.owid() << ",";
-ss << "\"level\":"<< this->f.level() << ",";
-ss << "\"name\":"<< "\"" << this->f.name() << "\"" << ",";
+            ss << "{";
+            ss << "\"uid\":" << this->f.uid() << ",";
+            ss << "\"nickname\":" << "\"" << this->f.nickname() << "\"" << ",";
+            ss << "\"owid\":" << this->f.owid() << ",";
+            ss << "\"level\":" << this->f.level() << ",";
+            ss << "\"name\":" << "\"" << this->f.name() << "\"" << ",";
 
-Client_type_map c_5(this->f.targetmap());
-ss << "\"targetMap\":" << c_5.to_jsonstr() << ",";
-ss << "\"validTime\":"<< "\"" << this->f.validtime() << "\"" << ",";
-ss << "\"number\":"<< this->f.number() << ",";
-ss << "\"owNickName\":"<< "\"" << this->f.ownickname() << "\"";
-ss << "}";
-return ss.str();
+            Client_type_map c_5(this->f.targetmap());
+            ss << "\"targetMap\":" << c_5.to_jsonstr() << ",";
+            ss << "\"validTime\":" << "\"" << this->f.validtime() << "\"" << ",";
+            ss << "\"number\":" << this->f.number() << ",";
+            ss << "\"owNickName\":" << "\"" << this->f.ownickname() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::FitLevelUpGlobalMsgNotify f;
     };

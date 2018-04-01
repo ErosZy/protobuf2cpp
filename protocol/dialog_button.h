@@ -25,44 +25,47 @@ namespace protocol {
     class Dialog_button : public Protocol {
     public:
         Dialog_button() : d(linkerProtocol::DialogButton()) {};
+
         explicit Dialog_button(const linkerProtocol::DialogButton &us) : d(us) {};
+
         const linkerProtocol::DialogButton &get_dialog_button() const { return this->d; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->d.ByteSize()];
             this->d.SerializeToArray(ptr, this->d.ByteSize());
             return std::make_shared<Buffer>(ptr, this->d.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::String>("button")) {
-	this->d.set_button((o.get<jsonxx::String>("button")));
-}
+            if (o.has<jsonxx::String>("button")) {
+                this->d.set_button((o.get<jsonxx::String>("button")));
+            }
 
-if(o.has<jsonxx::String>("url")) {
-	this->d.set_url((o.get<jsonxx::String>("url")));
-}
+            if (o.has<jsonxx::String>("url")) {
+                this->d.set_url((o.get<jsonxx::String>("url")));
+            }
 
-if(o.has<jsonxx::Number>("action")) {
-	this->d.set_action(int32_t(o.get<jsonxx::Number>("action")));
-}
+            if (o.has<jsonxx::Number>("action")) {
+                this->d.set_action(int32_t(o.get<jsonxx::Number>("action")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"button\":"<< "\"" << this->d.button() << "\"" << ",";
-ss << "\"url\":"<< "\"" << this->d.url() << "\"" << ",";
-ss << "\"action\":"<< this->d.action();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"button\":" << "\"" << this->d.button() << "\"" << ",";
+            ss << "\"url\":" << "\"" << this->d.url() << "\"" << ",";
+            ss << "\"action\":" << this->d.action();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::DialogButton d;
     };

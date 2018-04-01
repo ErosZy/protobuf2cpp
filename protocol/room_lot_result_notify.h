@@ -25,39 +25,42 @@ namespace protocol {
     class Room_lot_result_notify : public Protocol {
     public:
         Room_lot_result_notify() : r(linkerProtocol::RoomLotResultNotify()) {};
+
         explicit Room_lot_result_notify(const linkerProtocol::RoomLotResultNotify &us) : r(us) {};
+
         const linkerProtocol::RoomLotResultNotify &get_room_lot_result_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::String>("txt")) {
-	this->r.set_txt((o.get<jsonxx::String>("txt")));
-}
+            if (o.has<jsonxx::String>("txt")) {
+                this->r.set_txt((o.get<jsonxx::String>("txt")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
-ss << "\"txt\":"<< "\"" << this->r.txt() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
+            ss << "\"txt\":" << "\"" << this->r.txt() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomLotResultNotify r;
     };

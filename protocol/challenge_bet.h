@@ -27,94 +27,97 @@ namespace protocol {
     class Challenge_bet : public Protocol {
     public:
         Challenge_bet() : c(linkerProtocol::ChallengeBet()) {};
+
         explicit Challenge_bet(const linkerProtocol::ChallengeBet &us) : c(us) {};
+
         const linkerProtocol::ChallengeBet &get_challenge_bet() const { return this->c; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->c.ByteSize()];
             this->c.SerializeToArray(ptr, this->c.ByteSize());
             return std::make_shared<Buffer>(ptr, this->c.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->c.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->c.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("replayId")) {
-	this->c.set_replayid(int32_t(o.get<jsonxx::Number>("replayId")));
-}
+            if (o.has<jsonxx::Number>("replayId")) {
+                this->c.set_replayid(int32_t(o.get<jsonxx::Number>("replayId")));
+            }
 
-if (o.has<jsonxx::Object>("User")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("User");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("User")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("User");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->c.set_allocated_user(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->c.set_allocated_user(_u);
+            }
 
-if(o.has<jsonxx::Number>("amount")) {
-	this->c.set_amount(int32_t(o.get<jsonxx::Number>("amount")));
-}
+            if (o.has<jsonxx::Number>("amount")) {
+                this->c.set_amount(int32_t(o.get<jsonxx::Number>("amount")));
+            }
 
-if(o.has<jsonxx::Number>("taskId")) {
-	this->c.set_taskid(int32_t(o.get<jsonxx::Number>("taskId")));
-}
+            if (o.has<jsonxx::Number>("taskId")) {
+                this->c.set_taskid(int32_t(o.get<jsonxx::Number>("taskId")));
+            }
 
-if (o.has<jsonxx::Array>("ChallengeTaskList")) {
-	auto cs = o.get<jsonxx::Array>("ChallengeTaskList");
-	for (size_t i = 0; i < cs.size(); i++) {
-		auto j = cs.get<jsonxx::Object>(i);
-		Challenge_task k;
-		k.from_json(j);
-		uint8_t buf[k.get_challenge_task().ByteSize()];
-		k.get_challenge_task().SerializeToArray(buf, k.get_challenge_task().ByteSize());
+            if (o.has<jsonxx::Array>("ChallengeTaskList")) {
+                auto cs = o.get<jsonxx::Array>("ChallengeTaskList");
+                for (size_t i = 0; i < cs.size(); i++) {
+                    auto j = cs.get<jsonxx::Object>(i);
+                    Challenge_task k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_challenge_task().ByteSize()];
+                    k.get_challenge_task().SerializeToArray(buf, k.get_challenge_task().ByteSize());
 
-		auto m = this->c.add_challengetasklist();
-		m->ParseFromArray(buf, k.get_challenge_task().ByteSize());
-	}
-}
+                    auto m = this->c.add_challengetasklist();
+                    m->ParseFromArray(buf, k.get_challenge_task().ByteSize());
+                }
+            }
 
-if(o.has<jsonxx::Number>("combo")) {
-	this->c.set_combo(int32_t(o.get<jsonxx::Number>("combo")));
-}
+            if (o.has<jsonxx::Number>("combo")) {
+                this->c.set_combo(int32_t(o.get<jsonxx::Number>("combo")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->c.owid() << ",";
-ss << "\"replayId\":"<< this->c.replayid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->c.owid() << ",";
+            ss << "\"replayId\":" << this->c.replayid() << ",";
 
-User u_2(this->c.user());
-ss << "\"User\":" << u_2.to_jsonstr() << ",";
-ss << "\"amount\":"<< this->c.amount() << ",";
-ss << "\"taskId\":"<< this->c.taskid() << ",";
+            User u_2(this->c.user());
+            ss << "\"User\":" << u_2.to_jsonstr() << ",";
+            ss << "\"amount\":" << this->c.amount() << ",";
+            ss << "\"taskId\":" << this->c.taskid() << ",";
 
-std::stringstream challengetasklist_stream;
-challengetasklist_stream << "[";
-for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
-	challengetasklist_stream << Challenge_task(this->c.challengetasklist(i)).to_jsonstr();
-	if (i != this->c.challengetasklist_size() - 1) {
-		challengetasklist_stream << ",";
-	}
-}
-challengetasklist_stream << "]";
-ss << "\"ChallengeTaskList\":" << challengetasklist_stream.str() << ",";
-ss << "\"combo\":"<< this->c.combo();
-ss << "}";
-return ss.str();
+            std::stringstream challengetasklist_stream;
+            challengetasklist_stream << "[";
+            for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
+                challengetasklist_stream << Challenge_task(this->c.challengetasklist(i)).to_jsonstr();
+                if (i != this->c.challengetasklist_size() - 1) {
+                    challengetasklist_stream << ",";
+                }
+            }
+            challengetasklist_stream << "]";
+            ss << "\"ChallengeTaskList\":" << challengetasklist_stream.str() << ",";
+            ss << "\"combo\":" << this->c.combo();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::ChallengeBet c;
     };

@@ -26,49 +26,52 @@ namespace protocol {
     class Room_update_notify : public Protocol {
     public:
         Room_update_notify() : r(linkerProtocol::RoomUpdateNotify()) {};
+
         explicit Room_update_notify(const linkerProtocol::RoomUpdateNotify &us) : r(us) {};
+
         const linkerProtocol::RoomUpdateNotify &get_room_update_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Object>("liveData")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("liveData");
-	Live_data l;
-	l.from_json(info);
+            if (o.has<jsonxx::Object>("liveData")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("liveData");
+                Live_data l;
+                l.from_json(info);
 
-	auto _l = new linkerProtocol::LiveData();
-	uint8_t buf[l.get_live_data().ByteSize()];
-	l.get_live_data().SerializeToArray(buf, l.get_live_data().ByteSize());
-	_l->ParseFromArray(buf, l.get_live_data().ByteSize());
-	this->r.set_allocated_livedata(_l);
-}
+                auto _l = new linkerProtocol::LiveData();
+                uint8_t buf[l.get_live_data().ByteSize()];
+                l.get_live_data().SerializeToArray(buf, l.get_live_data().ByteSize());
+                _l->ParseFromArray(buf, l.get_live_data().ByteSize());
+                this->r.set_allocated_livedata(_l);
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
 
-Live_data l_1(this->r.livedata());
-ss << "\"liveData\":" << l_1.to_jsonstr();
-ss << "}";
-return ss.str();
+            Live_data l_1(this->r.livedata());
+            ss << "\"liveData\":" << l_1.to_jsonstr();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomUpdateNotify r;
     };

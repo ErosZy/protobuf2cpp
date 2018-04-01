@@ -25,54 +25,57 @@ namespace protocol {
     class Guess_award : public Protocol {
     public:
         Guess_award() : g(linkerProtocol::GuessAward()) {};
+
         explicit Guess_award(const linkerProtocol::GuessAward &us) : g(us) {};
+
         const linkerProtocol::GuessAward &get_guess_award() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("guessID")) {
-	this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
-}
+            if (o.has<jsonxx::Number>("guessID")) {
+                this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
+            }
 
-if(o.has<jsonxx::String>("title")) {
-	this->g.set_title((o.get<jsonxx::String>("title")));
-}
+            if (o.has<jsonxx::String>("title")) {
+                this->g.set_title((o.get<jsonxx::String>("title")));
+            }
 
-if(o.has<jsonxx::String>("desc")) {
-	this->g.set_desc((o.get<jsonxx::String>("desc")));
-}
+            if (o.has<jsonxx::String>("desc")) {
+                this->g.set_desc((o.get<jsonxx::String>("desc")));
+            }
 
-if(o.has<jsonxx::Number>("award")) {
-	this->g.set_award(int32_t(o.get<jsonxx::Number>("award")));
-}
+            if (o.has<jsonxx::Number>("award")) {
+                this->g.set_award(int32_t(o.get<jsonxx::Number>("award")));
+            }
 
-if(o.has<jsonxx::Number>("status")) {
-	this->g.set_status(int32_t(o.get<jsonxx::Number>("status")));
-}
+            if (o.has<jsonxx::Number>("status")) {
+                this->g.set_status(int32_t(o.get<jsonxx::Number>("status")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"guessID\":"<< this->g.guessid() << ",";
-ss << "\"title\":"<< "\"" << this->g.title() << "\"" << ",";
-ss << "\"desc\":"<< "\"" << this->g.desc() << "\"" << ",";
-ss << "\"award\":"<< this->g.award() << ",";
-ss << "\"status\":"<< this->g.status();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"guessID\":" << this->g.guessid() << ",";
+            ss << "\"title\":" << "\"" << this->g.title() << "\"" << ",";
+            ss << "\"desc\":" << "\"" << this->g.desc() << "\"" << ",";
+            ss << "\"award\":" << this->g.award() << ",";
+            ss << "\"status\":" << this->g.status();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GuessAward g;
     };

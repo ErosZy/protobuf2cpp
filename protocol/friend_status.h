@@ -27,13 +27,16 @@ namespace protocol {
     class Friend_status : public Protocol {
     public:
         Friend_status() : f(linkerProtocol::FriendStatus()) {};
+
         explicit Friend_status(const linkerProtocol::FriendStatus &us) : f(us) {};
+
         const linkerProtocol::FriendStatus &get_friend_status() const { return this->f; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->f.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->f.ByteSize()];
             this->f.SerializeToArray(ptr, this->f.ByteSize());
             return std::make_shared<Buffer>(ptr, this->f.ByteSize());
@@ -41,45 +44,45 @@ namespace protocol {
 
         virtual void from_json(jsonxx::Object &o) {
             if (o.has<jsonxx::Object>("user")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("user");
-	User u;
-	u.from_json(info);
+                jsonxx::Object info = o.get<jsonxx::Object>("user");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->f.set_allocated_user(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->f.set_allocated_user(_u);
+            }
 
-if (o.has<jsonxx::Object>("anchor")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("anchor");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("anchor")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("anchor");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->f.set_allocated_anchor(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->f.set_allocated_anchor(_u);
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
+            ss << "{";
 
-User u_0(this->f.user());
-ss << "\"user\":" << u_0.to_jsonstr() << ",";
+            User u_0(this->f.user());
+            ss << "\"user\":" << u_0.to_jsonstr() << ",";
 
-User u_1(this->f.anchor());
-ss << "\"anchor\":" << u_1.to_jsonstr();
-ss << "}";
-return ss.str();
+            User u_1(this->f.anchor());
+            ss << "\"anchor\":" << u_1.to_jsonstr();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::FriendStatus f;
     };

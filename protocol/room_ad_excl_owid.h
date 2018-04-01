@@ -25,34 +25,37 @@ namespace protocol {
     class Room_ad_excl_owid : public Protocol {
     public:
         Room_ad_excl_owid() : r(linkerProtocol::RoomAdExclOwid()) {};
+
         explicit Room_ad_excl_owid(const linkerProtocol::RoomAdExclOwid &us) : r(us) {};
+
         const linkerProtocol::RoomAdExclOwid &get_room_ad_excl_owid() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomAdExclOwid r;
     };

@@ -26,54 +26,57 @@ namespace protocol {
     class Nobleman_recommend_notify : public Protocol {
     public:
         Nobleman_recommend_notify() : n(linkerProtocol::NoblemanRecommendNotify()) {};
+
         explicit Nobleman_recommend_notify(const linkerProtocol::NoblemanRecommendNotify &us) : n(us) {};
+
         const linkerProtocol::NoblemanRecommendNotify &get_nobleman_recommend_notify() const { return this->n; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->n.ByteSize()];
             this->n.SerializeToArray(ptr, this->n.ByteSize());
             return std::make_shared<Buffer>(ptr, this->n.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->n.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->n.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Object>("noble")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("noble");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("noble")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("noble");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->n.set_allocated_noble(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->n.set_allocated_noble(_u);
+            }
 
-if(o.has<jsonxx::Number>("endTime")) {
-	this->n.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
-}
+            if (o.has<jsonxx::Number>("endTime")) {
+                this->n.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->n.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->n.owid() << ",";
 
-User u_1(this->n.noble());
-ss << "\"noble\":" << u_1.to_jsonstr() << ",";
-ss << "\"endTime\":"<< this->n.endtime();
-ss << "}";
-return ss.str();
+            User u_1(this->n.noble());
+            ss << "\"noble\":" << u_1.to_jsonstr() << ",";
+            ss << "\"endTime\":" << this->n.endtime();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::NoblemanRecommendNotify n;
     };

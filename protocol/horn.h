@@ -27,79 +27,82 @@ namespace protocol {
     class Horn : public Protocol {
     public:
         Horn() : h(linkerProtocol::Horn()) {};
+
         explicit Horn(const linkerProtocol::Horn &us) : h(us) {};
+
         const linkerProtocol::Horn &get_horn() const { return this->h; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->h.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->h.ByteSize()];
             this->h.SerializeToArray(ptr, this->h.ByteSize());
             return std::make_shared<Buffer>(ptr, this->h.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("type")) {
-	this->h.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->h.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if(o.has<jsonxx::Number>("cid")) {
-	this->h.set_cid(int32_t(o.get<jsonxx::Number>("cid")));
-}
+            if (o.has<jsonxx::Number>("cid")) {
+                this->h.set_cid(int32_t(o.get<jsonxx::Number>("cid")));
+            }
 
-if (o.has<jsonxx::Object>("user")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("user");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("user")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("user");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->h.set_allocated_user(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->h.set_allocated_user(_u);
+            }
 
-if (o.has<jsonxx::Object>("anchor")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("anchor");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("anchor")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("anchor");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->h.set_allocated_anchor(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->h.set_allocated_anchor(_u);
+            }
 
-if(o.has<jsonxx::String>("txt")) {
-	this->h.set_txt((o.get<jsonxx::String>("txt")));
-}
+            if (o.has<jsonxx::String>("txt")) {
+                this->h.set_txt((o.get<jsonxx::String>("txt")));
+            }
 
-if(o.has<jsonxx::Number>("expire")) {
-	this->h.set_expire(int32_t(o.get<jsonxx::Number>("expire")));
-}
+            if (o.has<jsonxx::Number>("expire")) {
+                this->h.set_expire(int32_t(o.get<jsonxx::Number>("expire")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"type\":"<< this->h.type() << ",";
-ss << "\"cid\":"<< this->h.cid() << ",";
+            ss << "{";
+            ss << "\"type\":" << this->h.type() << ",";
+            ss << "\"cid\":" << this->h.cid() << ",";
 
-User u_2(this->h.user());
-ss << "\"user\":" << u_2.to_jsonstr() << ",";
+            User u_2(this->h.user());
+            ss << "\"user\":" << u_2.to_jsonstr() << ",";
 
-User u_3(this->h.anchor());
-ss << "\"anchor\":" << u_3.to_jsonstr() << ",";
-ss << "\"txt\":"<< "\"" << this->h.txt() << "\"" << ",";
-ss << "\"expire\":"<< this->h.expire();
-ss << "}";
-return ss.str();
+            User u_3(this->h.anchor());
+            ss << "\"anchor\":" << u_3.to_jsonstr() << ",";
+            ss << "\"txt\":" << "\"" << this->h.txt() << "\"" << ",";
+            ss << "\"expire\":" << this->h.expire();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::Horn h;
     };

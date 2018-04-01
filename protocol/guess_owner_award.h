@@ -25,54 +25,57 @@ namespace protocol {
     class Guess_owner_award : public Protocol {
     public:
         Guess_owner_award() : g(linkerProtocol::GuessOwnerAward()) {};
+
         explicit Guess_owner_award(const linkerProtocol::GuessOwnerAward &us) : g(us) {};
+
         const linkerProtocol::GuessOwnerAward &get_guess_owner_award() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("guessID")) {
-	this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
-}
+            if (o.has<jsonxx::Number>("guessID")) {
+                this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
+            }
 
-if(o.has<jsonxx::String>("title")) {
-	this->g.set_title((o.get<jsonxx::String>("title")));
-}
+            if (o.has<jsonxx::String>("title")) {
+                this->g.set_title((o.get<jsonxx::String>("title")));
+            }
 
-if(o.has<jsonxx::Number>("award")) {
-	this->g.set_award(int32_t(o.get<jsonxx::Number>("award")));
-}
+            if (o.has<jsonxx::Number>("award")) {
+                this->g.set_award(int32_t(o.get<jsonxx::Number>("award")));
+            }
 
-if(o.has<jsonxx::Number>("chips")) {
-	this->g.set_chips(int32_t(o.get<jsonxx::Number>("chips")));
-}
+            if (o.has<jsonxx::Number>("chips")) {
+                this->g.set_chips(int32_t(o.get<jsonxx::Number>("chips")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->g.owid() << ",";
-ss << "\"guessID\":"<< this->g.guessid() << ",";
-ss << "\"title\":"<< "\"" << this->g.title() << "\"" << ",";
-ss << "\"award\":"<< this->g.award() << ",";
-ss << "\"chips\":"<< this->g.chips();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->g.owid() << ",";
+            ss << "\"guessID\":" << this->g.guessid() << ",";
+            ss << "\"title\":" << "\"" << this->g.title() << "\"" << ",";
+            ss << "\"award\":" << this->g.award() << ",";
+            ss << "\"chips\":" << this->g.chips();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GuessOwnerAward g;
     };

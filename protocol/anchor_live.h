@@ -25,44 +25,47 @@ namespace protocol {
     class Anchor_live : public Protocol {
     public:
         Anchor_live() : a(linkerProtocol::AnchorLive()) {};
+
         explicit Anchor_live(const linkerProtocol::AnchorLive &us) : a(us) {};
+
         const linkerProtocol::AnchorLive &get_anchor_live() const { return this->a; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->a.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->a.ByteSize()];
             this->a.SerializeToArray(ptr, this->a.ByteSize());
             return std::make_shared<Buffer>(ptr, this->a.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->a.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->a.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("status")) {
-	this->a.set_status(int32_t(o.get<jsonxx::Number>("status")));
-}
+            if (o.has<jsonxx::Number>("status")) {
+                this->a.set_status(int32_t(o.get<jsonxx::Number>("status")));
+            }
 
-if(o.has<jsonxx::String>("nickname")) {
-	this->a.set_nickname((o.get<jsonxx::String>("nickname")));
-}
+            if (o.has<jsonxx::String>("nickname")) {
+                this->a.set_nickname((o.get<jsonxx::String>("nickname")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->a.owid() << ",";
-ss << "\"status\":"<< this->a.status() << ",";
-ss << "\"nickname\":"<< "\"" << this->a.nickname() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->a.owid() << ",";
+            ss << "\"status\":" << this->a.status() << ",";
+            ss << "\"nickname\":" << "\"" << this->a.nickname() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::AnchorLive a;
     };

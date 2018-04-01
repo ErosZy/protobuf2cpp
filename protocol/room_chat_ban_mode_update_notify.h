@@ -25,44 +25,48 @@ namespace protocol {
     class Room_chat_ban_mode_update_notify : public Protocol {
     public:
         Room_chat_ban_mode_update_notify() : r(linkerProtocol::RoomChatBanModeUpdateNotify()) {};
+
         explicit Room_chat_ban_mode_update_notify(const linkerProtocol::RoomChatBanModeUpdateNotify &us) : r(us) {};
-        const linkerProtocol::RoomChatBanModeUpdateNotify &get_room_chat_ban_mode_update_notify() const { return this->r; }
+
+        const linkerProtocol::RoomChatBanModeUpdateNotify &
+        get_room_chat_ban_mode_update_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("banMode")) {
-	this->r.set_banmode(int32_t(o.get<jsonxx::Number>("banMode")));
-}
+            if (o.has<jsonxx::Number>("banMode")) {
+                this->r.set_banmode(int32_t(o.get<jsonxx::Number>("banMode")));
+            }
 
-if(o.has<jsonxx::Number>("uid")) {
-	this->r.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
-}
+            if (o.has<jsonxx::Number>("uid")) {
+                this->r.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
-ss << "\"banMode\":"<< this->r.banmode() << ",";
-ss << "\"uid\":"<< this->r.uid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
+            ss << "\"banMode\":" << this->r.banmode() << ",";
+            ss << "\"uid\":" << this->r.uid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomChatBanModeUpdateNotify r;
     };

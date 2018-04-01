@@ -27,94 +27,97 @@ namespace protocol {
     class Dialog_notify : public Protocol {
     public:
         Dialog_notify() : d(linkerProtocol::DialogNotify()) {};
+
         explicit Dialog_notify(const linkerProtocol::DialogNotify &us) : d(us) {};
+
         const linkerProtocol::DialogNotify &get_dialog_notify() const { return this->d; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->d.ByteSize()];
             this->d.SerializeToArray(ptr, this->d.ByteSize());
             return std::make_shared<Buffer>(ptr, this->d.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("type")) {
-	this->d.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->d.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if(o.has<jsonxx::String>("title")) {
-	this->d.set_title((o.get<jsonxx::String>("title")));
-}
+            if (o.has<jsonxx::String>("title")) {
+                this->d.set_title((o.get<jsonxx::String>("title")));
+            }
 
-if(o.has<jsonxx::String>("content")) {
-	this->d.set_content((o.get<jsonxx::String>("content")));
-}
+            if (o.has<jsonxx::String>("content")) {
+                this->d.set_content((o.get<jsonxx::String>("content")));
+            }
 
-if (o.has<jsonxx::Array>("buttons")) {
-	auto ds = o.get<jsonxx::Array>("buttons");
-	for (size_t i = 0; i < ds.size(); i++) {
-		auto j = ds.get<jsonxx::Object>(i);
-		Dialog_button k;
-		k.from_json(j);
-		uint8_t buf[k.get_dialog_button().ByteSize()];
-		k.get_dialog_button().SerializeToArray(buf, k.get_dialog_button().ByteSize());
+            if (o.has<jsonxx::Array>("buttons")) {
+                auto ds = o.get<jsonxx::Array>("buttons");
+                for (size_t i = 0; i < ds.size(); i++) {
+                    auto j = ds.get<jsonxx::Object>(i);
+                    Dialog_button k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_dialog_button().ByteSize()];
+                    k.get_dialog_button().SerializeToArray(buf, k.get_dialog_button().ByteSize());
 
-		auto m = this->d.add_buttons();
-		m->ParseFromArray(buf, k.get_dialog_button().ByteSize());
-	}
-}
+                    auto m = this->d.add_buttons();
+                    m->ParseFromArray(buf, k.get_dialog_button().ByteSize());
+                }
+            }
 
-if (o.has<jsonxx::Array>("paramEntries")) {
-	auto ms = o.get<jsonxx::Array>("paramEntries");
-	for (size_t i = 0; i < ms.size(); i++) {
-		auto j = ms.get<jsonxx::Object>(i);
-		Map_entry k;
-		k.from_json(j);
-		uint8_t buf[k.get_map_entry().ByteSize()];
-		k.get_map_entry().SerializeToArray(buf, k.get_map_entry().ByteSize());
+            if (o.has<jsonxx::Array>("paramEntries")) {
+                auto ms = o.get<jsonxx::Array>("paramEntries");
+                for (size_t i = 0; i < ms.size(); i++) {
+                    auto j = ms.get<jsonxx::Object>(i);
+                    Map_entry k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_map_entry().ByteSize()];
+                    k.get_map_entry().SerializeToArray(buf, k.get_map_entry().ByteSize());
 
-		auto m = this->d.add_paramentries();
-		m->ParseFromArray(buf, k.get_map_entry().ByteSize());
-	}
-}
+                    auto m = this->d.add_paramentries();
+                    m->ParseFromArray(buf, k.get_map_entry().ByteSize());
+                }
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"type\":"<< this->d.type() << ",";
-ss << "\"title\":"<< "\"" << this->d.title() << "\"" << ",";
-ss << "\"content\":"<< "\"" << this->d.content() << "\"" << ",";
+            ss << "{";
+            ss << "\"type\":" << this->d.type() << ",";
+            ss << "\"title\":" << "\"" << this->d.title() << "\"" << ",";
+            ss << "\"content\":" << "\"" << this->d.content() << "\"" << ",";
 
-std::stringstream buttons_stream;
-buttons_stream << "[";
-for (int32_t i = 0; i < this->d.buttons_size(); i++) {
-	buttons_stream << Dialog_button(this->d.buttons(i)).to_jsonstr();
-	if (i != this->d.buttons_size() - 1) {
-		buttons_stream << ",";
-	}
-}
-buttons_stream << "]";
-ss << "\"buttons\":" << buttons_stream.str() << ",";
+            std::stringstream buttons_stream;
+            buttons_stream << "[";
+            for (int32_t i = 0; i < this->d.buttons_size(); i++) {
+                buttons_stream << Dialog_button(this->d.buttons(i)).to_jsonstr();
+                if (i != this->d.buttons_size() - 1) {
+                    buttons_stream << ",";
+                }
+            }
+            buttons_stream << "]";
+            ss << "\"buttons\":" << buttons_stream.str() << ",";
 
-std::stringstream paramentries_stream;
-paramentries_stream << "[";
-for (int32_t i = 0; i < this->d.paramentries_size(); i++) {
-	paramentries_stream << Map_entry(this->d.paramentries(i)).to_jsonstr();
-	if (i != this->d.paramentries_size() - 1) {
-		paramentries_stream << ",";
-	}
-}
-paramentries_stream << "]";
-ss << "\"paramEntries\":" << paramentries_stream.str();
-ss << "}";
-return ss.str();
+            std::stringstream paramentries_stream;
+            paramentries_stream << "[";
+            for (int32_t i = 0; i < this->d.paramentries_size(); i++) {
+                paramentries_stream << Map_entry(this->d.paramentries(i)).to_jsonstr();
+                if (i != this->d.paramentries_size() - 1) {
+                    paramentries_stream << ",";
+                }
+            }
+            paramentries_stream << "]";
+            ss << "\"paramEntries\":" << paramentries_stream.str();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::DialogNotify d;
     };

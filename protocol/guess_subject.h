@@ -26,79 +26,82 @@ namespace protocol {
     class Guess_subject : public Protocol {
     public:
         Guess_subject() : g(linkerProtocol::GuessSubject()) {};
+
         explicit Guess_subject(const linkerProtocol::GuessSubject &us) : g(us) {};
+
         const linkerProtocol::GuessSubject &get_guess_subject() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("guessID")) {
-	this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
-}
+            if (o.has<jsonxx::Number>("guessID")) {
+                this->g.set_guessid(int32_t(o.get<jsonxx::Number>("guessID")));
+            }
 
-if(o.has<jsonxx::String>("title")) {
-	this->g.set_title((o.get<jsonxx::String>("title")));
-}
+            if (o.has<jsonxx::String>("title")) {
+                this->g.set_title((o.get<jsonxx::String>("title")));
+            }
 
-if(o.has<jsonxx::Number>("status")) {
-	this->g.set_status(int32_t(o.get<jsonxx::Number>("status")));
-}
+            if (o.has<jsonxx::Number>("status")) {
+                this->g.set_status(int32_t(o.get<jsonxx::Number>("status")));
+            }
 
-if(o.has<jsonxx::String>("reason")) {
-	this->g.set_reason((o.get<jsonxx::String>("reason")));
-}
+            if (o.has<jsonxx::String>("reason")) {
+                this->g.set_reason((o.get<jsonxx::String>("reason")));
+            }
 
-if(o.has<jsonxx::Number>("endTime")) {
-	this->g.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
-}
+            if (o.has<jsonxx::Number>("endTime")) {
+                this->g.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
+            }
 
-if (o.has<jsonxx::Array>("items")) {
-	auto gs = o.get<jsonxx::Array>("items");
-	for (size_t i = 0; i < gs.size(); i++) {
-		auto j = gs.get<jsonxx::Object>(i);
-		Guess_item k;
-		k.from_json(j);
-		uint8_t buf[k.get_guess_item().ByteSize()];
-		k.get_guess_item().SerializeToArray(buf, k.get_guess_item().ByteSize());
+            if (o.has<jsonxx::Array>("items")) {
+                auto gs = o.get<jsonxx::Array>("items");
+                for (size_t i = 0; i < gs.size(); i++) {
+                    auto j = gs.get<jsonxx::Object>(i);
+                    Guess_item k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_guess_item().ByteSize()];
+                    k.get_guess_item().SerializeToArray(buf, k.get_guess_item().ByteSize());
 
-		auto m = this->g.add_items();
-		m->ParseFromArray(buf, k.get_guess_item().ByteSize());
-	}
-}
+                    auto m = this->g.add_items();
+                    m->ParseFromArray(buf, k.get_guess_item().ByteSize());
+                }
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"guessID\":"<< this->g.guessid() << ",";
-ss << "\"title\":"<< "\"" << this->g.title() << "\"" << ",";
-ss << "\"status\":"<< this->g.status() << ",";
-ss << "\"reason\":"<< "\"" << this->g.reason() << "\"" << ",";
-ss << "\"endTime\":"<< this->g.endtime() << ",";
+            ss << "{";
+            ss << "\"guessID\":" << this->g.guessid() << ",";
+            ss << "\"title\":" << "\"" << this->g.title() << "\"" << ",";
+            ss << "\"status\":" << this->g.status() << ",";
+            ss << "\"reason\":" << "\"" << this->g.reason() << "\"" << ",";
+            ss << "\"endTime\":" << this->g.endtime() << ",";
 
-std::stringstream items_stream;
-items_stream << "[";
-for (int32_t i = 0; i < this->g.items_size(); i++) {
-	items_stream << Guess_item(this->g.items(i)).to_jsonstr();
-	if (i != this->g.items_size() - 1) {
-		items_stream << ",";
-	}
-}
-items_stream << "]";
-ss << "\"items\":" << items_stream.str();
-ss << "}";
-return ss.str();
+            std::stringstream items_stream;
+            items_stream << "[";
+            for (int32_t i = 0; i < this->g.items_size(); i++) {
+                items_stream << Guess_item(this->g.items(i)).to_jsonstr();
+                if (i != this->g.items_size() - 1) {
+                    items_stream << ",";
+                }
+            }
+            items_stream << "]";
+            ss << "\"items\":" << items_stream.str();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GuessSubject g;
     };

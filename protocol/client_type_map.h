@@ -25,44 +25,47 @@ namespace protocol {
     class Client_type_map : public Protocol {
     public:
         Client_type_map() : c(linkerProtocol::ClientTypeMap()) {};
+
         explicit Client_type_map(const linkerProtocol::ClientTypeMap &us) : c(us) {};
+
         const linkerProtocol::ClientTypeMap &get_client_type_map() const { return this->c; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->c.ByteSize()];
             this->c.SerializeToArray(ptr, this->c.ByteSize());
             return std::make_shared<Buffer>(ptr, this->c.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("ios")) {
-	this->c.set_ios(int32_t(o.get<jsonxx::Number>("ios")));
-}
+            if (o.has<jsonxx::Number>("ios")) {
+                this->c.set_ios(int32_t(o.get<jsonxx::Number>("ios")));
+            }
 
-if(o.has<jsonxx::Number>("android")) {
-	this->c.set_android(int32_t(o.get<jsonxx::Number>("android")));
-}
+            if (o.has<jsonxx::Number>("android")) {
+                this->c.set_android(int32_t(o.get<jsonxx::Number>("android")));
+            }
 
-if(o.has<jsonxx::Number>("pc")) {
-	this->c.set_pc(int32_t(o.get<jsonxx::Number>("pc")));
-}
+            if (o.has<jsonxx::Number>("pc")) {
+                this->c.set_pc(int32_t(o.get<jsonxx::Number>("pc")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"ios\":"<< this->c.ios() << ",";
-ss << "\"android\":"<< this->c.android() << ",";
-ss << "\"pc\":"<< this->c.pc();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"ios\":" << this->c.ios() << ",";
+            ss << "\"android\":" << this->c.android() << ",";
+            ss << "\"pc\":" << this->c.pc();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::ClientTypeMap c;
     };

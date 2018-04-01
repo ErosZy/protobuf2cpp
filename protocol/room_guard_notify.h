@@ -26,54 +26,57 @@ namespace protocol {
     class Room_guard_notify : public Protocol {
     public:
         Room_guard_notify() : r(linkerProtocol::RoomGuardNotify()) {};
+
         explicit Room_guard_notify(const linkerProtocol::RoomGuardNotify &us) : r(us) {};
+
         const linkerProtocol::RoomGuardNotify &get_room_guard_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Object>("roomAttr")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("roomAttr");
-	Room_attr r;
-	r.from_json(info);
+            if (o.has<jsonxx::Object>("roomAttr")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("roomAttr");
+                Room_attr r;
+                r.from_json(info);
 
-	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[r.get_room_attr().ByteSize()];
-	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
-	this->r.set_allocated_roomattr(_r);
-}
+                auto _r = new linkerProtocol::RoomAttr();
+                uint8_t buf[r.get_room_attr().ByteSize()];
+                r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+                _r->ParseFromArray(buf, r.get_room_attr().ByteSize());
+                this->r.set_allocated_roomattr(_r);
+            }
 
-if(o.has<jsonxx::Number>("uid")) {
-	this->r.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
-}
+            if (o.has<jsonxx::Number>("uid")) {
+                this->r.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
 
-Room_attr r_1(this->r.roomattr());
-ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
-ss << "\"uid\":"<< this->r.uid();
-ss << "}";
-return ss.str();
+            Room_attr r_1(this->r.roomattr());
+            ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
+            ss << "\"uid\":" << this->r.uid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RoomGuardNotify r;
     };

@@ -27,84 +27,87 @@ namespace protocol {
     class Link_gift_pk_end : public Protocol {
     public:
         Link_gift_pk_end() : l(linkerProtocol::LinkGiftPkEnd()) {};
+
         explicit Link_gift_pk_end(const linkerProtocol::LinkGiftPkEnd &us) : l(us) {};
+
         const linkerProtocol::LinkGiftPkEnd &get_link_gift_pk_end() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Object>("winner")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("winner");
-	Gift_pk_user_info g;
-	g.from_json(info);
+            if (o.has<jsonxx::Object>("winner")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("winner");
+                Gift_pk_user_info g;
+                g.from_json(info);
 
-	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
-	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
-	this->l.set_allocated_winner(_g);
-}
+                auto _g = new linkerProtocol::GiftPkUserInfo();
+                uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+                g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+                _g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
+                this->l.set_allocated_winner(_g);
+            }
 
-if (o.has<jsonxx::Object>("loser")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("loser");
-	Gift_pk_user_info g;
-	g.from_json(info);
+            if (o.has<jsonxx::Object>("loser")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("loser");
+                Gift_pk_user_info g;
+                g.from_json(info);
 
-	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
-	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
-	this->l.set_allocated_loser(_g);
-}
+                auto _g = new linkerProtocol::GiftPkUserInfo();
+                uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+                g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+                _g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
+                this->l.set_allocated_loser(_g);
+            }
 
-if(o.has<jsonxx::Number>("type")) {
-	this->l.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->l.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if(o.has<jsonxx::String>("punishment")) {
-	this->l.set_punishment((o.get<jsonxx::String>("punishment")));
-}
+            if (o.has<jsonxx::String>("punishment")) {
+                this->l.set_punishment((o.get<jsonxx::String>("punishment")));
+            }
 
-if(o.has<jsonxx::Number>("startTime")) {
-	this->l.set_starttime(int32_t(o.get<jsonxx::Number>("startTime")));
-}
+            if (o.has<jsonxx::Number>("startTime")) {
+                this->l.set_starttime(int32_t(o.get<jsonxx::Number>("startTime")));
+            }
 
-if(o.has<jsonxx::Number>("endTime")) {
-	this->l.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
-}
+            if (o.has<jsonxx::Number>("endTime")) {
+                this->l.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->l.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->l.owid() << ",";
 
-Gift_pk_user_info g_1(this->l.winner());
-ss << "\"winner\":" << g_1.to_jsonstr() << ",";
+            Gift_pk_user_info g_1(this->l.winner());
+            ss << "\"winner\":" << g_1.to_jsonstr() << ",";
 
-Gift_pk_user_info g_2(this->l.loser());
-ss << "\"loser\":" << g_2.to_jsonstr() << ",";
-ss << "\"type\":"<< this->l.type() << ",";
-ss << "\"punishment\":"<< "\"" << this->l.punishment() << "\"" << ",";
-ss << "\"startTime\":"<< this->l.starttime() << ",";
-ss << "\"endTime\":"<< this->l.endtime();
-ss << "}";
-return ss.str();
+            Gift_pk_user_info g_2(this->l.loser());
+            ss << "\"loser\":" << g_2.to_jsonstr() << ",";
+            ss << "\"type\":" << this->l.type() << ",";
+            ss << "\"punishment\":" << "\"" << this->l.punishment() << "\"" << ",";
+            ss << "\"startTime\":" << this->l.starttime() << ",";
+            ss << "\"endTime\":" << this->l.endtime();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LinkGiftPkEnd l;
     };

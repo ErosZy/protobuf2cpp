@@ -25,49 +25,52 @@ namespace protocol {
     class Official_live_like_notify : public Protocol {
     public:
         Official_live_like_notify() : o(linkerProtocol::OfficialLiveLikeNotify()) {};
+
         explicit Official_live_like_notify(const linkerProtocol::OfficialLiveLikeNotify &us) : o(us) {};
+
         const linkerProtocol::OfficialLiveLikeNotify &get_official_live_like_notify() const { return this->o; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->o.ByteSize()];
             this->o.SerializeToArray(ptr, this->o.ByteSize());
             return std::make_shared<Buffer>(ptr, this->o.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->o.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->o.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("remainingTime")) {
-	this->o.set_remainingtime(int32_t(o.get<jsonxx::Number>("remainingTime")));
-}
+            if (o.has<jsonxx::Number>("remainingTime")) {
+                this->o.set_remainingtime(int32_t(o.get<jsonxx::Number>("remainingTime")));
+            }
 
-if(o.has<jsonxx::Number>("like")) {
-	this->o.set_like(int32_t(o.get<jsonxx::Number>("like")));
-}
+            if (o.has<jsonxx::Number>("like")) {
+                this->o.set_like(int32_t(o.get<jsonxx::Number>("like")));
+            }
 
-if(o.has<jsonxx::Number>("unlike")) {
-	this->o.set_unlike(int32_t(o.get<jsonxx::Number>("unlike")));
-}
+            if (o.has<jsonxx::Number>("unlike")) {
+                this->o.set_unlike(int32_t(o.get<jsonxx::Number>("unlike")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->o.owid() << ",";
-ss << "\"remainingTime\":"<< this->o.remainingtime() << ",";
-ss << "\"like\":"<< this->o.like() << ",";
-ss << "\"unlike\":"<< this->o.unlike();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->o.owid() << ",";
+            ss << "\"remainingTime\":" << this->o.remainingtime() << ",";
+            ss << "\"like\":" << this->o.like() << ",";
+            ss << "\"unlike\":" << this->o.unlike();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::OfficialLiveLikeNotify o;
     };

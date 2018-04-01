@@ -25,44 +25,47 @@ namespace protocol {
     class Option_detail : public Protocol {
     public:
         Option_detail() : o(linkerProtocol::OptionDetail()) {};
+
         explicit Option_detail(const linkerProtocol::OptionDetail &us) : o(us) {};
+
         const linkerProtocol::OptionDetail &get_option_detail() const { return this->o; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->o.ByteSize()];
             this->o.SerializeToArray(ptr, this->o.ByteSize());
             return std::make_shared<Buffer>(ptr, this->o.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::String>("info")) {
-	this->o.set_info((o.get<jsonxx::String>("info")));
-}
+            if (o.has<jsonxx::String>("info")) {
+                this->o.set_info((o.get<jsonxx::String>("info")));
+            }
 
-if(o.has<jsonxx::Number>("optionId")) {
-	this->o.set_optionid(int32_t(o.get<jsonxx::Number>("optionId")));
-}
+            if (o.has<jsonxx::Number>("optionId")) {
+                this->o.set_optionid(int32_t(o.get<jsonxx::Number>("optionId")));
+            }
 
-if(o.has<jsonxx::Number>("num")) {
-	this->o.set_num(int32_t(o.get<jsonxx::Number>("num")));
-}
+            if (o.has<jsonxx::Number>("num")) {
+                this->o.set_num(int32_t(o.get<jsonxx::Number>("num")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"info\":"<< "\"" << this->o.info() << "\"" << ",";
-ss << "\"optionId\":"<< this->o.optionid() << ",";
-ss << "\"num\":"<< this->o.num();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"info\":" << "\"" << this->o.info() << "\"" << ",";
+            ss << "\"optionId\":" << this->o.optionid() << ",";
+            ss << "\"num\":" << this->o.num();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::OptionDetail o;
     };

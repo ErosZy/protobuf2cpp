@@ -25,39 +25,42 @@ namespace protocol {
     class Map_entry : public Protocol {
     public:
         Map_entry() : m(linkerProtocol::MapEntry()) {};
+
         explicit Map_entry(const linkerProtocol::MapEntry &us) : m(us) {};
+
         const linkerProtocol::MapEntry &get_map_entry() const { return this->m; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->m.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->m.ByteSize()];
             this->m.SerializeToArray(ptr, this->m.ByteSize());
             return std::make_shared<Buffer>(ptr, this->m.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::String>("key")) {
-	this->m.set_key((o.get<jsonxx::String>("key")));
-}
+            if (o.has<jsonxx::String>("key")) {
+                this->m.set_key((o.get<jsonxx::String>("key")));
+            }
 
-if(o.has<jsonxx::String>("value")) {
-	this->m.set_value((o.get<jsonxx::String>("value")));
-}
+            if (o.has<jsonxx::String>("value")) {
+                this->m.set_value((o.get<jsonxx::String>("value")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"key\":"<< "\"" << this->m.key() << "\"" << ",";
-ss << "\"value\":"<< "\"" << this->m.value() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"key\":" << "\"" << this->m.key() << "\"" << ",";
+            ss << "\"value\":" << "\"" << this->m.value() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::MapEntry m;
     };

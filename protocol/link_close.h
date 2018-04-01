@@ -25,44 +25,47 @@ namespace protocol {
     class Link_close : public Protocol {
     public:
         Link_close() : l(linkerProtocol::LinkClose()) {};
+
         explicit Link_close(const linkerProtocol::LinkClose &us) : l(us) {};
+
         const linkerProtocol::LinkClose &get_link_close() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("applyCount")) {
-	this->l.set_applycount(int32_t(o.get<jsonxx::Number>("applyCount")));
-}
+            if (o.has<jsonxx::Number>("applyCount")) {
+                this->l.set_applycount(int32_t(o.get<jsonxx::Number>("applyCount")));
+            }
 
-if(o.has<jsonxx::Number>("forbidUid")) {
-	this->l.set_forbiduid(int32_t(o.get<jsonxx::Number>("forbidUid")));
-}
+            if (o.has<jsonxx::Number>("forbidUid")) {
+                this->l.set_forbiduid(int32_t(o.get<jsonxx::Number>("forbidUid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->l.owid() << ",";
-ss << "\"applyCount\":"<< this->l.applycount() << ",";
-ss << "\"forbidUid\":"<< this->l.forbiduid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->l.owid() << ",";
+            ss << "\"applyCount\":" << this->l.applycount() << ",";
+            ss << "\"forbidUid\":" << this->l.forbiduid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LinkClose l;
     };

@@ -25,59 +25,62 @@ namespace protocol {
     class Honor_level_up : public Protocol {
     public:
         Honor_level_up() : h(linkerProtocol::HonorLevelUp()) {};
+
         explicit Honor_level_up(const linkerProtocol::HonorLevelUp &us) : h(us) {};
+
         const linkerProtocol::HonorLevelUp &get_honor_level_up() const { return this->h; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->h.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->h.ByteSize()];
             this->h.SerializeToArray(ptr, this->h.ByteSize());
             return std::make_shared<Buffer>(ptr, this->h.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("uid")) {
-	this->h.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
-}
+            if (o.has<jsonxx::Number>("uid")) {
+                this->h.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
+            }
 
-if(o.has<jsonxx::Number>("honorOwid")) {
-	this->h.set_honorowid(int32_t(o.get<jsonxx::Number>("honorOwid")));
-}
+            if (o.has<jsonxx::Number>("honorOwid")) {
+                this->h.set_honorowid(int32_t(o.get<jsonxx::Number>("honorOwid")));
+            }
 
-if(o.has<jsonxx::Number>("honorLevel")) {
-	this->h.set_honorlevel(int32_t(o.get<jsonxx::Number>("honorLevel")));
-}
+            if (o.has<jsonxx::Number>("honorLevel")) {
+                this->h.set_honorlevel(int32_t(o.get<jsonxx::Number>("honorLevel")));
+            }
 
-if(o.has<jsonxx::String>("honorName")) {
-	this->h.set_honorname((o.get<jsonxx::String>("honorName")));
-}
+            if (o.has<jsonxx::String>("honorName")) {
+                this->h.set_honorname((o.get<jsonxx::String>("honorName")));
+            }
 
-if(o.has<jsonxx::Boolean>("honorOwIsGray")) {
-	this->h.set_honorowisgray((o.get<jsonxx::Boolean>("honorOwIsGray")));
-}
+            if (o.has<jsonxx::Boolean>("honorOwIsGray")) {
+                this->h.set_honorowisgray((o.get<jsonxx::Boolean>("honorOwIsGray")));
+            }
 
-if(o.has<jsonxx::Number>("type")) {
-	this->h.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->h.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"uid\":"<< this->h.uid() << ",";
-ss << "\"honorOwid\":"<< this->h.honorowid() << ",";
-ss << "\"honorLevel\":"<< this->h.honorlevel() << ",";
-ss << "\"honorName\":"<< "\"" << this->h.honorname() << "\"" << ",";
-ss << "\"honorOwIsGray\":"<< this->h.honorowisgray() << ",";
-ss << "\"type\":"<< this->h.type();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"uid\":" << this->h.uid() << ",";
+            ss << "\"honorOwid\":" << this->h.honorowid() << ",";
+            ss << "\"honorLevel\":" << this->h.honorlevel() << ",";
+            ss << "\"honorName\":" << "\"" << this->h.honorname() << "\"" << ",";
+            ss << "\"honorOwIsGray\":" << this->h.honorowisgray() << ",";
+            ss << "\"type\":" << this->h.type();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::HonorLevelUp h;
     };

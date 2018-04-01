@@ -25,39 +25,42 @@ namespace protocol {
     class Login_resp : public Protocol {
     public:
         Login_resp() : l(linkerProtocol::LoginResp()) {};
+
         explicit Login_resp(const linkerProtocol::LoginResp &us) : l(us) {};
+
         const linkerProtocol::LoginResp &get_login_resp() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("status")) {
-	this->l.set_status(int32_t(o.get<jsonxx::Number>("status")));
-}
+            if (o.has<jsonxx::Number>("status")) {
+                this->l.set_status(int32_t(o.get<jsonxx::Number>("status")));
+            }
 
-if(o.has<jsonxx::Number>("uid")) {
-	this->l.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
-}
+            if (o.has<jsonxx::Number>("uid")) {
+                this->l.set_uid(int32_t(o.get<jsonxx::Number>("uid")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"status\":"<< this->l.status() << ",";
-ss << "\"uid\":"<< this->l.uid();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"status\":" << this->l.status() << ",";
+            ss << "\"uid\":" << this->l.uid();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LoginResp l;
     };

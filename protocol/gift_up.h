@@ -25,59 +25,62 @@ namespace protocol {
     class Gift_up : public Protocol {
     public:
         Gift_up() : g(linkerProtocol::GiftUp()) {};
+
         explicit Gift_up(const linkerProtocol::GiftUp &us) : g(us) {};
+
         const linkerProtocol::GiftUp &get_gift_up() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->g.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("gid")) {
-	this->g.set_gid(int32_t(o.get<jsonxx::Number>("gid")));
-}
+            if (o.has<jsonxx::Number>("gid")) {
+                this->g.set_gid(int32_t(o.get<jsonxx::Number>("gid")));
+            }
 
-if(o.has<jsonxx::Number>("attrId")) {
-	this->g.set_attrid(int32_t(o.get<jsonxx::Number>("attrId")));
-}
+            if (o.has<jsonxx::Number>("attrId")) {
+                this->g.set_attrid(int32_t(o.get<jsonxx::Number>("attrId")));
+            }
 
-if(o.has<jsonxx::Number>("count")) {
-	this->g.set_count(int32_t(o.get<jsonxx::Number>("count")));
-}
+            if (o.has<jsonxx::Number>("count")) {
+                this->g.set_count(int32_t(o.get<jsonxx::Number>("count")));
+            }
 
-if(o.has<jsonxx::String>("txt")) {
-	this->g.set_txt((o.get<jsonxx::String>("txt")));
-}
+            if (o.has<jsonxx::String>("txt")) {
+                this->g.set_txt((o.get<jsonxx::String>("txt")));
+            }
 
-if(o.has<jsonxx::String>("ext")) {
-	this->g.set_ext((o.get<jsonxx::String>("ext")));
-}
+            if (o.has<jsonxx::String>("ext")) {
+                this->g.set_ext((o.get<jsonxx::String>("ext")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->g.owid() << ",";
-ss << "\"gid\":"<< this->g.gid() << ",";
-ss << "\"attrId\":"<< this->g.attrid() << ",";
-ss << "\"count\":"<< this->g.count() << ",";
-ss << "\"txt\":"<< "\"" << this->g.txt() << "\"" << ",";
-ss << "\"ext\":"<< "\"" << this->g.ext() << "\"";
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->g.owid() << ",";
+            ss << "\"gid\":" << this->g.gid() << ",";
+            ss << "\"attrId\":" << this->g.attrid() << ",";
+            ss << "\"count\":" << this->g.count() << ",";
+            ss << "\"txt\":" << "\"" << this->g.txt() << "\"" << ",";
+            ss << "\"ext\":" << "\"" << this->g.ext() << "\"";
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GiftUp g;
     };

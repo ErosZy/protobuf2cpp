@@ -26,64 +26,67 @@ namespace protocol {
     class Link_accept : public Protocol {
     public:
         Link_accept() : l(linkerProtocol::LinkAccept()) {};
+
         explicit Link_accept(const linkerProtocol::LinkAccept &us) : l(us) {};
+
         const linkerProtocol::LinkAccept &get_link_accept() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::String>("roomName")) {
-	this->l.set_roomname((o.get<jsonxx::String>("roomName")));
-}
+            if (o.has<jsonxx::String>("roomName")) {
+                this->l.set_roomname((o.get<jsonxx::String>("roomName")));
+            }
 
-if(o.has<jsonxx::String>("token")) {
-	this->l.set_token((o.get<jsonxx::String>("token")));
-}
+            if (o.has<jsonxx::String>("token")) {
+                this->l.set_token((o.get<jsonxx::String>("token")));
+            }
 
-if(o.has<jsonxx::Number>("type")) {
-	this->l.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->l.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if (o.has<jsonxx::Object>("owidInfo")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("owidInfo");
-	User u;
-	u.from_json(info);
+            if (o.has<jsonxx::Object>("owidInfo")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("owidInfo");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->l.set_allocated_owidinfo(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->l.set_allocated_owidinfo(_u);
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->l.owid() << ",";
-ss << "\"roomName\":"<< "\"" << this->l.roomname() << "\"" << ",";
-ss << "\"token\":"<< "\"" << this->l.token() << "\"" << ",";
-ss << "\"type\":"<< this->l.type() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->l.owid() << ",";
+            ss << "\"roomName\":" << "\"" << this->l.roomname() << "\"" << ",";
+            ss << "\"token\":" << "\"" << this->l.token() << "\"" << ",";
+            ss << "\"type\":" << this->l.type() << ",";
 
-User u_4(this->l.owidinfo());
-ss << "\"owidInfo\":" << u_4.to_jsonstr();
-ss << "}";
-return ss.str();
+            User u_4(this->l.owidinfo());
+            ss << "\"owidInfo\":" << u_4.to_jsonstr();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LinkAccept l;
     };

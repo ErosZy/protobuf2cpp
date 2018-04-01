@@ -25,39 +25,42 @@ namespace protocol {
     class Rectify_room_notify : public Protocol {
     public:
         Rectify_room_notify() : r(linkerProtocol::RectifyRoomNotify()) {};
+
         explicit Rectify_room_notify(const linkerProtocol::RectifyRoomNotify &us) : r(us) {};
+
         const linkerProtocol::RectifyRoomNotify &get_rectify_room_notify() const { return this->r; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->r.ByteSize()];
             this->r.SerializeToArray(ptr, this->r.ByteSize());
             return std::make_shared<Buffer>(ptr, this->r.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->r.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("op")) {
-	this->r.set_op(int32_t(o.get<jsonxx::Number>("op")));
-}
+            if (o.has<jsonxx::Number>("op")) {
+                this->r.set_op(int32_t(o.get<jsonxx::Number>("op")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->r.owid() << ",";
-ss << "\"op\":"<< this->r.op();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->r.owid() << ",";
+            ss << "\"op\":" << this->r.op();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::RectifyRoomNotify r;
     };

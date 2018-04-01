@@ -26,59 +26,62 @@ namespace protocol {
     class Global_msg : public Protocol {
     public:
         Global_msg() : g(linkerProtocol::GlobalMsg()) {};
+
         explicit Global_msg(const linkerProtocol::GlobalMsg &us) : g(us) {};
+
         const linkerProtocol::GlobalMsg &get_global_msg() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("type")) {
-	this->g.set_type(int32_t(o.get<jsonxx::Number>("type")));
-}
+            if (o.has<jsonxx::Number>("type")) {
+                this->g.set_type(int32_t(o.get<jsonxx::Number>("type")));
+            }
 
-if (o.has<jsonxx::Array>("ext")) {
-	auto es = o.get<jsonxx::Array>("ext");
-	for (size_t i = 0; i < es.size(); i++) {
-		auto j = es.get<jsonxx::Object>(i);
-		Ext k;
-		k.from_json(j);
-		uint8_t buf[k.get_ext().ByteSize()];
-		k.get_ext().SerializeToArray(buf, k.get_ext().ByteSize());
+            if (o.has<jsonxx::Array>("ext")) {
+                auto es = o.get<jsonxx::Array>("ext");
+                for (size_t i = 0; i < es.size(); i++) {
+                    auto j = es.get<jsonxx::Object>(i);
+                    Ext k;
+                    k.from_json(j);
+                    uint8_t buf[k.get_ext().ByteSize()];
+                    k.get_ext().SerializeToArray(buf, k.get_ext().ByteSize());
 
-		auto m = this->g.add_ext();
-		m->ParseFromArray(buf, k.get_ext().ByteSize());
-	}
-}
+                    auto m = this->g.add_ext();
+                    m->ParseFromArray(buf, k.get_ext().ByteSize());
+                }
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"type\":"<< this->g.type() << ",";
+            ss << "{";
+            ss << "\"type\":" << this->g.type() << ",";
 
-std::stringstream ext_stream;
-ext_stream << "[";
-for (int32_t i = 0; i < this->g.ext_size(); i++) {
-	ext_stream << Ext(this->g.ext(i)).to_jsonstr();
-	if (i != this->g.ext_size() - 1) {
-		ext_stream << ",";
-	}
-}
-ext_stream << "]";
-ss << "\"ext\":" << ext_stream.str();
-ss << "}";
-return ss.str();
+            std::stringstream ext_stream;
+            ext_stream << "[";
+            for (int32_t i = 0; i < this->g.ext_size(); i++) {
+                ext_stream << Ext(this->g.ext(i)).to_jsonstr();
+                if (i != this->g.ext_size() - 1) {
+                    ext_stream << ",";
+                }
+            }
+            ext_stream << "]";
+            ss << "\"ext\":" << ext_stream.str();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GlobalMsg g;
     };

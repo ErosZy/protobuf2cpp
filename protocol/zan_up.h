@@ -25,39 +25,42 @@ namespace protocol {
     class Zan_up : public Protocol {
     public:
         Zan_up() : z(linkerProtocol::ZanUp()) {};
+
         explicit Zan_up(const linkerProtocol::ZanUp &us) : z(us) {};
+
         const linkerProtocol::ZanUp &get_zan_up() const { return this->z; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->z.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->z.ByteSize()];
             this->z.SerializeToArray(ptr, this->z.ByteSize());
             return std::make_shared<Buffer>(ptr, this->z.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->z.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->z.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::Number>("color")) {
-	this->z.set_color(int32_t(o.get<jsonxx::Number>("color")));
-}
+            if (o.has<jsonxx::Number>("color")) {
+                this->z.set_color(int32_t(o.get<jsonxx::Number>("color")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->z.owid() << ",";
-ss << "\"color\":"<< this->z.color();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->z.owid() << ",";
+            ss << "\"color\":" << this->z.color();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::ZanUp z;
     };

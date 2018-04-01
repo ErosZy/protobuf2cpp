@@ -27,79 +27,82 @@ namespace protocol {
     class Link_gift_pk_notify : public Protocol {
     public:
         Link_gift_pk_notify() : l(linkerProtocol::LinkGiftPkNotify()) {};
+
         explicit Link_gift_pk_notify(const linkerProtocol::LinkGiftPkNotify &us) : l(us) {};
+
         const linkerProtocol::LinkGiftPkNotify &get_link_gift_pk_notify() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if (o.has<jsonxx::Object>("applyUserInfo")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("applyUserInfo");
-	Gift_pk_user_info g;
-	g.from_json(info);
+            if (o.has<jsonxx::Object>("applyUserInfo")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("applyUserInfo");
+                Gift_pk_user_info g;
+                g.from_json(info);
 
-	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
-	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
-	this->l.set_allocated_applyuserinfo(_g);
-}
+                auto _g = new linkerProtocol::GiftPkUserInfo();
+                uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+                g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+                _g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
+                this->l.set_allocated_applyuserinfo(_g);
+            }
 
-if (o.has<jsonxx::Object>("acceptUserInfo")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("acceptUserInfo");
-	Gift_pk_user_info g;
-	g.from_json(info);
+            if (o.has<jsonxx::Object>("acceptUserInfo")) {
+                jsonxx::Object info = o.get<jsonxx::Object>("acceptUserInfo");
+                Gift_pk_user_info g;
+                g.from_json(info);
 
-	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
-	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
-	this->l.set_allocated_acceptuserinfo(_g);
-}
+                auto _g = new linkerProtocol::GiftPkUserInfo();
+                uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+                g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+                _g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
+                this->l.set_allocated_acceptuserinfo(_g);
+            }
 
-if(o.has<jsonxx::String>("title")) {
-	this->l.set_title((o.get<jsonxx::String>("title")));
-}
+            if (o.has<jsonxx::String>("title")) {
+                this->l.set_title((o.get<jsonxx::String>("title")));
+            }
 
-if(o.has<jsonxx::Number>("startTime")) {
-	this->l.set_starttime(int32_t(o.get<jsonxx::Number>("startTime")));
-}
+            if (o.has<jsonxx::Number>("startTime")) {
+                this->l.set_starttime(int32_t(o.get<jsonxx::Number>("startTime")));
+            }
 
-if(o.has<jsonxx::Number>("endTime")) {
-	this->l.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
-}
+            if (o.has<jsonxx::Number>("endTime")) {
+                this->l.set_endtime(int32_t(o.get<jsonxx::Number>("endTime")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->l.owid() << ",";
+            ss << "{";
+            ss << "\"owid\":" << this->l.owid() << ",";
 
-Gift_pk_user_info g_1(this->l.applyuserinfo());
-ss << "\"applyUserInfo\":" << g_1.to_jsonstr() << ",";
+            Gift_pk_user_info g_1(this->l.applyuserinfo());
+            ss << "\"applyUserInfo\":" << g_1.to_jsonstr() << ",";
 
-Gift_pk_user_info g_2(this->l.acceptuserinfo());
-ss << "\"acceptUserInfo\":" << g_2.to_jsonstr() << ",";
-ss << "\"title\":"<< "\"" << this->l.title() << "\"" << ",";
-ss << "\"startTime\":"<< this->l.starttime() << ",";
-ss << "\"endTime\":"<< this->l.endtime();
-ss << "}";
-return ss.str();
+            Gift_pk_user_info g_2(this->l.acceptuserinfo());
+            ss << "\"acceptUserInfo\":" << g_2.to_jsonstr() << ",";
+            ss << "\"title\":" << "\"" << this->l.title() << "\"" << ",";
+            ss << "\"startTime\":" << this->l.starttime() << ",";
+            ss << "\"endTime\":" << this->l.endtime();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LinkGiftPkNotify l;
     };

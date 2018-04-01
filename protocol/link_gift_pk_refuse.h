@@ -26,13 +26,16 @@ namespace protocol {
     class Link_gift_pk_refuse : public Protocol {
     public:
         Link_gift_pk_refuse() : l(linkerProtocol::LinkGiftPkRefuse()) {};
+
         explicit Link_gift_pk_refuse(const linkerProtocol::LinkGiftPkRefuse &us) : l(us) {};
+
         const linkerProtocol::LinkGiftPkRefuse &get_link_gift_pk_refuse() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
@@ -40,30 +43,30 @@ namespace protocol {
 
         virtual void from_json(jsonxx::Object &o) {
             if (o.has<jsonxx::Object>("rejecter")) {
-	jsonxx::Object info = o.get<jsonxx::Object>("rejecter");
-	User u;
-	u.from_json(info);
+                jsonxx::Object info = o.get<jsonxx::Object>("rejecter");
+                User u;
+                u.from_json(info);
 
-	auto _u = new linkerProtocol::User();
-	uint8_t buf[u.get_user().ByteSize()];
-	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
-	_u->ParseFromArray(buf, u.get_user().ByteSize());
-	this->l.set_allocated_rejecter(_u);
-}
+                auto _u = new linkerProtocol::User();
+                uint8_t buf[u.get_user().ByteSize()];
+                u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+                _u->ParseFromArray(buf, u.get_user().ByteSize());
+                this->l.set_allocated_rejecter(_u);
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
+            ss << "{";
 
-User u_0(this->l.rejecter());
-ss << "\"rejecter\":" << u_0.to_jsonstr();
-ss << "}";
-return ss.str();
+            User u_0(this->l.rejecter());
+            ss << "\"rejecter\":" << u_0.to_jsonstr();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LinkGiftPkRefuse l;
     };

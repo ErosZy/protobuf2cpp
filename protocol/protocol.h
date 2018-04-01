@@ -31,7 +31,7 @@ namespace protocol {
     public:
         virtual bool decode_from_buf(Buffer &buf)=0;
 
-        virtual std::shared_ptr<Buffer> encode_to_buf()=0;
+        virtual std::shared_ptr <Buffer> encode_to_buf()=0;
 
         virtual void from_json(jsonxx::Object &json)=0;
 

@@ -25,59 +25,62 @@ namespace protocol {
     class Guess_item : public Protocol {
     public:
         Guess_item() : g(linkerProtocol::GuessItem()) {};
+
         explicit Guess_item(const linkerProtocol::GuessItem &us) : g(us) {};
+
         const linkerProtocol::GuessItem &get_guess_item() const { return this->g; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->g.ByteSize()];
             this->g.SerializeToArray(ptr, this->g.ByteSize());
             return std::make_shared<Buffer>(ptr, this->g.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::String>("desc")) {
-	this->g.set_desc((o.get<jsonxx::String>("desc")));
-}
+            if (o.has<jsonxx::String>("desc")) {
+                this->g.set_desc((o.get<jsonxx::String>("desc")));
+            }
 
-if(o.has<jsonxx::Number>("odd")) {
-	this->g.set_odd(float(o.get<jsonxx::Number>("odd")));
-}
+            if (o.has<jsonxx::Number>("odd")) {
+                this->g.set_odd(float(o.get<jsonxx::Number>("odd")));
+            }
 
-if(o.has<jsonxx::Number>("stake")) {
-	this->g.set_stake(int32_t(o.get<jsonxx::Number>("stake")));
-}
+            if (o.has<jsonxx::Number>("stake")) {
+                this->g.set_stake(int32_t(o.get<jsonxx::Number>("stake")));
+            }
 
-if(o.has<jsonxx::Number>("balance")) {
-	this->g.set_balance(int32_t(o.get<jsonxx::Number>("balance")));
-}
+            if (o.has<jsonxx::Number>("balance")) {
+                this->g.set_balance(int32_t(o.get<jsonxx::Number>("balance")));
+            }
 
-if(o.has<jsonxx::Number>("itemID")) {
-	this->g.set_itemid(int32_t(o.get<jsonxx::Number>("itemID")));
-}
+            if (o.has<jsonxx::Number>("itemID")) {
+                this->g.set_itemid(int32_t(o.get<jsonxx::Number>("itemID")));
+            }
 
-if(o.has<jsonxx::Boolean>("isWin")) {
-	this->g.set_iswin((o.get<jsonxx::Boolean>("isWin")));
-}
+            if (o.has<jsonxx::Boolean>("isWin")) {
+                this->g.set_iswin((o.get<jsonxx::Boolean>("isWin")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"desc\":"<< "\"" << this->g.desc() << "\"" << ",";
-ss << "\"odd\":"<< this->g.odd() << ",";
-ss << "\"stake\":"<< this->g.stake() << ",";
-ss << "\"balance\":"<< this->g.balance() << ",";
-ss << "\"itemID\":"<< this->g.itemid() << ",";
-ss << "\"isWin\":"<< this->g.iswin();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"desc\":" << "\"" << this->g.desc() << "\"" << ",";
+            ss << "\"odd\":" << this->g.odd() << ",";
+            ss << "\"stake\":" << this->g.stake() << ",";
+            ss << "\"balance\":" << this->g.balance() << ",";
+            ss << "\"itemID\":" << this->g.itemid() << ",";
+            ss << "\"isWin\":" << this->g.iswin();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::GuessItem g;
     };

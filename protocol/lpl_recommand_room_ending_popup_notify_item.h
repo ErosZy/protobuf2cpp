@@ -25,54 +25,59 @@ namespace protocol {
     class Lpl_recommand_room_ending_popup_notify_item : public Protocol {
     public:
         Lpl_recommand_room_ending_popup_notify_item() : l(linkerProtocol::LplRecommandRoomEndingPopupNotifyItem()) {};
-        explicit Lpl_recommand_room_ending_popup_notify_item(const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &us) : l(us) {};
-        const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &get_lpl_recommand_room_ending_popup_notify_item() const { return this->l; }
+
+        explicit Lpl_recommand_room_ending_popup_notify_item(
+                const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &us) : l(us) {};
+
+        const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &
+        get_lpl_recommand_room_ending_popup_notify_item() const { return this->l; }
+
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
         }
 
-        virtual std::shared_ptr<Buffer> encode_to_buf() {
+        virtual std::shared_ptr <Buffer> encode_to_buf() {
             auto ptr = new uint8_t[this->l.ByteSize()];
             this->l.SerializeToArray(ptr, this->l.ByteSize());
             return std::make_shared<Buffer>(ptr, this->l.ByteSize());
         }
 
         virtual void from_json(jsonxx::Object &o) {
-            if(o.has<jsonxx::Number>("owid")) {
-	this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
-}
+            if (o.has<jsonxx::Number>("owid")) {
+                this->l.set_owid(int32_t(o.get<jsonxx::Number>("owid")));
+            }
 
-if(o.has<jsonxx::String>("no")) {
-	this->l.set_no((o.get<jsonxx::String>("no")));
-}
+            if (o.has<jsonxx::String>("no")) {
+                this->l.set_no((o.get<jsonxx::String>("no")));
+            }
 
-if(o.has<jsonxx::String>("nickname")) {
-	this->l.set_nickname((o.get<jsonxx::String>("nickname")));
-}
+            if (o.has<jsonxx::String>("nickname")) {
+                this->l.set_nickname((o.get<jsonxx::String>("nickname")));
+            }
 
-if(o.has<jsonxx::String>("name")) {
-	this->l.set_name((o.get<jsonxx::String>("name")));
-}
+            if (o.has<jsonxx::String>("name")) {
+                this->l.set_name((o.get<jsonxx::String>("name")));
+            }
 
-if(o.has<jsonxx::Number>("online")) {
-	this->l.set_online(int32_t(o.get<jsonxx::Number>("online")));
-}
+            if (o.has<jsonxx::Number>("online")) {
+                this->l.set_online(int32_t(o.get<jsonxx::Number>("online")));
+            }
 
         }
 
         virtual std::string to_jsonstr() {
             std::stringstream ss;
-ss << "{";
-ss << "\"owid\":"<< this->l.owid() << ",";
-ss << "\"no\":"<< "\"" << this->l.no() << "\"" << ",";
-ss << "\"nickname\":"<< "\"" << this->l.nickname() << "\"" << ",";
-ss << "\"name\":"<< "\"" << this->l.name() << "\"" << ",";
-ss << "\"online\":"<< this->l.online();
-ss << "}";
-return ss.str();
+            ss << "{";
+            ss << "\"owid\":" << this->l.owid() << ",";
+            ss << "\"no\":" << "\"" << this->l.no() << "\"" << ",";
+            ss << "\"nickname\":" << "\"" << this->l.nickname() << "\"" << ",";
+            ss << "\"name\":" << "\"" << this->l.name() << "\"" << ",";
+            ss << "\"online\":" << this->l.online();
+            ss << "}";
+            return ss.str();
 
         }
-        
+
     private:
         linkerProtocol::LplRecommandRoomEndingPopupNotifyItem l;
     };
