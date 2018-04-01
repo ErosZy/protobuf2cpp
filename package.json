@@ -1,0 +1,22 @@
+{
+  "name": "protobuf2cpp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "protobuf2cpp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErosZy/protobuf2cpp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErosZy/protobuf2cpp/issues"
+  },
+  "homepage": "https://github.com/ErosZy/protobuf2cpp#readme",
+  "dependencies": {
+    "handlebars": "^4.0.11"
+  }
+}

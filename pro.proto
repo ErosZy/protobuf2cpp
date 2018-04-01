@@ -1,0 +1,868 @@
+syntax = "proto2";
+package linkerProtocol;
+option java_package = "la.shanggou.live.proto.gateway";
+option optimize_for = LITE_RUNTIME;
+// 用户个人信息
+message User {
+    required int32 uid = 1; // 用户ID
+    optional int32 gender = 2; // 性别
+    optional int32 verified = 3; // 验证
+    optional int32 exp = 4; // 经验
+    optional int32 level = 5; // 等级
+    optional int32 authed = 6; // 认证信息
+    optional int32 status = 7; // 用户账号状态
+    optional string nickname = 8; // 昵称
+    optional int32 guard = 9; // 全平台勋章,因为位数不够的废弃字段
+    optional int32 rider = 10; // 坐骑
+    optional string portrait = 11; // 头像
+    repeated string guardArray = 12; // 勋章列表
+    optional int32 honorOwid = 13; // 粉丝勋章的房间号
+    optional int32 honorLevel = 14; // 粉丝勋章的等级
+    optional string honorName = 15; // 粉丝勋章的文字
+    optional bool honorOwIsGray =16; // 粉丝勋章是否变灰
+    optional int32 no = 17; // 靓号用户的全民号，在某些协议中可能用到，比如靓号的送礼下行
+    optional int32 noType = 18; // 靓号用户的靓号类型
+    optional NoblemanExt nobleInfo = 19; //贵族信息
+    optional string nickColor = 20; // 彩色昵称，字段不存在或者为空字符串表示没有彩色昵称，或者为 FF00AA 这种颜色代码
+    // optional int32 cid = 21; // 用户渠道信息
+    optional int32 cashBalance = 22; //用户现金余额
+}
+// 描述直播间的状态信息
+message AnchorLive
+{
+    required int32 owid = 1; // 直播间的主播 id
+    optional int32 status = 2; // 直播间状态 1 开播，2 关播
+    optional string nickname  = 3; // 主播的昵称
+}
+// 房间信息
+message LiveData {
+    required int32 online = 1; // 房间在线人数
+    required int32 starlight = 2; // 星光
+    required int32 fight = 3; // 战斗力
+    required int32 status = 4; // 房间状态 '0,停播 -1禁播, 1准备中, 2推流中',
+    optional int32 views = 5; // 观看次数
+    optional int32 duration = 6; // 播放时长
+    optional int32 maxOnline = 7; // 最大观众人数
+    optional bool isRectify = 8; // 是否整改
+    optional int32 onlineNobleman = 9; //在线贵族数
+}
+// 用户房间内个人成就
+message RoomAttr {
+    required uint32 priv = 1; // 房间内特权
+    optional int32 guard = 2; // 基于主播获取的守护
+    optional int32 medal = 3; // 基于房间的勋章
+    optional int32 firstClass = 4;   //房间头等舱
+}
+// 滞留属性
+message RetetionAttr {
+    required int32 aliveTime = 1; // 存活时间
+    required int32 nowTime = 2; // 当前时间
+    required int32 startTime = 3; // 开始时间
+    optional int32 id = 4; // 滞留属性的ID
+}
+// 登录服务器请求 "Gateway.Login.Req"
+message LoginReq {
+    required int32 uid = 1; // 用户ID
+    required string pwd = 2; // passwd
+    required string devid = 3; // 设备ID
+    required string app = 4; // 平台类型，如iOS/Android/PC
+    required int64 rt = 5; // 当前的客户端时间
+    required string vk = 6; // 校验码
+    required string ver = 7; // 客户端版本
+    required string channel = 8; // 应用渠道，对于Android有用，如360，百度，推广包等
+}
+// 登录服务器响应 "Gateway.Login.Resp"
+message LoginResp {
+    required int32 status = 1; // 登录状态，非零为异常
+    optional int32 uid = 2; // 如果是游客，系统分配的id
+}
+// 加入房间请求 "Gateway.RoomJoin.Req"
+message RoomJoinReq {
+    required int32 owid = 1; // owner ID
+}
+// 加入房间响应 "Gateway.RoomJoin.Resp"
+message RoomJoinResp {
+    required int32 owid = 1; // owner ID
+    required int32 code = 2; // 状态码，非0表示进入房间失败
+    optional RoomAttr roomAttr = 3; //
+    optional LiveData liveData = 4;
+    repeated int32 optionalTextColors = 5;//用户在房间内可以使用的文本颜色
+}
+// 延迟2s发送的加入房间广播 "Gateway.RoomJoin.Up"
+message RoomJoinNotifyUp {
+    required int32 owid = 1; // 房间ID
+}
+// 离开房间 "Gateway.RoomLeave.Up"
+message RoomLeaveReq {
+    required int32 owid = 1; // owner ID
+}
+// 聊天上行消息 "Gateway.Chat.Up"
+message ChatUp {
+    required int32 type = 1; // 消息类型：0 普通消息 1 收费弹幕
+    required string txt = 2;
+    repeated User toUsers = 3; // 被@的人
+    optional int32 color = 4;
+    optional TextAttribe textAttr = 5;
+    optional bool asNobleman = 6; // true 表示以贵族身份发送
+}
+message TextAttribe
+{
+    optional string font = 1;//显示的字体
+    required int32 fontSize = 2;//文本大小
+    optional int32 color = 3;//文本颜色
+    required int32 floatStyle = 4;//1.弹幕从左到右动态滚动显示 2.弹幕固定在顶部显示，其它弹幕在其底部经过。显示7秒后收起。
+    required int32 shading = 5;//底纹编号
+    required int32 payMethod = 6; // 支付方式 0-牛币 1-卡片
+}
+// 背包消费上行 "Gateway.Bag.Up"
+message BagUp {
+    optional int32 owid = 1;
+    required int32 pid = 2; // 道具id
+    optional int32 count = 3; // 礼物数量
+    optional string ext = 4; // 扩展字段
+    required int32 platform = 5;// 0: 全平台，  1：手印， 2：全民
+}
+// 背包变更,通知客户端拉数据 "Gateway.Bag.Notify"
+message BagNotify {
+    required int32 uid = 1;
+    optional int32 action = 2; //1增，2减
+    optional int32 pid = 3; //道具id
+    optional int32 num = 4; //道具数量
+    optional int32 expire = 5; //最快过期的过期时间
+    optional int32 expireNum = 6; //最快过期的数量
+}
+// 聊天下行消息 "Gateway.Chat.Notify"
+message ChatNotify {
+    required int32 owid = 1; // owner ID
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required int32 type = 4; // 消息类型：0 普通消息 1 收费弹幕 1001 系统通知
+    required string txt = 5; // 消息文本
+    optional int32 color = 6; // 消息颜色
+    repeated User toUsers = 7; // 被@的人
+    optional RetetionAttr retetionAttr = 8;
+    optional string platForm = 9; //平台类型(发送端登陆时的App字段)，如iOS/Android/PC
+    optional TextAttribe textAttr = 10;
+    optional bool asNobleman = 11; // true 表示以贵族身份发送    
+    optional string ver = 12; // 客户端版本
+}
+// 送礼上行 "Gateway.Gift.Up"
+message GiftUp {
+    required int32 owid = 1; // owner ID
+    required int32 gid = 2; // 礼物模板ID
+    optional int32 attrId = 3; // 礼物ID
+    optional int32 count = 4; // 礼物数量
+    optional string txt = 5; // 文本
+    optional string ext = 6; // 扩展字段
+}
+// 送礼下行 "Gateway.Gift.Notify"
+message GiftNotify {
+    required int32 owid = 1; // owner ID
+    required RoomAttr roomAttr = 2; // 送礼人房间内成就
+    required User user = 3; // 送礼人信息
+    required int32 combo = 4; // 连击送礼的连击次数
+    required int32 comboId = 5; // 标识每个连击消息的ID
+    required int32 gid = 6; // 礼物模板ID
+    optional int32 attrId = 7; // 礼物ID
+    optional int32 count = 8; // 礼物数量
+    optional RetetionAttr retetionAttr = 9; // 礼物滞留属性
+    optional int32 luckyMulti = 10;// 幸运礼物的倍数
+    optional int32 consumeType = 11; // 消费方式 1是正常礼物，2是道具
+    optional int32 newCount = 12;
+    optional int32 newCombo = 13;
+    optional int32 pcExtendDelayTime = 14;
+    optional int32 appExtendDelayTime = 15;
+    optional int32 starlight = 16; // 星光
+}
+// 点赞上行 "Gateway.Zan.Up"
+message ZanUp {
+    required int32 owid = 1;
+    required int32 color = 2; // 点赞的颜色
+}
+// 点赞下行 "Gateway.Zan.Notify"
+message ZanNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required int32 color = 4; // 点赞的颜色
+}
+// 管理事件通知 (上行走http) "Gateway.Manager.Notify"
+message ManagerNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required int32 status = 4; //1禁止进入 -1解除禁入 2禁止发言 -2解除禁言 4设为管理员 -4解除管理员 8设为房主
+}
+// 房间更新信息通知 "Gateway.RoomUpdate.Notify"
+message RoomUpdateNotify {
+    required int32 owid = 1;
+    required LiveData liveData = 2; // 当前房间信息
+}
+// 通知房间守护变更 "Gateway.Guard.Notify"
+message RoomGuardNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required int32 uid = 3;
+}
+//主播暂离 (上行走http) "Gateway.AnchorLiveStatus.Notify"
+message AnchorLiveStatusNotify {
+    required int32 owid = 1;
+    required int32 type = 2; //	1 暂离, 2 回来
+}
+// 房间分享 (上行走http) "Gateway.Shared.Notify"
+message SharedNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required string type = 4; // 分享平台，如微信，QQ
+    required string tips = 5; // 提示信息
+}
+// 关注 (上行走http) "Gateway.Followed.Notify"
+message FollowedNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required string tips = 4; // 提示信息
+}
+// 红包通知（新增了合体宝箱，星秀和showing不处理?）"Gateway.RedEnvelope.Notify"
+message RedEnvelopeNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required int32 rid = 4; // 红包ID
+    required int32 type = 5; // 1 牛币红包， 2 种子宝箱， 3 牛币宝箱 ，4 青铜宝箱 ，5 白银宝箱 ，6 黄金宝箱 ，7 铂金宝箱 ，8 钻石宝箱 ，9 大师宝箱 ，10 王者宝箱
+    required int32 amount = 6; // 红包金额
+    optional string txt = 7; // 红包附件信息
+    optional RetetionAttr retetionAttr = 8;
+    required uint32 key = 9; // 用于抢红包校验的key
+    optional int32 boxType = 10; // 宝箱的真正类型，用于请求显示的素材
+}
+// 用户属性更新通知 "Gateway.UserAttr.Notify"
+message UserAttrNotify {
+    required User user = 1;
+    required int32 diamond = 2; // 个人财富钻石
+    required int32 starlight = 3; // 获得的星光
+    required int32 fight = 4; // 战斗力
+    optional int32 seed = 5; // 种子
+}
+// 等级更新提醒 "Gateway.UserLevelUp.Notify"
+message UserLevelUpNotify {
+    required int32 owid = 1;
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    required int32 nextLevel = 4;
+    required int32 needDiamod = 5;
+    required int32 percent = 6;
+    required int32 type = 7;
+    optional string tips = 8;
+}
+// 踢出登录通知 "Gateway.Kickout.Notify"
+message KickoutNotify {
+    required int32 owid = 1;
+    optional string msg = 2;
+}
+// 申请连麦 "Gateway.Link.Apply"
+message LinkApply {
+    required int32 owid = 1;
+    required int32 uid = 2;
+    required int32 applyCount = 3;
+    optional User applyUser = 4;
+    optional int32 type = 5;
+}
+// 取消连麦 "Gateway.Link.Cancel"
+message LinkCancel {
+    required int32 owid = 1;
+    required int32 uid = 2;
+    required int32 applyCount = 3;
+}
+// 关闭连麦 "Gateway.Link.Close"
+message LinkClose {
+    required int32 owid = 1;
+    required int32 applyCount = 2;
+    optional int32 forbidUid = 3;  //被禁止连麦的uid
+}
+// 连麦广播下行 "Gateway.Link.Notify"
+message LinkNotify {
+    required int32 owid = 1;
+    required int32 applyCount = 2;
+}
+// 接受连麦 "Gateway.Link.Accept"
+message LinkAccept {
+    required int32 owid = 1;
+    required string roomName = 2;
+    required string token = 3;
+    optional int32 type = 4;
+    optional User owidInfo = 5;
+}
+// 连麦广播 "Gateway.Link.Broadcast"
+message LinkBroadcast {
+    required int32 owid = 1;
+    required int32 status = 2;
+    repeated User linkers = 3;
+    optional int32 type = 4;
+    optional int32 linkersLandscape = 5;
+}
+// 横幅广播 "Gateway.Banner.Notify"
+message BannerNotify
+{
+    required int32 owid = 1;
+    required User user = 2;
+    required User anchor = 3;
+    required int32 templateId = 4;
+    required int32 gid = 5;
+    required int32 attrId = 6;
+    required int32 giftCount = 7;
+    optional string txt = 8;
+    optional User officialRoom = 9;
+    optional int32 landscape = 10; // 0竖屏, 1横屏
+    optional int32 luckyMulti = 11; // 幸运礼物的中奖倍数
+    repeated MapEntry params = 12;
+    optional AnchorLiveInfo liveInfo = 13; //直播间信息
+    
+}
+message AnchorLiveInfo
+{
+    required int32 catagory = 1; //主播所在分类 
+}
+//官方房间状态通知 "Gateway.OfficialLiveStatus.Notify"
+message OfficialLiveStatusNotify
+{
+    required int32 owid = 1;//公共房间号
+    repeated User  anchorList = 2;//主播列表数据
+    optional User  currentAnchor = 3;//正在直播中的主播
+}
+// 官方房间Like赞、踩上行"Gateway.OfficalRoomGift.Send"
+message OfficialLiveLikeUp
+{
+    required int32 owid = 1; // owner ID
+    required int32 action = 2; // 1 赞， 2 踩
+}
+//官方房间Like变更通知 "Gateway.OfficialLiveLive.Notify"
+message OfficialLiveLikeNotify
+{
+    required int32 owid = 1;//公共房间号
+    required int32 remainingTime = 2;//以秒计算的剩余时间,更新时下发
+    required int32 like = 3;//赞数量
+    required int32 unlike = 4;//踩数量
+}
+// 通知主播是否重新推流 "Gateway.AnchorIndicate.Notify"
+message AnchorIndicateNotify
+{
+    required int32 action = 1; // 1 重推 2 指示主播关播
+    optional string txt = 2; //提示文本(关播原因blablabla)
+}
+// 通知官方直播间的用户跳转房间"Gateway.OfficialLiveNavigation.Change"
+message OfficialLiveNavigationChange
+{
+    required int32 srcOwid = 1; // 源房间号
+    required int32 destOwid = 2; // 目的房间号
+    required string streamUrl = 3; // 目的房间的视频流地址
+}
+// 挑战令任务状态
+message ChallengeTask
+{
+    required int32 taskId = 1;
+    required int32 amount = 2;//投注金额
+    required int32 val = 3;//任务数据
+}
+// 挑战令任务状态通知 Gateway.Challenger.Notify(需要滞留)
+message ChallengeTaskStatus
+{
+    required int32 owid = 1;
+    required int32 replayId = 2;
+    required int32 startTime = 3;
+    required int32 times = 4;
+    required int32 status = 5;
+    repeated ChallengeTask ChallengeTaskList = 6;
+    optional User user = 7;
+}
+// 挑战令用户投注 Gateway.Challenger.Bet
+message ChallengeBet
+{
+    required int32 owid = 1;
+    required int32 replayId = 2;
+    required User User = 3;
+    required int32 amount = 4;
+    required int32 taskId = 5;
+    repeated ChallengeTask ChallengeTaskList = 6;
+    optional int32 combo = 7;
+}
+// 中奖广播 Gateway.Award.Notify
+message ChallengeAward
+{
+    required int32 owid = 1;
+    required int32 replayId = 2;
+    required RoomAttr roomAttr = 3;
+    required User user = 4;
+    optional string source = 5; // 来源如 giftbox-110
+    optional string tips = 6; // 提示: 合体宝箱
+    optional int32 diamond = 7;
+    optional int32 seed = 8;
+}
+// 全局的通用广播信息"Gateway.GlobalMsg.Notify"
+message GlobalMsg
+{
+    required int32 type = 1; // 消息类型: 1 只显示用户的全局属性(User.guard)， 2 需要显示用户的基于房间的属性（RoomAttr)
+    repeated Ext ext = 2;  // 额外信息
+}
+message Ext
+{
+    optional User user = 1 ; // 关联的用户信息在users中的下标
+    optional string txt  = 2 ;
+    optional int32 color = 3 ;
+    optional RoomAttr roomAttr = 4;
+}
+// 宝箱抢完的事件通知“Giftbox.State.Done”
+message GiftboxDone
+{
+    required int32 owid = 1; // 房间号
+    required int32 type = 2; // 宝箱类型
+    required int32 boxid = 3; // 宝箱id
+}
+// 业务系统下发的对话框，"Logic.Dialog.Notify"
+message DialogNotify
+{
+    required int32 type = 1;    // 对话框类型  0 无参数的默认对话框，1 绑定靓号, 2 竞猜引导页
+    required string title = 2;  // 对话框标题
+    required string content = 3;// 内容
+    repeated DialogButton buttons = 4; // 按钮定义
+    repeated MapEntry paramEntries = 5;// 妥协ios的pb版本不兼容的临时字段
+    //map<string, string> params= 5;
+}
+message DialogButton
+{
+    required string button = 1;
+    optional string url = 2; // 如果确定需要跳转，指定url
+    optional int32 action = 3; // 1 请求api， 2 跳转url
+}
+message MapEntry {
+    required string key = 1;
+    required string value = 2;
+}
+// 竞猜的状态变化事件，房间内广播 "Logic.Guess.Update"
+message GuessUpdate
+{
+    required int32 owid = 1;
+    repeated GuessSubject subjects = 2; // 竞猜的主题
+    required int32 nowTime = 3; // 服务器下发的时间
+}
+// 竞猜主题
+message GuessSubject
+{
+    required int32 guessID = 1;
+    required string title = 2; // 竞猜的主题
+    required int32 status = 3; // 1正常, 0停止下注, 2已结算, -1流局
+    optional string reason = 4; // 状态原因描述，比如终止的原因
+    optional int32 endTime = 5; // 终止时间戳
+    repeated GuessItem items = 6;  // 竞猜的选项
+}
+// 竞猜主题中的选项
+message GuessItem
+{
+    required string desc = 1; // 选项描述
+    required float odd = 2; // 选项赔率
+    required int32 stake = 3; // 下注总金额
+    required int32 balance = 4; // 庄所剩的余额
+    required int32 itemID = 5; // 选项id，用来作为请求的参数带给服务器
+    optional bool isWin = 6; // 这个选项是否获胜，在终局时有用
+}
+// 主播竞猜收益的下发 "Logic.Guess.OwnerAward"
+message GuessOwnerAward
+{
+    required int32 owid = 1;
+    required int32 guessID = 2; // 竞猜游戏的id
+    required string title = 3; // 竞猜的主题
+    required int32 award  = 4; // 竞猜的收益或者损失
+    optional int32 chips = 5; // 用户竞猜币的余额
+}
+// 竞猜中奖的奖品颁发，发给个人 "Logic.Guess.Award"
+message GuessWin
+{
+    required int32 uid = 1;
+    required int32 owid = 2;
+    repeated GuessAward awards = 3;
+    optional int32 chips = 4; // 用户竞猜币的余额
+}
+// 竞猜结果的描述
+message GuessAward
+{
+    required int32 guessID = 1; // 竞猜游戏的id
+    required string title = 2; // 竞猜的主题
+    required string desc = 3; //  竞猜的选项
+    required int32 award  = 4; // 竞猜的收益或者损失
+    required int32 status = 5; // 竞猜的状态： 1正常, 0停止下注, 2已结算, -1流局
+}
+// 粉丝勋章升级 "Gateway.HonorLevelUp.Notify"
+message HonorLevelUp
+{
+    required int32 uid = 1;
+    optional int32 honorOwid = 2; // 粉丝勋章的房间号
+    optional int32 honorLevel = 3; // 粉丝勋章的等级
+    optional string honorName = 4; // 粉丝勋章的文字
+    optional bool honorOwIsGray = 5; // 粉丝勋章是否变灰
+    optional int32 type = 6; //1 新增 ，2升级
+}
+// 好友追踪信息 "Gateway.FriendStatus.Notify"
+message FriendStatus{
+    required User user = 1 ; // 好友信息 uid nickname
+    required User anchor = 2; // 主播信息 uid nickname
+}
+// 整改主播房间事件 "Gateway.RectifyRoom.Notify"
+message RectifyRoomNotify
+{
+    required int32 owid = 1;
+    required int32 op = 2; //  0 正常， 1 整改中
+}
+// 投票项信息
+message OptionDetail
+{
+   required string info = 1;
+   required int32 optionId = 2;
+   required int32 num = 3;
+}
+// 房间投票信息广播 "Gateway.RoomVote.Notify"
+message VoteNotify
+{
+    required int32 owid = 1;
+    required int32 voteId = 2;
+    required string title = 3;
+    required int32 uid = 4;
+    required int32 status = 5;
+    required int32 isShow = 6;
+    required int32 startTime = 7;
+    required int32 endTime = 8;
+    repeated OptionDetail options = 9;
+}
+// 踢出登录通知 "Gateway.NoblemanBan.Notify"
+message NoblemanBanNotify {
+    required int32 owid = 1;
+    required int32 uid = 2;
+    required User oper = 3;
+    required int32 deadtime = 4;
+}
+message NoblemanExt {
+    required int32 level = 1; // 贵族等级
+    required int32 endTime = 2;
+    required int32 roomHide = 3;
+    required int32 status = 4;
+}
+message RoomJoinNotify {
+    required int32 owid = 1; // owner ID，类似于Host ID
+    required RoomAttr roomAttr = 2;
+    required User user = 3;
+    optional int32 showWeekstarCard = 4; // 是否显示周星进房提醒卡片
+}
+// 房间内部贵族数量和全站贵族列表 ""Gateway.NoblemanInfo.Notify"
+message NobleListNotify
+{
+    required int32 owid = 1; 
+    required int32 noblemanCount = 2;
+    repeated User noblemanList = 3;
+    required int32 ts = 4;
+}
+// 贵族授予通知 "Gateway.NoblemanConfer.Notify"
+message NoblemanConferNotify {
+    required int32 owid = 1; // 房间id
+    required User nobleman = 2; // 新授予的贵族
+    required int32 status = 3; // 0 开通 1 续费
+}
+// 分区|全区喇叭 "Gateway.Horn.Notify"
+message Horn {
+    required int32 type = 1;
+    optional int32 cid = 2;
+    required User user = 3;
+    required User anchor = 4;
+    required string txt = 5;
+    required int32 expire = 6;
+}
+// 申请连麦礼物PK "Gateway.GiftPk.Apply"
+message LinkGiftPkApply {
+    required User applyUser = 1;  //请求者user
+    required string title = 2;    //本次连麦礼物PK标题
+    required int32 time = 3;      //时长
+}
+// 拒绝连麦礼物Pk "Gateway.GiftPk.Refuse"
+message LinkGiftPkRefuse {
+    required User rejecter = 1;  //拒绝者
+}
+// 接受连麦礼物Pk "Gateway.GiftPk.Accept"
+message LinkGiftPkAccept {
+    required User recipient = 1;  //接受者
+}
+// 连麦礼物Pk房间广播 "Gateway.GiftPk.Notify"
+message LinkGiftPkNotify {
+    required int32 owid = 1;       //房间id
+    required GiftPkUserInfo applyUserInfo = 2;   //申请者
+    required GiftPkUserInfo acceptUserInfo = 3;  //接受者
+    required string title = 4;     //pk标题
+    required int32 startTime  = 5; //pk开始时间戳
+    required int32 endTime = 6;    //pk结束时间戳
+}
+message GiftPkUserInfo {
+    required User user = 1;  //user
+    optional int32 score = 2; //得分
+}
+// 连麦礼物Pk结束房间广播 "Gateway.GiftPk.End"
+message LinkGiftPkEnd {
+    required int32 owid = 1; //房间id
+    required GiftPkUserInfo winner = 2; //胜者uid
+    required GiftPkUserInfo loser = 3; //输者uid
+    required int32 type = 4; //输赢方式：1分数， 2平局， 3投降
+    required string punishment = 5; //惩罚措施
+    required int32 startTime = 6;   //惩罚开始时间戳
+    required int32 endTime = 7;     //惩罚结束时间戳
+}
+// 贵族推荐直播间信息 "Gateway.NoblemanRecommend.Notify"
+message NoblemanRecommendNotify {
+    required int32 owid = 1; // 房间id
+    required User noble = 2; // 推荐的贵族
+    required int32 endTime = 3; //结束时间戳
+}
+// 合体升级全局消息 "Gateway.FitLevelUpGlobalMsg.Notify" // Global logic_layer event
+message FitLevelUpGlobalMsgNotify {
+    required int32 uid = 1;
+    required string nickname = 2; // 用户昵称
+    required int32 owid = 3; // 房间id
+    required int32 level = 4;
+    required string name = 5; // 等级名称
+    required ClientTypeMap targetMap = 6;
+    required string validTime = 7; // 有效时间
+    required int32 number = 8; // 合体数量
+    required string owNickName = 9; // 主播昵称
+}
+message ClientTypeMap {
+    required int32 ios = 1; // 非0 ios需要处理此消息，否则忽略
+    required int32 android = 2; // 非0 android需要处理此消息，否则忽略
+    required int32 pc = 3; // 非0 pc需要处理此消息，否则忽略
+}
+// 房间抽奖开启配置下发 "Gateway.RoomLot.Start" // Room logic_layer rpc
+message RoomLotStart {
+    required int32 lotId = 1;
+    required int32 lotStatus = 2;
+    required int32 owid = 3;                        //发起房间
+    required int32 uid = 4;                        //发起用户
+    required int32 giftType = 5;                        //奖品类型
+    required int32 giftTotalNum = 6;                        //奖品总量
+    required int32 partitionNum = 7;                        //奖品份数
+    required int32 lotType = 8;                        //抽奖类型
+    required int32 scope = 9;                        //抽奖用户参与范围
+    required int32 duration = 10;                        //抽奖时长
+    required string startTime = 11;                        //开始时间
+    required string endTime = 12;                        //结束时间
+    required RoomLotAttrs attrs = 13;
+}
+message RoomLotAttrs {
+    optional string word = 1;                        //弹幕口令
+    optional int32 commentType = 2;               //弹幕类型
+    optional string prizeName = 3; //奖品名称
+    optional int32 partGiftId = 4; //参与抽奖礼物id，lotType=2 or 3时使用
+    optional string partGiftName = 5; //参与抽奖礼物名称，lotType=2 or 3时使用
+    optional string partGiftIcon = 6; //参与抽奖礼物Icon，lotType=2 or 3时使用
+    optional int32 partGiftMinNum = 7; //参与抽奖礼物最少个数限制，lotType=2时使用
+    optional int32 chargeLimit = 8; //爆灯抽奖爆灯界限，lotType=3时使用
+    optional int32 partGiftGid = 9; //参与抽奖礼物gid，lotType=2 or 3时使用
+}
+// 房间抽奖结果弹幕通知 "Gateway.RoomLot.ResultNotify" // Room logic_layer rpc
+message RoomLotResultNotify {
+    required int32 owid = 1;                        //发起房间
+    required string txt = 2;                        //通知内容
+}
+// 房间抽奖中奖结果下发 "Gateway.RoomLot.Result" // Room logic_layer rpc
+message RoomLotResult {
+    required int32 lotId = 1; //抽奖id
+    required int32 giftType = 2; //奖品类型
+    required int32 shardingNum = 3; //分片总数
+    required int32 shardingId = 4; //分片id
+    repeated RoomLotWinUser list = 5; //中奖用户列表
+    required RoomLotGiftAttr giftAttr = 6; //奖品属性
+    required int32 owid = 7; //发起房间
+}
+message RoomLotWinUser {
+    required int32 uid = 1;  //中奖用户uid
+    required int32 score = 2; //中奖数量
+    required int32 rank = 3; //抽奖名次
+}
+message RoomLotGiftAttr {
+    required string name = 1;  //奖品名称
+    required string img = 2; //奖品图片
+}
+// 房间广告下发 "Gateway.RoomAd.Push" // Room logic_layer rpc
+message RoomAdPush {
+    required int32 owid = 1;          //房间id 如果是0则为全局下发
+    required int32 dateline = 2;         //下发时间(int)
+    required int32 style = 3;         //广告推送类型 1:定时推送 2:关播推送
+    repeated RoomAdAttr adlist = 4;   //广告列表
+    repeated RoomAdExclOwid exclroomlist = 5;   //排除的房间owid列表
+    repeated RoomAdExclCateid exclcatelist = 6;   //排除的分类categoryId列表
+    optional RetetionAttr retetionAttr = 7; // 滞留属性
+}
+message RoomAdAttr{
+    required int32 pcslotid = 1;      //pc物料id
+    required int32 iosslotid = 2;      //ios物料id
+    required int32 androidslotid = 3;      //android物料id
+    required int32 type = 4;        //广告类型 1:贴片 2:浮窗
+    required int32 duration = 5;   //广告时长（s）
+    required int32 frequency = 6;   //0:一天N次 1:一天只播一次
+}
+message RoomAdExclOwid {
+    required int32 owid = 1;      //排除的房间id
+}
+message RoomAdExclCateid {
+    required int32 cateid = 1;    //排除的分类Id
+}
+// 周星榜同步 "Gateway.RoomSvrWeeklyStar.Notify" // Room logic_layer event
+message RoomSvrWeeklyStarNotify {
+    required int32 owid                 = 1;
+    required int32 weeklyStarRank       = 2; // 周星排位 <=0表示不在榜单之中或者>99时, 需要显示99+
+    required int32 weeklyStarScoreDiff  = 3; // 和上一名的差距, < 0 表示差距未知, 应保持老的值
+    optional int32 weeklyStarUpdateTime = 4; // 榜单最后更新时间
+    optional string weeklyStarCacheKey  = 5;
+}
+message BlessingbagInfo {
+    required int32 level = 1; //等级
+    required int32 progress = 2; //已收集进度
+    required int32 capacity = 3; //总进度
+    required int32 status = 4; //福袋状态 1已打开  2正在积攒 3已经结束
+    required int32 isCrit = 5; //是否暴击 0否 1是
+    required int32 bid = 6; //福袋唯一标识
+}
+// 福袋升级房间广播 "Gateway.BlessingbagLevelUp.Notify"
+message BlessingbagNotify {
+    required BlessingbagInfo liveBag = 1;  //正在收集福袋
+    required BlessingbagInfo showBag = 2;   //正在展示福袋
+    required int32 owid = 3;         //房间id
+    required int32 uid = 4;        //最后一击用户id
+    required string message = 5; //最后一击提示信息
+}
+// 福袋奖品广播 "Gateway.Blessingbag.Notify" // Room logic_layer rpc
+message BlessingbagGlobalMsgNotify
+{
+    optional int32 owid = 1; //可选 若无则为全站广播 否则为房间广播
+    repeated BlessingbagExt ext = 2; // 额外信息
+}
+message BlessingbagExt
+{
+    optional User user = 1 ; // 关联的用户信息在users中的下标
+    optional string txt  = 2 ;
+    optional int32 color = 3 ;
+    optional int32 attrId = 4 ; //礼物id
+}
+// 福袋奖励发放完成通知 "Gateway.BlessingbagFinish.Notify" // Room logic_layer rpc
+message BlessingbagFinishNotify
+{
+    required int32 owid = 1; //房间
+    required int32 bid = 2; // 福袋id
+}
+// 双十一抽奖活动 "Gateway.DoubleElevenLottery.Notify" // Room logic_layer rpc
+message DoubleElevenLotteryNotify
+{
+    required int32 owid = 1; //房间
+    repeated DoubleElevenLotteryDrawList drawList = 2;
+    repeated DoubleElevenLotteryPrizeList prizeList = 3;
+    repeated DoubleElevenLotteryBestAssistList bestAssistList = 4;
+}
+message DoubleElevenLotteryDrawList {
+    required string prizeName = 1;
+    required string userName = 2;
+    required int32 propNum = 3;
+    required string prizeId = 4;
+}
+message DoubleElevenLotteryPrizeList {
+    required string prizeName = 1;
+    required string userName = 2;
+    required int32 uid = 3;
+    required string time = 4;
+    required int32 propNum = 5;
+    required string prizeId = 6;
+}
+message DoubleElevenLotteryBestAssistList {
+    required string prizeName = 1;
+    required string userName = 2;
+    required int32 uid = 3;
+    required int32 propNum = 4;
+    required string prizeId = 5;
+}
+// 双十一抽奖活动发送次数 "Gateway.DoubleElevenLotterySend.Notify" // Room logic_layer rpc
+message DoubleElevenLotterySendNotify
+{
+    required int32 owid = 1; //房间
+    required int32 drawNum = 2;
+    required int32 diffProp = 3;
+    required int32 propNum = 4;
+}
+// 房间抽奖爆灯进度通知 "Gateway.RoomLot.ChargeValue" // Room logic_layer rpc
+message RoomLotChargeValueNotify {
+    required int32 owid = 1; //发起房间
+    required int32 lotId = 2; //抽奖id
+    required int32 chargeValue = 3; //当前充能值
+    optional int32 uNum = 4; // 参与人数
+}
+message OnlineView2ChangeNotify {
+    required int32 owid = 1;
+    required int32 online2 = 2; // 人气2
+}
+// 直播间人气2更新 "Gateway.OnlineViewV2.Update" // Room logic_layer event
+message OnlineView2ChangeListNotify {
+    repeated OnlineView2ChangeNotify changeList = 1;
+}
+// 春节红包新红包下发 "Gateway.RedPacket.Start" // Room logic_layer rpc
+message RedPacketStart {
+    required int32 id = 1; //红包id
+    required int32 owid = 2; //房间id
+    required string redcode = 3; //红包口令
+    required string nickname = 4; //用户昵称
+    required int32 level = 5; //用户等级
+    required string portrait = 6; //用户头像
+}
+// LPL关播推荐 "Gateway.LplRecommandRoomEnding.Popup" // Room logic_layer rpc
+message LplRecommandRoomEndingPopupNotify {
+    required int32 owid = 1;
+    required string title = 2;
+    required int32 second = 3;
+    repeated LplRecommandRoomEndingPopupNotifyItem rooms = 4;
+}
+message LplRecommandRoomEndingPopupNotifyItem {
+    required int32 owid = 1;
+    required string no = 2;
+    required string nickname = 3; // 昵称
+    required string name = 4; // 房间名称
+    required int32 online = 5; // 在线
+}
+// 春节现金红包滞留消息下发 "Gateway.CashPacket.Send"
+message CashPacketNotify {
+    required int32 id = 1; //红包id
+    required int32 owid = 2; //房间id
+    required string code = 3; //红包口令
+    required string nickname = 4; //用户昵称
+    required int32 level = 5; //用户等级
+    required string portrait = 6; //用户头像
+    required int32 starttime = 7; //开抢时间
+    optional RetetionAttr retetionAttr = 8;
+    required int32 money = 9;//现金红包金额 （单位分）
+}
+// 更新房间禁言模式 rpc: Logic.Room.ChatBanMode.Update 下行给app: Gateway.Room.ChatBanMode.Update
+message RoomChatBanModeUpdateNotify {
+    required int32 owid = 1; // 房间id
+    required int32 banMode = 2; // 房间禁言模式 0 不限制(或解除禁言) 1 不含有当前房间粉丝勋章的用户禁言 2 全部禁言
+    optional int32 uid = 3; // 操作的用户id, rpc需要带此参数, 下行不会有此参数
+}
+message RecommendRoomPopupRoom {
+    required int32 uid = 1;
+    required string no = 2;
+    required string pic = 3;
+    required string title = 4;
+    required string btnText = 5;
+}
+// 房间弹窗推荐 rpc: Logic.RecommendRoom.Popup 下行给app: Gateway.RecommendRoom.Popup
+message RecommendRoomPopupNotify {
+    required int32 owid = 1; // 房间id
+    repeated RecommendRoomPopupRoom rooms = 2;
+}
+// 带特效的送礼下行 "Gateway.GiftEffect.Notify" // Room logic_layer rpc
+message GiftEffectNotify {
+    required int32 id = 1; //id
+    required int32 owid = 2; //房间id
+    required int32 gid = 3; //特效id
+    required string url = 4; //特效url
+    optional RetetionAttr retetionAttr = 5;
+}
