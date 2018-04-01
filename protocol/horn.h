@@ -54,9 +54,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->h.set_allocated_user(_u);
 }
 
@@ -66,9 +66,9 @@ if (o.has<jsonxx::Object>("anchor")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->h.set_allocated_anchor(_u);
 }
 
@@ -88,11 +88,11 @@ ss << "{";
 ss << "\"type\":"<< this->h.type() << ",";
 ss << "\"cid\":"<< this->h.cid() << ",";
 
-User u(this->h.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_2(this->h.user());
+ss << "\"user\":" << u_2.to_jsonstr() << ",";
 
-User u(this->h.anchor());
-ss << "\"anchor\":" << u.to_jsonstr() << ",";
+User u_3(this->h.anchor());
+ss << "\"anchor\":" << u_3.to_jsonstr() << ",";
 ss << "\"txt\":"<< "\"" << this->h.txt() << "\"" << ",";
 ss << "\"expire\":"<< this->h.expire();
 ss << "}";

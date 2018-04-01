@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class NoblemanRecommendNotify : public Protocol {
+    class Nobleman_recommend_notify : public Protocol {
     public:
-        NoblemanRecommendNotify() : n(linkerProtocol::NoblemanRecommendNotify()) {};
-        explicit NoblemanRecommendNotify(const linkerProtocol::NoblemanRecommendNotify &us) : n(us) {};
+        Nobleman_recommend_notify() : n(linkerProtocol::NoblemanRecommendNotify()) {};
+        explicit Nobleman_recommend_notify(const linkerProtocol::NoblemanRecommendNotify &us) : n(us) {};
         const linkerProtocol::NoblemanRecommendNotify &get_nobleman_recommend_notify() const { return this->n; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -49,9 +49,9 @@ if (o.has<jsonxx::Object>("noble")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->n.set_allocated_noble(_u);
 }
 
@@ -66,8 +66,8 @@ if(o.has<jsonxx::Number>("endTime")) {
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
 
-User u(this->n.noble());
-ss << "\"noble\":" << u.to_jsonstr() << ",";
+User u_1(this->n.noble());
+ss << "\"noble\":" << u_1.to_jsonstr() << ",";
 ss << "\"endTime\":"<< this->n.endtime();
 ss << "}";
 return ss.str();

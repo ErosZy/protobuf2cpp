@@ -24,10 +24,10 @@
 #include "user.h"
 
 namespace protocol {
-    class UserLevelUpNotify : public Protocol {
+    class User_level_up_notify : public Protocol {
     public:
-        UserLevelUpNotify() : u(linkerProtocol::UserLevelUpNotify()) {};
-        explicit UserLevelUpNotify(const linkerProtocol::UserLevelUpNotify &us) : u(us) {};
+        User_level_up_notify() : u(linkerProtocol::UserLevelUpNotify()) {};
+        explicit User_level_up_notify(const linkerProtocol::UserLevelUpNotify &us) : u(us) {};
         const linkerProtocol::UserLevelUpNotify &get_user_level_up_notify() const { return this->u; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->u.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -50,9 +50,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->u.set_allocated_roomattr(_r);
 }
 
@@ -62,9 +62,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->u.set_allocated_user(_u);
 }
 
@@ -95,11 +95,11 @@ if(o.has<jsonxx::String>("tips")) {
 ss << "{";
 ss << "\"owid\":"<< this->u.owid() << ",";
 
-Room_attr r(this->u.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_1(this->u.roomattr());
+ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
 
-User u(this->u.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_2(this->u.user());
+ss << "\"user\":" << u_2.to_jsonstr() << ",";
 ss << "\"nextLevel\":"<< this->u.nextlevel() << ",";
 ss << "\"needDiamod\":"<< this->u.needdiamod() << ",";
 ss << "\"percent\":"<< this->u.percent() << ",";

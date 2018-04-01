@@ -25,10 +25,10 @@
 #include "retetion_attr.h"
 
 namespace protocol {
-    class RedEnvelopeNotify : public Protocol {
+    class Red_envelope_notify : public Protocol {
     public:
-        RedEnvelopeNotify() : r(linkerProtocol::RedEnvelopeNotify()) {};
-        explicit RedEnvelopeNotify(const linkerProtocol::RedEnvelopeNotify &us) : r(us) {};
+        Red_envelope_notify() : r(linkerProtocol::RedEnvelopeNotify()) {};
+        explicit Red_envelope_notify(const linkerProtocol::RedEnvelopeNotify &us) : r(us) {};
         const linkerProtocol::RedEnvelopeNotify &get_red_envelope_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -51,9 +51,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->r.set_allocated_roomattr(_r);
 }
 
@@ -63,9 +63,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->r.set_allocated_user(_u);
 }
 
@@ -91,9 +91,9 @@ if (o.has<jsonxx::Object>("retetionAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RetetionAttr();
-	uint8_t buf[_r.get_retetion_attr().ByteSize()];
-	_r.get_retetion_attr().SerializeToArray(buf, n.get_retetion_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_retetion_attr().ByteSize());
+	uint8_t buf[r.get_retetion_attr().ByteSize()];
+	r.get_retetion_attr().SerializeToArray(buf, r.get_retetion_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_retetion_attr().ByteSize());
 	this->r.set_allocated_retetionattr(_r);
 }
 
@@ -112,18 +112,18 @@ if(o.has<jsonxx::Number>("boxType")) {
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
 
-Room_attr r(this->r.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_1(this->r.roomattr());
+ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
 
-User u(this->r.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_2(this->r.user());
+ss << "\"user\":" << u_2.to_jsonstr() << ",";
 ss << "\"rid\":"<< this->r.rid() << ",";
 ss << "\"type\":"<< this->r.type() << ",";
 ss << "\"amount\":"<< this->r.amount() << ",";
 ss << "\"txt\":"<< "\"" << this->r.txt() << "\"" << ",";
 
-Retetion_attr r(this->r.retetionattr());
-ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
+Retetion_attr r_7(this->r.retetionattr());
+ss << "\"retetionAttr\":" << r_7.to_jsonstr() << ",";
 ss << "\"key\":"<< this->r.key() << ",";
 ss << "\"boxType\":"<< this->r.boxtype();
 ss << "}";

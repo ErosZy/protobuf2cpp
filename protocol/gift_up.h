@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class GiftUp : public Protocol {
+    class Gift_up : public Protocol {
     public:
-        GiftUp() : g(linkerProtocol::GiftUp()) {};
-        explicit GiftUp(const linkerProtocol::GiftUp &us) : g(us) {};
+        Gift_up() : g(linkerProtocol::GiftUp()) {};
+        explicit Gift_up(const linkerProtocol::GiftUp &us) : g(us) {};
         const linkerProtocol::GiftUp &get_gift_up() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

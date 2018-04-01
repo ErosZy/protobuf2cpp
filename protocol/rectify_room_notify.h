@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RectifyRoomNotify : public Protocol {
+    class Rectify_room_notify : public Protocol {
     public:
-        RectifyRoomNotify() : r(linkerProtocol::RectifyRoomNotify()) {};
-        explicit RectifyRoomNotify(const linkerProtocol::RectifyRoomNotify &us) : r(us) {};
+        Rectify_room_notify() : r(linkerProtocol::RectifyRoomNotify()) {};
+        explicit Rectify_room_notify(const linkerProtocol::RectifyRoomNotify &us) : r(us) {};
         const linkerProtocol::RectifyRoomNotify &get_rectify_room_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

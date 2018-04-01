@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class OnlineView2ChangeNotify : public Protocol {
+    class Online_view2_change_notify : public Protocol {
     public:
-        OnlineView2ChangeNotify() : o(linkerProtocol::OnlineView2ChangeNotify()) {};
-        explicit OnlineView2ChangeNotify(const linkerProtocol::OnlineView2ChangeNotify &us) : o(us) {};
+        Online_view2_change_notify() : o(linkerProtocol::OnlineView2ChangeNotify()) {};
+        explicit Online_view2_change_notify(const linkerProtocol::OnlineView2ChangeNotify &us) : o(us) {};
         const linkerProtocol::OnlineView2ChangeNotify &get_online_view2_change_notify() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

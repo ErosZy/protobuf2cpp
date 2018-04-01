@@ -23,10 +23,10 @@
 #include "lpl_recommand_room_ending_popup_notify_item.h"
 
 namespace protocol {
-    class LplRecommandRoomEndingPopupNotify : public Protocol {
+    class Lpl_recommand_room_ending_popup_notify : public Protocol {
     public:
-        LplRecommandRoomEndingPopupNotify() : l(linkerProtocol::LplRecommandRoomEndingPopupNotify()) {};
-        explicit LplRecommandRoomEndingPopupNotify(const linkerProtocol::LplRecommandRoomEndingPopupNotify &us) : l(us) {};
+        Lpl_recommand_room_ending_popup_notify() : l(linkerProtocol::LplRecommandRoomEndingPopupNotify()) {};
+        explicit Lpl_recommand_room_ending_popup_notify(const linkerProtocol::LplRecommandRoomEndingPopupNotify &us) : l(us) {};
         const linkerProtocol::LplRecommandRoomEndingPopupNotify &get_lpl_recommand_room_ending_popup_notify() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -55,7 +55,7 @@ if (o.has<jsonxx::Array>("rooms")) {
 	auto ls = o.get<jsonxx::Array>("rooms");
 	for (size_t i = 0; i < ls.size(); i++) {
 		auto j = ls.get<jsonxx::Object>(i);
-		LplRecommandRoomEndingPopupNotifyItem k;
+		Lpl_recommand_room_ending_popup_notify_item k;
 		k.from_json(j);
 		uint8_t buf[k.get_lpl_recommand_room_ending_popup_notify_item().ByteSize()];
 		k.get_lpl_recommand_room_ending_popup_notify_item().SerializeToArray(buf, k.get_lpl_recommand_room_ending_popup_notify_item().ByteSize());
@@ -77,7 +77,7 @@ ss << "\"second\":"<< this->l.second() << ",";
 std::stringstream rooms_stream;
 rooms_stream << "[";
 for (int32_t i = 0; i < this->l.rooms_size(); i++) {
-	rooms_stream << LplRecommandRoomEndingPopupNotifyItem(this->l.rooms(i)).to_jsonstr();
+	rooms_stream << Lpl_recommand_room_ending_popup_notify_item(this->l.rooms(i)).to_jsonstr();
 	if (i != this->l.rooms_size() - 1) {
 		rooms_stream << ",";
 	}

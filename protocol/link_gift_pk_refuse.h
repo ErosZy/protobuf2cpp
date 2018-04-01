@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkGiftPkRefuse : public Protocol {
+    class Link_gift_pk_refuse : public Protocol {
     public:
-        LinkGiftPkRefuse() : l(linkerProtocol::LinkGiftPkRefuse()) {};
-        explicit LinkGiftPkRefuse(const linkerProtocol::LinkGiftPkRefuse &us) : l(us) {};
+        Link_gift_pk_refuse() : l(linkerProtocol::LinkGiftPkRefuse()) {};
+        explicit Link_gift_pk_refuse(const linkerProtocol::LinkGiftPkRefuse &us) : l(us) {};
         const linkerProtocol::LinkGiftPkRefuse &get_link_gift_pk_refuse() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->l.set_allocated_rejecter(_u);
 }
 
@@ -57,8 +57,8 @@ namespace protocol {
             std::stringstream ss;
 ss << "{";
 
-User u(this->l.rejecter());
-ss << "\"rejecter\":" << u.to_jsonstr();
+User u_0(this->l.rejecter());
+ss << "\"rejecter\":" << u_0.to_jsonstr();
 ss << "}";
 return ss.str();
 

@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkApply : public Protocol {
+    class Link_apply : public Protocol {
     public:
-        LinkApply() : l(linkerProtocol::LinkApply()) {};
-        explicit LinkApply(const linkerProtocol::LinkApply &us) : l(us) {};
+        Link_apply() : l(linkerProtocol::LinkApply()) {};
+        explicit Link_apply(const linkerProtocol::LinkApply &us) : l(us) {};
         const linkerProtocol::LinkApply &get_link_apply() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -57,9 +57,9 @@ if (o.has<jsonxx::Object>("applyUser")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->l.set_allocated_applyuser(_u);
 }
 
@@ -76,8 +76,8 @@ ss << "\"owid\":"<< this->l.owid() << ",";
 ss << "\"uid\":"<< this->l.uid() << ",";
 ss << "\"applyCount\":"<< this->l.applycount() << ",";
 
-User u(this->l.applyuser());
-ss << "\"applyUser\":" << u.to_jsonstr() << ",";
+User u_3(this->l.applyuser());
+ss << "\"applyUser\":" << u_3.to_jsonstr() << ",";
 ss << "\"type\":"<< this->l.type();
 ss << "}";
 return ss.str();

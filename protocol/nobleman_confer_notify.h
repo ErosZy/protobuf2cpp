@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class NoblemanConferNotify : public Protocol {
+    class Nobleman_confer_notify : public Protocol {
     public:
-        NoblemanConferNotify() : n(linkerProtocol::NoblemanConferNotify()) {};
-        explicit NoblemanConferNotify(const linkerProtocol::NoblemanConferNotify &us) : n(us) {};
+        Nobleman_confer_notify() : n(linkerProtocol::NoblemanConferNotify()) {};
+        explicit Nobleman_confer_notify(const linkerProtocol::NoblemanConferNotify &us) : n(us) {};
         const linkerProtocol::NoblemanConferNotify &get_nobleman_confer_notify() const { return this->n; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -49,9 +49,9 @@ if (o.has<jsonxx::Object>("nobleman")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->n.set_allocated_nobleman(_u);
 }
 
@@ -66,8 +66,8 @@ if(o.has<jsonxx::Number>("status")) {
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
 
-User u(this->n.nobleman());
-ss << "\"nobleman\":" << u.to_jsonstr() << ",";
+User u_1(this->n.nobleman());
+ss << "\"nobleman\":" << u_1.to_jsonstr() << ",";
 ss << "\"status\":"<< this->n.status();
 ss << "}";
 return ss.str();

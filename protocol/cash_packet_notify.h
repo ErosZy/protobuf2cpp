@@ -23,10 +23,10 @@
 #include "retetion_attr.h"
 
 namespace protocol {
-    class CashPacketNotify : public Protocol {
+    class Cash_packet_notify : public Protocol {
     public:
-        CashPacketNotify() : c(linkerProtocol::CashPacketNotify()) {};
-        explicit CashPacketNotify(const linkerProtocol::CashPacketNotify &us) : c(us) {};
+        Cash_packet_notify() : c(linkerProtocol::CashPacketNotify()) {};
+        explicit Cash_packet_notify(const linkerProtocol::CashPacketNotify &us) : c(us) {};
         const linkerProtocol::CashPacketNotify &get_cash_packet_notify() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -73,9 +73,9 @@ if (o.has<jsonxx::Object>("retetionAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RetetionAttr();
-	uint8_t buf[_r.get_retetion_attr().ByteSize()];
-	_r.get_retetion_attr().SerializeToArray(buf, n.get_retetion_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_retetion_attr().ByteSize());
+	uint8_t buf[r.get_retetion_attr().ByteSize()];
+	r.get_retetion_attr().SerializeToArray(buf, r.get_retetion_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_retetion_attr().ByteSize());
 	this->c.set_allocated_retetionattr(_r);
 }
 
@@ -96,8 +96,8 @@ ss << "\"level\":"<< this->c.level() << ",";
 ss << "\"portrait\":"<< "\"" << this->c.portrait() << "\"" << ",";
 ss << "\"starttime\":"<< this->c.starttime() << ",";
 
-Retetion_attr r(this->c.retetionattr());
-ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
+Retetion_attr r_7(this->c.retetionattr());
+ss << "\"retetionAttr\":" << r_7.to_jsonstr() << ",";
 ss << "\"money\":"<< this->c.money();
 ss << "}";
 return ss.str();

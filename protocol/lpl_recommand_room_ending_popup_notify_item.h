@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LplRecommandRoomEndingPopupNotifyItem : public Protocol {
+    class Lpl_recommand_room_ending_popup_notify_item : public Protocol {
     public:
-        LplRecommandRoomEndingPopupNotifyItem() : l(linkerProtocol::LplRecommandRoomEndingPopupNotifyItem()) {};
-        explicit LplRecommandRoomEndingPopupNotifyItem(const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &us) : l(us) {};
+        Lpl_recommand_room_ending_popup_notify_item() : l(linkerProtocol::LplRecommandRoomEndingPopupNotifyItem()) {};
+        explicit Lpl_recommand_room_ending_popup_notify_item(const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &us) : l(us) {};
         const linkerProtocol::LplRecommandRoomEndingPopupNotifyItem &get_lpl_recommand_room_ending_popup_notify_item() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

@@ -24,10 +24,10 @@
 #include "live_data.h"
 
 namespace protocol {
-    class RoomJoinResp : public Protocol {
+    class Room_join_resp : public Protocol {
     public:
-        RoomJoinResp() : r(linkerProtocol::RoomJoinResp()) {};
-        explicit RoomJoinResp(const linkerProtocol::RoomJoinResp &us) : r(us) {};
+        Room_join_resp() : r(linkerProtocol::RoomJoinResp()) {};
+        explicit Room_join_resp(const linkerProtocol::RoomJoinResp &us) : r(us) {};
         const linkerProtocol::RoomJoinResp &get_room_join_resp() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -54,9 +54,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->r.set_allocated_roomattr(_r);
 }
 
@@ -66,9 +66,9 @@ if (o.has<jsonxx::Object>("liveData")) {
 	l.from_json(info);
 
 	auto _l = new linkerProtocol::LiveData();
-	uint8_t buf[_l.get_live_data().ByteSize()];
-	_l.get_live_data().SerializeToArray(buf, n.get_live_data().ByteSize());
-	_l->ParseFromArray(buf, _l.get_live_data().ByteSize());
+	uint8_t buf[l.get_live_data().ByteSize()];
+	l.get_live_data().SerializeToArray(buf, l.get_live_data().ByteSize());
+	_l->ParseFromArray(buf, l.get_live_data().ByteSize());
 	this->r.set_allocated_livedata(_l);
 }
 
@@ -87,11 +87,11 @@ ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
 ss << "\"code\":"<< this->r.code() << ",";
 
-Room_attr r(this->r.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_2(this->r.roomattr());
+ss << "\"roomAttr\":" << r_2.to_jsonstr() << ",";
 
-Live_data l(this->r.livedata());
-ss << "\"liveData\":" << l.to_jsonstr() << ",";
+Live_data l_3(this->r.livedata());
+ss << "\"liveData\":" << l_3.to_jsonstr() << ",";
 ss << "\"optionalTextColors\":[";
 for (int32_t i = 0; i < this->r.optionaltextcolors_size(); i++) {
 	ss << this->r.optionaltextcolors(i);

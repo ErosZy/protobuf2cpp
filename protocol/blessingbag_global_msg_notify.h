@@ -23,10 +23,10 @@
 #include "blessingbag_ext.h"
 
 namespace protocol {
-    class BlessingbagGlobalMsgNotify : public Protocol {
+    class Blessingbag_global_msg_notify : public Protocol {
     public:
-        BlessingbagGlobalMsgNotify() : b(linkerProtocol::BlessingbagGlobalMsgNotify()) {};
-        explicit BlessingbagGlobalMsgNotify(const linkerProtocol::BlessingbagGlobalMsgNotify &us) : b(us) {};
+        Blessingbag_global_msg_notify() : b(linkerProtocol::BlessingbagGlobalMsgNotify()) {};
+        explicit Blessingbag_global_msg_notify(const linkerProtocol::BlessingbagGlobalMsgNotify &us) : b(us) {};
         const linkerProtocol::BlessingbagGlobalMsgNotify &get_blessingbag_global_msg_notify() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -47,7 +47,7 @@ if (o.has<jsonxx::Array>("ext")) {
 	auto bs = o.get<jsonxx::Array>("ext");
 	for (size_t i = 0; i < bs.size(); i++) {
 		auto j = bs.get<jsonxx::Object>(i);
-		BlessingbagExt k;
+		Blessingbag_ext k;
 		k.from_json(j);
 		uint8_t buf[k.get_blessingbag_ext().ByteSize()];
 		k.get_blessingbag_ext().SerializeToArray(buf, k.get_blessingbag_ext().ByteSize());
@@ -67,7 +67,7 @@ ss << "\"owid\":"<< this->b.owid() << ",";
 std::stringstream ext_stream;
 ext_stream << "[";
 for (int32_t i = 0; i < this->b.ext_size(); i++) {
-	ext_stream << BlessingbagExt(this->b.ext(i)).to_jsonstr();
+	ext_stream << Blessingbag_ext(this->b.ext(i)).to_jsonstr();
 	if (i != this->b.ext_size() - 1) {
 		ext_stream << ",";
 	}

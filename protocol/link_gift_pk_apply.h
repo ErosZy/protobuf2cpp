@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkGiftPkApply : public Protocol {
+    class Link_gift_pk_apply : public Protocol {
     public:
-        LinkGiftPkApply() : l(linkerProtocol::LinkGiftPkApply()) {};
-        explicit LinkGiftPkApply(const linkerProtocol::LinkGiftPkApply &us) : l(us) {};
+        Link_gift_pk_apply() : l(linkerProtocol::LinkGiftPkApply()) {};
+        explicit Link_gift_pk_apply(const linkerProtocol::LinkGiftPkApply &us) : l(us) {};
         const linkerProtocol::LinkGiftPkApply &get_link_gift_pk_apply() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->l.set_allocated_applyuser(_u);
 }
 
@@ -65,8 +65,8 @@ if(o.has<jsonxx::Number>("time")) {
             std::stringstream ss;
 ss << "{";
 
-User u(this->l.applyuser());
-ss << "\"applyUser\":" << u.to_jsonstr() << ",";
+User u_0(this->l.applyuser());
+ss << "\"applyUser\":" << u_0.to_jsonstr() << ",";
 ss << "\"title\":"<< "\"" << this->l.title() << "\"" << ",";
 ss << "\"time\":"<< this->l.time();
 ss << "}";

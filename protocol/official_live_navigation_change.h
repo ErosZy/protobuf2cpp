@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class OfficialLiveNavigationChange : public Protocol {
+    class Official_live_navigation_change : public Protocol {
     public:
-        OfficialLiveNavigationChange() : o(linkerProtocol::OfficialLiveNavigationChange()) {};
-        explicit OfficialLiveNavigationChange(const linkerProtocol::OfficialLiveNavigationChange &us) : o(us) {};
+        Official_live_navigation_change() : o(linkerProtocol::OfficialLiveNavigationChange()) {};
+        explicit Official_live_navigation_change(const linkerProtocol::OfficialLiveNavigationChange &us) : o(us) {};
         const linkerProtocol::OfficialLiveNavigationChange &get_official_live_navigation_change() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

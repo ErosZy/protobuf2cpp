@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class ClientTypeMap : public Protocol {
+    class Client_type_map : public Protocol {
     public:
-        ClientTypeMap() : c(linkerProtocol::ClientTypeMap()) {};
-        explicit ClientTypeMap(const linkerProtocol::ClientTypeMap &us) : c(us) {};
+        Client_type_map() : c(linkerProtocol::ClientTypeMap()) {};
+        explicit Client_type_map(const linkerProtocol::ClientTypeMap &us) : c(us) {};
         const linkerProtocol::ClientTypeMap &get_client_type_map() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

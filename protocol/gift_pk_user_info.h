@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class GiftPkUserInfo : public Protocol {
+    class Gift_pk_user_info : public Protocol {
     public:
-        GiftPkUserInfo() : g(linkerProtocol::GiftPkUserInfo()) {};
-        explicit GiftPkUserInfo(const linkerProtocol::GiftPkUserInfo &us) : g(us) {};
+        Gift_pk_user_info() : g(linkerProtocol::GiftPkUserInfo()) {};
+        explicit Gift_pk_user_info(const linkerProtocol::GiftPkUserInfo &us) : g(us) {};
         const linkerProtocol::GiftPkUserInfo &get_gift_pk_user_info() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->g.set_allocated_user(_u);
 }
 
@@ -61,8 +61,8 @@ if(o.has<jsonxx::Number>("score")) {
             std::stringstream ss;
 ss << "{";
 
-User u(this->g.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_0(this->g.user());
+ss << "\"user\":" << u_0.to_jsonstr() << ",";
 ss << "\"score\":"<< this->g.score();
 ss << "}";
 return ss.str();

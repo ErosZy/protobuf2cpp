@@ -24,10 +24,10 @@
 #include "user.h"
 
 namespace protocol {
-    class ChallengeAward : public Protocol {
+    class Challenge_award : public Protocol {
     public:
-        ChallengeAward() : c(linkerProtocol::ChallengeAward()) {};
-        explicit ChallengeAward(const linkerProtocol::ChallengeAward &us) : c(us) {};
+        Challenge_award() : c(linkerProtocol::ChallengeAward()) {};
+        explicit Challenge_award(const linkerProtocol::ChallengeAward &us) : c(us) {};
         const linkerProtocol::ChallengeAward &get_challenge_award() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -54,9 +54,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->c.set_allocated_roomattr(_r);
 }
 
@@ -66,9 +66,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->c.set_allocated_user(_u);
 }
 
@@ -96,11 +96,11 @@ ss << "{";
 ss << "\"owid\":"<< this->c.owid() << ",";
 ss << "\"replayId\":"<< this->c.replayid() << ",";
 
-Room_attr r(this->c.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_2(this->c.roomattr());
+ss << "\"roomAttr\":" << r_2.to_jsonstr() << ",";
 
-User u(this->c.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_3(this->c.user());
+ss << "\"user\":" << u_3.to_jsonstr() << ",";
 ss << "\"source\":"<< "\"" << this->c.source() << "\"" << ",";
 ss << "\"tips\":"<< "\"" << this->c.tips() << "\"" << ",";
 ss << "\"diamond\":"<< this->c.diamond() << ",";

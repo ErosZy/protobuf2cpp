@@ -23,10 +23,10 @@
 #include "retetion_attr.h"
 
 namespace protocol {
-    class GiftEffectNotify : public Protocol {
+    class Gift_effect_notify : public Protocol {
     public:
-        GiftEffectNotify() : g(linkerProtocol::GiftEffectNotify()) {};
-        explicit GiftEffectNotify(const linkerProtocol::GiftEffectNotify &us) : g(us) {};
+        Gift_effect_notify() : g(linkerProtocol::GiftEffectNotify()) {};
+        explicit Gift_effect_notify(const linkerProtocol::GiftEffectNotify &us) : g(us) {};
         const linkerProtocol::GiftEffectNotify &get_gift_effect_notify() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -61,9 +61,9 @@ if (o.has<jsonxx::Object>("retetionAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RetetionAttr();
-	uint8_t buf[_r.get_retetion_attr().ByteSize()];
-	_r.get_retetion_attr().SerializeToArray(buf, n.get_retetion_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_retetion_attr().ByteSize());
+	uint8_t buf[r.get_retetion_attr().ByteSize()];
+	r.get_retetion_attr().SerializeToArray(buf, r.get_retetion_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_retetion_attr().ByteSize());
 	this->g.set_allocated_retetionattr(_r);
 }
 
@@ -77,8 +77,8 @@ ss << "\"owid\":"<< this->g.owid() << ",";
 ss << "\"gid\":"<< this->g.gid() << ",";
 ss << "\"url\":"<< "\"" << this->g.url() << "\"" << ",";
 
-Retetion_attr r(this->g.retetionattr());
-ss << "\"retetionAttr\":" << r.to_jsonstr();
+Retetion_attr r_4(this->g.retetionattr());
+ss << "\"retetionAttr\":" << r_4.to_jsonstr();
 ss << "}";
 return ss.str();
 

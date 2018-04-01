@@ -120,9 +120,9 @@ if (o.has<jsonxx::Object>("nobleInfo")) {
 	n.from_json(info);
 
 	auto _n = new linkerProtocol::NoblemanExt();
-	uint8_t buf[_n.get_nobleman_ext().ByteSize()];
-	_n.get_nobleman_ext().SerializeToArray(buf, n.get_nobleman_ext().ByteSize());
-	_n->ParseFromArray(buf, _n.get_nobleman_ext().ByteSize());
+	uint8_t buf[n.get_nobleman_ext().ByteSize()];
+	n.get_nobleman_ext().SerializeToArray(buf, n.get_nobleman_ext().ByteSize());
+	_n->ParseFromArray(buf, n.get_nobleman_ext().ByteSize());
 	this->u.set_allocated_nobleinfo(_n);
 }
 
@@ -165,8 +165,8 @@ ss << "\"honorOwIsGray\":"<< this->u.honorowisgray() << ",";
 ss << "\"no\":"<< this->u.no() << ",";
 ss << "\"noType\":"<< this->u.notype() << ",";
 
-Nobleman_ext n(this->u.nobleinfo());
-ss << "\"nobleInfo\":" << n.to_jsonstr() << ",";
+Nobleman_ext n_18(this->u.nobleinfo());
+ss << "\"nobleInfo\":" << n_18.to_jsonstr() << ",";
 ss << "\"nickColor\":"<< "\"" << this->u.nickcolor() << "\"" << ",";
 ss << "\"cashBalance\":"<< this->u.cashbalance();
 ss << "}";

@@ -24,10 +24,10 @@
 #include "gift_pk_user_info.h"
 
 namespace protocol {
-    class LinkGiftPkNotify : public Protocol {
+    class Link_gift_pk_notify : public Protocol {
     public:
-        LinkGiftPkNotify() : l(linkerProtocol::LinkGiftPkNotify()) {};
-        explicit LinkGiftPkNotify(const linkerProtocol::LinkGiftPkNotify &us) : l(us) {};
+        Link_gift_pk_notify() : l(linkerProtocol::LinkGiftPkNotify()) {};
+        explicit Link_gift_pk_notify(const linkerProtocol::LinkGiftPkNotify &us) : l(us) {};
         const linkerProtocol::LinkGiftPkNotify &get_link_gift_pk_notify() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -50,9 +50,9 @@ if (o.has<jsonxx::Object>("applyUserInfo")) {
 	g.from_json(info);
 
 	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[_g.get_gift_pk_user_info().ByteSize()];
-	_g.get_gift_pk_user_info().SerializeToArray(buf, n.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, _g.get_gift_pk_user_info().ByteSize());
+	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
 	this->l.set_allocated_applyuserinfo(_g);
 }
 
@@ -62,9 +62,9 @@ if (o.has<jsonxx::Object>("acceptUserInfo")) {
 	g.from_json(info);
 
 	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[_g.get_gift_pk_user_info().ByteSize()];
-	_g.get_gift_pk_user_info().SerializeToArray(buf, n.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, _g.get_gift_pk_user_info().ByteSize());
+	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
 	this->l.set_allocated_acceptuserinfo(_g);
 }
 
@@ -87,11 +87,11 @@ if(o.has<jsonxx::Number>("endTime")) {
 ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
 
-Gift_pk_user_info g(this->l.applyuserinfo());
-ss << "\"applyUserInfo\":" << g.to_jsonstr() << ",";
+Gift_pk_user_info g_1(this->l.applyuserinfo());
+ss << "\"applyUserInfo\":" << g_1.to_jsonstr() << ",";
 
-Gift_pk_user_info g(this->l.acceptuserinfo());
-ss << "\"acceptUserInfo\":" << g.to_jsonstr() << ",";
+Gift_pk_user_info g_2(this->l.acceptuserinfo());
+ss << "\"acceptUserInfo\":" << g_2.to_jsonstr() << ",";
 ss << "\"title\":"<< "\"" << this->l.title() << "\"" << ",";
 ss << "\"startTime\":"<< this->l.starttime() << ",";
 ss << "\"endTime\":"<< this->l.endtime();

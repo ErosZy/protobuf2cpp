@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RedPacketStart : public Protocol {
+    class Red_packet_start : public Protocol {
     public:
-        RedPacketStart() : r(linkerProtocol::RedPacketStart()) {};
-        explicit RedPacketStart(const linkerProtocol::RedPacketStart &us) : r(us) {};
+        Red_packet_start() : r(linkerProtocol::RedPacketStart()) {};
+        explicit Red_packet_start(const linkerProtocol::RedPacketStart &us) : r(us) {};
         const linkerProtocol::RedPacketStart &get_red_packet_start() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

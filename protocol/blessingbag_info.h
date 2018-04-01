@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class BlessingbagInfo : public Protocol {
+    class Blessingbag_info : public Protocol {
     public:
-        BlessingbagInfo() : b(linkerProtocol::BlessingbagInfo()) {};
-        explicit BlessingbagInfo(const linkerProtocol::BlessingbagInfo &us) : b(us) {};
+        Blessingbag_info() : b(linkerProtocol::BlessingbagInfo()) {};
+        explicit Blessingbag_info(const linkerProtocol::BlessingbagInfo &us) : b(us) {};
         const linkerProtocol::BlessingbagInfo &get_blessingbag_info() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class DialogButton : public Protocol {
+    class Dialog_button : public Protocol {
     public:
-        DialogButton() : d(linkerProtocol::DialogButton()) {};
-        explicit DialogButton(const linkerProtocol::DialogButton &us) : d(us) {};
+        Dialog_button() : d(linkerProtocol::DialogButton()) {};
+        explicit Dialog_button(const linkerProtocol::DialogButton &us) : d(us) {};
         const linkerProtocol::DialogButton &get_dialog_button() const { return this->d; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

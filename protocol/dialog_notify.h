@@ -24,10 +24,10 @@
 #include "map_entry.h"
 
 namespace protocol {
-    class DialogNotify : public Protocol {
+    class Dialog_notify : public Protocol {
     public:
-        DialogNotify() : d(linkerProtocol::DialogNotify()) {};
-        explicit DialogNotify(const linkerProtocol::DialogNotify &us) : d(us) {};
+        Dialog_notify() : d(linkerProtocol::DialogNotify()) {};
+        explicit Dialog_notify(const linkerProtocol::DialogNotify &us) : d(us) {};
         const linkerProtocol::DialogNotify &get_dialog_notify() const { return this->d; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -56,7 +56,7 @@ if (o.has<jsonxx::Array>("buttons")) {
 	auto ds = o.get<jsonxx::Array>("buttons");
 	for (size_t i = 0; i < ds.size(); i++) {
 		auto j = ds.get<jsonxx::Object>(i);
-		DialogButton k;
+		Dialog_button k;
 		k.from_json(j);
 		uint8_t buf[k.get_dialog_button().ByteSize()];
 		k.get_dialog_button().SerializeToArray(buf, k.get_dialog_button().ByteSize());
@@ -70,7 +70,7 @@ if (o.has<jsonxx::Array>("paramEntries")) {
 	auto ms = o.get<jsonxx::Array>("paramEntries");
 	for (size_t i = 0; i < ms.size(); i++) {
 		auto j = ms.get<jsonxx::Object>(i);
-		MapEntry k;
+		Map_entry k;
 		k.from_json(j);
 		uint8_t buf[k.get_map_entry().ByteSize()];
 		k.get_map_entry().SerializeToArray(buf, k.get_map_entry().ByteSize());
@@ -92,7 +92,7 @@ ss << "\"content\":"<< "\"" << this->d.content() << "\"" << ",";
 std::stringstream buttons_stream;
 buttons_stream << "[";
 for (int32_t i = 0; i < this->d.buttons_size(); i++) {
-	buttons_stream << DialogButton(this->d.buttons(i)).to_jsonstr();
+	buttons_stream << Dialog_button(this->d.buttons(i)).to_jsonstr();
 	if (i != this->d.buttons_size() - 1) {
 		buttons_stream << ",";
 	}
@@ -103,7 +103,7 @@ ss << "\"buttons\":" << buttons_stream.str() << ",";
 std::stringstream paramentries_stream;
 paramentries_stream << "[";
 for (int32_t i = 0; i < this->d.paramentries_size(); i++) {
-	paramentries_stream << MapEntry(this->d.paramentries(i)).to_jsonstr();
+	paramentries_stream << Map_entry(this->d.paramentries(i)).to_jsonstr();
 	if (i != this->d.paramentries_size() - 1) {
 		paramentries_stream << ",";
 	}

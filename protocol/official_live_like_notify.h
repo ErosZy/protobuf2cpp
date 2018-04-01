@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class OfficialLiveLikeNotify : public Protocol {
+    class Official_live_like_notify : public Protocol {
     public:
-        OfficialLiveLikeNotify() : o(linkerProtocol::OfficialLiveLikeNotify()) {};
-        explicit OfficialLiveLikeNotify(const linkerProtocol::OfficialLiveLikeNotify &us) : o(us) {};
+        Official_live_like_notify() : o(linkerProtocol::OfficialLiveLikeNotify()) {};
+        explicit Official_live_like_notify(const linkerProtocol::OfficialLiveLikeNotify &us) : o(us) {};
         const linkerProtocol::OfficialLiveLikeNotify &get_official_live_like_notify() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

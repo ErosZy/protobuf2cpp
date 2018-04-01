@@ -23,10 +23,10 @@
 #include "guess_subject.h"
 
 namespace protocol {
-    class GuessUpdate : public Protocol {
+    class Guess_update : public Protocol {
     public:
-        GuessUpdate() : g(linkerProtocol::GuessUpdate()) {};
-        explicit GuessUpdate(const linkerProtocol::GuessUpdate &us) : g(us) {};
+        Guess_update() : g(linkerProtocol::GuessUpdate()) {};
+        explicit Guess_update(const linkerProtocol::GuessUpdate &us) : g(us) {};
         const linkerProtocol::GuessUpdate &get_guess_update() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -47,7 +47,7 @@ if (o.has<jsonxx::Array>("subjects")) {
 	auto gs = o.get<jsonxx::Array>("subjects");
 	for (size_t i = 0; i < gs.size(); i++) {
 		auto j = gs.get<jsonxx::Object>(i);
-		GuessSubject k;
+		Guess_subject k;
 		k.from_json(j);
 		uint8_t buf[k.get_guess_subject().ByteSize()];
 		k.get_guess_subject().SerializeToArray(buf, k.get_guess_subject().ByteSize());
@@ -71,7 +71,7 @@ ss << "\"owid\":"<< this->g.owid() << ",";
 std::stringstream subjects_stream;
 subjects_stream << "[";
 for (int32_t i = 0; i < this->g.subjects_size(); i++) {
-	subjects_stream << GuessSubject(this->g.subjects(i)).to_jsonstr();
+	subjects_stream << Guess_subject(this->g.subjects(i)).to_jsonstr();
 	if (i != this->g.subjects_size() - 1) {
 		subjects_stream << ",";
 	}

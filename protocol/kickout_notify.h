@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class KickoutNotify : public Protocol {
+    class Kickout_notify : public Protocol {
     public:
-        KickoutNotify() : k(linkerProtocol::KickoutNotify()) {};
-        explicit KickoutNotify(const linkerProtocol::KickoutNotify &us) : k(us) {};
+        Kickout_notify() : k(linkerProtocol::KickoutNotify()) {};
+        explicit Kickout_notify(const linkerProtocol::KickoutNotify &us) : k(us) {};
         const linkerProtocol::KickoutNotify &get_kickout_notify() const { return this->k; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->k.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

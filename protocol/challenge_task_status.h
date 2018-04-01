@@ -24,10 +24,10 @@
 #include "user.h"
 
 namespace protocol {
-    class ChallengeTaskStatus : public Protocol {
+    class Challenge_task_status : public Protocol {
     public:
-        ChallengeTaskStatus() : c(linkerProtocol::ChallengeTaskStatus()) {};
-        explicit ChallengeTaskStatus(const linkerProtocol::ChallengeTaskStatus &us) : c(us) {};
+        Challenge_task_status() : c(linkerProtocol::ChallengeTaskStatus()) {};
+        explicit Challenge_task_status(const linkerProtocol::ChallengeTaskStatus &us) : c(us) {};
         const linkerProtocol::ChallengeTaskStatus &get_challenge_task_status() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -64,7 +64,7 @@ if (o.has<jsonxx::Array>("ChallengeTaskList")) {
 	auto cs = o.get<jsonxx::Array>("ChallengeTaskList");
 	for (size_t i = 0; i < cs.size(); i++) {
 		auto j = cs.get<jsonxx::Object>(i);
-		ChallengeTask k;
+		Challenge_task k;
 		k.from_json(j);
 		uint8_t buf[k.get_challenge_task().ByteSize()];
 		k.get_challenge_task().SerializeToArray(buf, k.get_challenge_task().ByteSize());
@@ -80,9 +80,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->c.set_allocated_user(_u);
 }
 
@@ -100,7 +100,7 @@ ss << "\"status\":"<< this->c.status() << ",";
 std::stringstream challengetasklist_stream;
 challengetasklist_stream << "[";
 for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
-	challengetasklist_stream << ChallengeTask(this->c.challengetasklist(i)).to_jsonstr();
+	challengetasklist_stream << Challenge_task(this->c.challengetasklist(i)).to_jsonstr();
 	if (i != this->c.challengetasklist_size() - 1) {
 		challengetasklist_stream << ",";
 	}
@@ -108,8 +108,8 @@ for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
 challengetasklist_stream << "]";
 ss << "\"ChallengeTaskList\":" << challengetasklist_stream.str() << ",";
 
-User u(this->c.user());
-ss << "\"user\":" << u.to_jsonstr();
+User u_6(this->c.user());
+ss << "\"user\":" << u_6.to_jsonstr();
 ss << "}";
 return ss.str();
 

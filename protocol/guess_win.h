@@ -23,10 +23,10 @@
 #include "guess_award.h"
 
 namespace protocol {
-    class GuessWin : public Protocol {
+    class Guess_win : public Protocol {
     public:
-        GuessWin() : g(linkerProtocol::GuessWin()) {};
-        explicit GuessWin(const linkerProtocol::GuessWin &us) : g(us) {};
+        Guess_win() : g(linkerProtocol::GuessWin()) {};
+        explicit Guess_win(const linkerProtocol::GuessWin &us) : g(us) {};
         const linkerProtocol::GuessWin &get_guess_win() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -51,7 +51,7 @@ if (o.has<jsonxx::Array>("awards")) {
 	auto gs = o.get<jsonxx::Array>("awards");
 	for (size_t i = 0; i < gs.size(); i++) {
 		auto j = gs.get<jsonxx::Object>(i);
-		GuessAward k;
+		Guess_award k;
 		k.from_json(j);
 		uint8_t buf[k.get_guess_award().ByteSize()];
 		k.get_guess_award().SerializeToArray(buf, k.get_guess_award().ByteSize());
@@ -76,7 +76,7 @@ ss << "\"owid\":"<< this->g.owid() << ",";
 std::stringstream awards_stream;
 awards_stream << "[";
 for (int32_t i = 0; i < this->g.awards_size(); i++) {
-	awards_stream << GuessAward(this->g.awards(i)).to_jsonstr();
+	awards_stream << Guess_award(this->g.awards(i)).to_jsonstr();
 	if (i != this->g.awards_size() - 1) {
 		awards_stream << ",";
 	}

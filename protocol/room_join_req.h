@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomJoinReq : public Protocol {
+    class Room_join_req : public Protocol {
     public:
-        RoomJoinReq() : r(linkerProtocol::RoomJoinReq()) {};
-        explicit RoomJoinReq(const linkerProtocol::RoomJoinReq &us) : r(us) {};
+        Room_join_req() : r(linkerProtocol::RoomJoinReq()) {};
+        explicit Room_join_req(const linkerProtocol::RoomJoinReq &us) : r(us) {};
         const linkerProtocol::RoomJoinReq &get_room_join_req() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkAccept : public Protocol {
+    class Link_accept : public Protocol {
     public:
-        LinkAccept() : l(linkerProtocol::LinkAccept()) {};
-        explicit LinkAccept(const linkerProtocol::LinkAccept &us) : l(us) {};
+        Link_accept() : l(linkerProtocol::LinkAccept()) {};
+        explicit Link_accept(const linkerProtocol::LinkAccept &us) : l(us) {};
         const linkerProtocol::LinkAccept &get_link_accept() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -61,9 +61,9 @@ if (o.has<jsonxx::Object>("owidInfo")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->l.set_allocated_owidinfo(_u);
 }
 
@@ -77,8 +77,8 @@ ss << "\"roomName\":"<< "\"" << this->l.roomname() << "\"" << ",";
 ss << "\"token\":"<< "\"" << this->l.token() << "\"" << ",";
 ss << "\"type\":"<< this->l.type() << ",";
 
-User u(this->l.owidinfo());
-ss << "\"owidInfo\":" << u.to_jsonstr();
+User u_4(this->l.owidinfo());
+ss << "\"owidInfo\":" << u_4.to_jsonstr();
 ss << "}";
 return ss.str();
 

@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomLeaveReq : public Protocol {
+    class Room_leave_req : public Protocol {
     public:
-        RoomLeaveReq() : r(linkerProtocol::RoomLeaveReq()) {};
-        explicit RoomLeaveReq(const linkerProtocol::RoomLeaveReq &us) : r(us) {};
+        Room_leave_req() : r(linkerProtocol::RoomLeaveReq()) {};
+        explicit Room_leave_req(const linkerProtocol::RoomLeaveReq &us) : r(us) {};
         const linkerProtocol::RoomLeaveReq &get_room_leave_req() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

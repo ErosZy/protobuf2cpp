@@ -23,10 +23,10 @@
 #include "option_detail.h"
 
 namespace protocol {
-    class VoteNotify : public Protocol {
+    class Vote_notify : public Protocol {
     public:
-        VoteNotify() : v(linkerProtocol::VoteNotify()) {};
-        explicit VoteNotify(const linkerProtocol::VoteNotify &us) : v(us) {};
+        Vote_notify() : v(linkerProtocol::VoteNotify()) {};
+        explicit Vote_notify(const linkerProtocol::VoteNotify &us) : v(us) {};
         const linkerProtocol::VoteNotify &get_vote_notify() const { return this->v; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->v.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -75,7 +75,7 @@ if (o.has<jsonxx::Array>("options")) {
 	auto os = o.get<jsonxx::Array>("options");
 	for (size_t i = 0; i < os.size(); i++) {
 		auto j = os.get<jsonxx::Object>(i);
-		OptionDetail k;
+		Option_detail k;
 		k.from_json(j);
 		uint8_t buf[k.get_option_detail().ByteSize()];
 		k.get_option_detail().SerializeToArray(buf, k.get_option_detail().ByteSize());
@@ -102,7 +102,7 @@ ss << "\"endTime\":"<< this->v.endtime() << ",";
 std::stringstream options_stream;
 options_stream << "[";
 for (int32_t i = 0; i < this->v.options_size(); i++) {
-	options_stream << OptionDetail(this->v.options(i)).to_jsonstr();
+	options_stream << Option_detail(this->v.options(i)).to_jsonstr();
 	if (i != this->v.options_size() - 1) {
 		options_stream << ",";
 	}

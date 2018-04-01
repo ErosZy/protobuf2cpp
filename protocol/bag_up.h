@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class BagUp : public Protocol {
+    class Bag_up : public Protocol {
     public:
-        BagUp() : b(linkerProtocol::BagUp()) {};
-        explicit BagUp(const linkerProtocol::BagUp &us) : b(us) {};
+        Bag_up() : b(linkerProtocol::BagUp()) {};
+        explicit Bag_up(const linkerProtocol::BagUp &us) : b(us) {};
         const linkerProtocol::BagUp &get_bag_up() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

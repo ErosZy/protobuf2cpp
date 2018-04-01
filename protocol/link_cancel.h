@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LinkCancel : public Protocol {
+    class Link_cancel : public Protocol {
     public:
-        LinkCancel() : l(linkerProtocol::LinkCancel()) {};
-        explicit LinkCancel(const linkerProtocol::LinkCancel &us) : l(us) {};
+        Link_cancel() : l(linkerProtocol::LinkCancel()) {};
+        explicit Link_cancel(const linkerProtocol::LinkCancel &us) : l(us) {};
         const linkerProtocol::LinkCancel &get_link_cancel() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

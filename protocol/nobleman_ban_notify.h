@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class NoblemanBanNotify : public Protocol {
+    class Nobleman_ban_notify : public Protocol {
     public:
-        NoblemanBanNotify() : n(linkerProtocol::NoblemanBanNotify()) {};
-        explicit NoblemanBanNotify(const linkerProtocol::NoblemanBanNotify &us) : n(us) {};
+        Nobleman_ban_notify() : n(linkerProtocol::NoblemanBanNotify()) {};
+        explicit Nobleman_ban_notify(const linkerProtocol::NoblemanBanNotify &us) : n(us) {};
         const linkerProtocol::NoblemanBanNotify &get_nobleman_ban_notify() const { return this->n; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -53,9 +53,9 @@ if (o.has<jsonxx::Object>("oper")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->n.set_allocated_oper(_u);
 }
 
@@ -71,8 +71,8 @@ ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
 ss << "\"uid\":"<< this->n.uid() << ",";
 
-User u(this->n.oper());
-ss << "\"oper\":" << u.to_jsonstr() << ",";
+User u_2(this->n.oper());
+ss << "\"oper\":" << u_2.to_jsonstr() << ",";
 ss << "\"deadtime\":"<< this->n.deadtime();
 ss << "}";
 return ss.str();

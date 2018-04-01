@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class BlessingbagExt : public Protocol {
+    class Blessingbag_ext : public Protocol {
     public:
-        BlessingbagExt() : b(linkerProtocol::BlessingbagExt()) {};
-        explicit BlessingbagExt(const linkerProtocol::BlessingbagExt &us) : b(us) {};
+        Blessingbag_ext() : b(linkerProtocol::BlessingbagExt()) {};
+        explicit Blessingbag_ext(const linkerProtocol::BlessingbagExt &us) : b(us) {};
         const linkerProtocol::BlessingbagExt &get_blessingbag_ext() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->b.set_allocated_user(_u);
 }
 
@@ -69,8 +69,8 @@ if(o.has<jsonxx::Number>("attrId")) {
             std::stringstream ss;
 ss << "{";
 
-User u(this->b.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_0(this->b.user());
+ss << "\"user\":" << u_0.to_jsonstr() << ",";
 ss << "\"txt\":"<< "\"" << this->b.txt() << "\"" << ",";
 ss << "\"color\":"<< this->b.color() << ",";
 ss << "\"attrId\":"<< this->b.attrid();

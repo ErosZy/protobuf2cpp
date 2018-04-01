@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class AnchorIndicateNotify : public Protocol {
+    class Anchor_indicate_notify : public Protocol {
     public:
-        AnchorIndicateNotify() : a(linkerProtocol::AnchorIndicateNotify()) {};
-        explicit AnchorIndicateNotify(const linkerProtocol::AnchorIndicateNotify &us) : a(us) {};
+        Anchor_indicate_notify() : a(linkerProtocol::AnchorIndicateNotify()) {};
+        explicit Anchor_indicate_notify(const linkerProtocol::AnchorIndicateNotify &us) : a(us) {};
         const linkerProtocol::AnchorIndicateNotify &get_anchor_indicate_notify() const { return this->a; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->a.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

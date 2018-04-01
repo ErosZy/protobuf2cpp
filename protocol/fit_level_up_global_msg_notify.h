@@ -23,10 +23,10 @@
 #include "client_type_map.h"
 
 namespace protocol {
-    class FitLevelUpGlobalMsgNotify : public Protocol {
+    class Fit_level_up_global_msg_notify : public Protocol {
     public:
-        FitLevelUpGlobalMsgNotify() : f(linkerProtocol::FitLevelUpGlobalMsgNotify()) {};
-        explicit FitLevelUpGlobalMsgNotify(const linkerProtocol::FitLevelUpGlobalMsgNotify &us) : f(us) {};
+        Fit_level_up_global_msg_notify() : f(linkerProtocol::FitLevelUpGlobalMsgNotify()) {};
+        explicit Fit_level_up_global_msg_notify(const linkerProtocol::FitLevelUpGlobalMsgNotify &us) : f(us) {};
         const linkerProtocol::FitLevelUpGlobalMsgNotify &get_fit_level_up_global_msg_notify() const { return this->f; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->f.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -65,9 +65,9 @@ if (o.has<jsonxx::Object>("targetMap")) {
 	c.from_json(info);
 
 	auto _c = new linkerProtocol::ClientTypeMap();
-	uint8_t buf[_c.get_client_type_map().ByteSize()];
-	_c.get_client_type_map().SerializeToArray(buf, n.get_client_type_map().ByteSize());
-	_c->ParseFromArray(buf, _c.get_client_type_map().ByteSize());
+	uint8_t buf[c.get_client_type_map().ByteSize()];
+	c.get_client_type_map().SerializeToArray(buf, c.get_client_type_map().ByteSize());
+	_c->ParseFromArray(buf, c.get_client_type_map().ByteSize());
 	this->f.set_allocated_targetmap(_c);
 }
 
@@ -94,8 +94,8 @@ ss << "\"owid\":"<< this->f.owid() << ",";
 ss << "\"level\":"<< this->f.level() << ",";
 ss << "\"name\":"<< "\"" << this->f.name() << "\"" << ",";
 
-Client_type_map c(this->f.targetmap());
-ss << "\"targetMap\":" << c.to_jsonstr() << ",";
+Client_type_map c_5(this->f.targetmap());
+ss << "\"targetMap\":" << c_5.to_jsonstr() << ",";
 ss << "\"validTime\":"<< "\"" << this->f.validtime() << "\"" << ",";
 ss << "\"number\":"<< this->f.number() << ",";
 ss << "\"owNickName\":"<< "\"" << this->f.ownickname() << "\"";

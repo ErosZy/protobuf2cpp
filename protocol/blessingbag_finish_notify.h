@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class BlessingbagFinishNotify : public Protocol {
+    class Blessingbag_finish_notify : public Protocol {
     public:
-        BlessingbagFinishNotify() : b(linkerProtocol::BlessingbagFinishNotify()) {};
-        explicit BlessingbagFinishNotify(const linkerProtocol::BlessingbagFinishNotify &us) : b(us) {};
+        Blessingbag_finish_notify() : b(linkerProtocol::BlessingbagFinishNotify()) {};
+        explicit Blessingbag_finish_notify(const linkerProtocol::BlessingbagFinishNotify &us) : b(us) {};
         const linkerProtocol::BlessingbagFinishNotify &get_blessingbag_finish_notify() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

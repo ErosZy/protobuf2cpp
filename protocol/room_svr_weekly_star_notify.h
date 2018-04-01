@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomSvrWeeklyStarNotify : public Protocol {
+    class Room_svr_weekly_star_notify : public Protocol {
     public:
-        RoomSvrWeeklyStarNotify() : r(linkerProtocol::RoomSvrWeeklyStarNotify()) {};
-        explicit RoomSvrWeeklyStarNotify(const linkerProtocol::RoomSvrWeeklyStarNotify &us) : r(us) {};
+        Room_svr_weekly_star_notify() : r(linkerProtocol::RoomSvrWeeklyStarNotify()) {};
+        explicit Room_svr_weekly_star_notify(const linkerProtocol::RoomSvrWeeklyStarNotify &us) : r(us) {};
         const linkerProtocol::RoomSvrWeeklyStarNotify &get_room_svr_weekly_star_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

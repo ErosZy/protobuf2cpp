@@ -1,3 +1,5 @@
 node_modules
 protocol/cmake-build-debug
+protocol/.idea
+cmake-build-debug
 .idea

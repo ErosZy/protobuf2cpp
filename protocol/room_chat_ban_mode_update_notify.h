@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomChatBanModeUpdateNotify : public Protocol {
+    class Room_chat_ban_mode_update_notify : public Protocol {
     public:
-        RoomChatBanModeUpdateNotify() : r(linkerProtocol::RoomChatBanModeUpdateNotify()) {};
-        explicit RoomChatBanModeUpdateNotify(const linkerProtocol::RoomChatBanModeUpdateNotify &us) : r(us) {};
+        Room_chat_ban_mode_update_notify() : r(linkerProtocol::RoomChatBanModeUpdateNotify()) {};
+        explicit Room_chat_ban_mode_update_notify(const linkerProtocol::RoomChatBanModeUpdateNotify &us) : r(us) {};
         const linkerProtocol::RoomChatBanModeUpdateNotify &get_room_chat_ban_mode_update_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

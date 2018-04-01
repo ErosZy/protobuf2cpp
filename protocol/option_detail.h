@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class OptionDetail : public Protocol {
+    class Option_detail : public Protocol {
     public:
-        OptionDetail() : o(linkerProtocol::OptionDetail()) {};
-        explicit OptionDetail(const linkerProtocol::OptionDetail &us) : o(us) {};
+        Option_detail() : o(linkerProtocol::OptionDetail()) {};
+        explicit Option_detail(const linkerProtocol::OptionDetail &us) : o(us) {};
         const linkerProtocol::OptionDetail &get_option_detail() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

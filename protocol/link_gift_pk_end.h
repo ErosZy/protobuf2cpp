@@ -24,10 +24,10 @@
 #include "gift_pk_user_info.h"
 
 namespace protocol {
-    class LinkGiftPkEnd : public Protocol {
+    class Link_gift_pk_end : public Protocol {
     public:
-        LinkGiftPkEnd() : l(linkerProtocol::LinkGiftPkEnd()) {};
-        explicit LinkGiftPkEnd(const linkerProtocol::LinkGiftPkEnd &us) : l(us) {};
+        Link_gift_pk_end() : l(linkerProtocol::LinkGiftPkEnd()) {};
+        explicit Link_gift_pk_end(const linkerProtocol::LinkGiftPkEnd &us) : l(us) {};
         const linkerProtocol::LinkGiftPkEnd &get_link_gift_pk_end() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -50,9 +50,9 @@ if (o.has<jsonxx::Object>("winner")) {
 	g.from_json(info);
 
 	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[_g.get_gift_pk_user_info().ByteSize()];
-	_g.get_gift_pk_user_info().SerializeToArray(buf, n.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, _g.get_gift_pk_user_info().ByteSize());
+	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
 	this->l.set_allocated_winner(_g);
 }
 
@@ -62,9 +62,9 @@ if (o.has<jsonxx::Object>("loser")) {
 	g.from_json(info);
 
 	auto _g = new linkerProtocol::GiftPkUserInfo();
-	uint8_t buf[_g.get_gift_pk_user_info().ByteSize()];
-	_g.get_gift_pk_user_info().SerializeToArray(buf, n.get_gift_pk_user_info().ByteSize());
-	_g->ParseFromArray(buf, _g.get_gift_pk_user_info().ByteSize());
+	uint8_t buf[g.get_gift_pk_user_info().ByteSize()];
+	g.get_gift_pk_user_info().SerializeToArray(buf, g.get_gift_pk_user_info().ByteSize());
+	_g->ParseFromArray(buf, g.get_gift_pk_user_info().ByteSize());
 	this->l.set_allocated_loser(_g);
 }
 
@@ -91,11 +91,11 @@ if(o.has<jsonxx::Number>("endTime")) {
 ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
 
-Gift_pk_user_info g(this->l.winner());
-ss << "\"winner\":" << g.to_jsonstr() << ",";
+Gift_pk_user_info g_1(this->l.winner());
+ss << "\"winner\":" << g_1.to_jsonstr() << ",";
 
-Gift_pk_user_info g(this->l.loser());
-ss << "\"loser\":" << g.to_jsonstr() << ",";
+Gift_pk_user_info g_2(this->l.loser());
+ss << "\"loser\":" << g_2.to_jsonstr() << ",";
 ss << "\"type\":"<< this->l.type() << ",";
 ss << "\"punishment\":"<< "\"" << this->l.punishment() << "\"" << ",";
 ss << "\"startTime\":"<< this->l.starttime() << ",";

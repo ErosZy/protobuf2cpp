@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomLotChargeValueNotify : public Protocol {
+    class Room_lot_charge_value_notify : public Protocol {
     public:
-        RoomLotChargeValueNotify() : r(linkerProtocol::RoomLotChargeValueNotify()) {};
-        explicit RoomLotChargeValueNotify(const linkerProtocol::RoomLotChargeValueNotify &us) : r(us) {};
+        Room_lot_charge_value_notify() : r(linkerProtocol::RoomLotChargeValueNotify()) {};
+        explicit Room_lot_charge_value_notify(const linkerProtocol::RoomLotChargeValueNotify &us) : r(us) {};
         const linkerProtocol::RoomLotChargeValueNotify &get_room_lot_charge_value_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

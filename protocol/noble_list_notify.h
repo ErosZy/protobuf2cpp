@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class NobleListNotify : public Protocol {
+    class Noble_list_notify : public Protocol {
     public:
-        NobleListNotify() : n(linkerProtocol::NobleListNotify()) {};
-        explicit NobleListNotify(const linkerProtocol::NobleListNotify &us) : n(us) {};
+        Noble_list_notify() : n(linkerProtocol::NobleListNotify()) {};
+        explicit Noble_list_notify(const linkerProtocol::NobleListNotify &us) : n(us) {};
         const linkerProtocol::NobleListNotify &get_noble_list_notify() const { return this->n; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

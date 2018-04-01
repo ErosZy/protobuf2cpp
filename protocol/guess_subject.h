@@ -23,10 +23,10 @@
 #include "guess_item.h"
 
 namespace protocol {
-    class GuessSubject : public Protocol {
+    class Guess_subject : public Protocol {
     public:
-        GuessSubject() : g(linkerProtocol::GuessSubject()) {};
-        explicit GuessSubject(const linkerProtocol::GuessSubject &us) : g(us) {};
+        Guess_subject() : g(linkerProtocol::GuessSubject()) {};
+        explicit Guess_subject(const linkerProtocol::GuessSubject &us) : g(us) {};
         const linkerProtocol::GuessSubject &get_guess_subject() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -63,7 +63,7 @@ if (o.has<jsonxx::Array>("items")) {
 	auto gs = o.get<jsonxx::Array>("items");
 	for (size_t i = 0; i < gs.size(); i++) {
 		auto j = gs.get<jsonxx::Object>(i);
-		GuessItem k;
+		Guess_item k;
 		k.from_json(j);
 		uint8_t buf[k.get_guess_item().ByteSize()];
 		k.get_guess_item().SerializeToArray(buf, k.get_guess_item().ByteSize());
@@ -87,7 +87,7 @@ ss << "\"endTime\":"<< this->g.endtime() << ",";
 std::stringstream items_stream;
 items_stream << "[";
 for (int32_t i = 0; i < this->g.items_size(); i++) {
-	items_stream << GuessItem(this->g.items(i)).to_jsonstr();
+	items_stream << Guess_item(this->g.items(i)).to_jsonstr();
 	if (i != this->g.items_size() - 1) {
 		items_stream << ",";
 	}

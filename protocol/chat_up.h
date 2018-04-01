@@ -24,10 +24,10 @@
 #include "text_attribe.h"
 
 namespace protocol {
-    class ChatUp : public Protocol {
+    class Chat_up : public Protocol {
     public:
-        ChatUp() : c(linkerProtocol::ChatUp()) {};
-        explicit ChatUp(const linkerProtocol::ChatUp &us) : c(us) {};
+        Chat_up() : c(linkerProtocol::ChatUp()) {};
+        explicit Chat_up(const linkerProtocol::ChatUp &us) : c(us) {};
         const linkerProtocol::ChatUp &get_chat_up() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -72,9 +72,9 @@ if (o.has<jsonxx::Object>("textAttr")) {
 	t.from_json(info);
 
 	auto _t = new linkerProtocol::TextAttribe();
-	uint8_t buf[_t.get_text_attribe().ByteSize()];
-	_t.get_text_attribe().SerializeToArray(buf, n.get_text_attribe().ByteSize());
-	_t->ParseFromArray(buf, _t.get_text_attribe().ByteSize());
+	uint8_t buf[t.get_text_attribe().ByteSize()];
+	t.get_text_attribe().SerializeToArray(buf, t.get_text_attribe().ByteSize());
+	_t->ParseFromArray(buf, t.get_text_attribe().ByteSize());
 	this->c.set_allocated_textattr(_t);
 }
 
@@ -102,8 +102,8 @@ tousers_stream << "]";
 ss << "\"toUsers\":" << tousers_stream.str() << ",";
 ss << "\"color\":"<< this->c.color() << ",";
 
-Text_attribe t(this->c.textattr());
-ss << "\"textAttr\":" << t.to_jsonstr() << ",";
+Text_attribe t_4(this->c.textattr());
+ss << "\"textAttr\":" << t_4.to_jsonstr() << ",";
 ss << "\"asNobleman\":"<< this->c.asnobleman();
 ss << "}";
 return ss.str();

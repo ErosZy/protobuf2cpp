@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class TextAttribe : public Protocol {
+    class Text_attribe : public Protocol {
     public:
-        TextAttribe() : t(linkerProtocol::TextAttribe()) {};
-        explicit TextAttribe(const linkerProtocol::TextAttribe &us) : t(us) {};
+        Text_attribe() : t(linkerProtocol::TextAttribe()) {};
+        explicit Text_attribe(const linkerProtocol::TextAttribe &us) : t(us) {};
         const linkerProtocol::TextAttribe &get_text_attribe() const { return this->t; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->t.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

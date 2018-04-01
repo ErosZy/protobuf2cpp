@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class OfficialLiveLikeUp : public Protocol {
+    class Official_live_like_up : public Protocol {
     public:
-        OfficialLiveLikeUp() : o(linkerProtocol::OfficialLiveLikeUp()) {};
-        explicit OfficialLiveLikeUp(const linkerProtocol::OfficialLiveLikeUp &us) : o(us) {};
+        Official_live_like_up() : o(linkerProtocol::OfficialLiveLikeUp()) {};
+        explicit Official_live_like_up(const linkerProtocol::OfficialLiveLikeUp &us) : o(us) {};
         const linkerProtocol::OfficialLiveLikeUp &get_official_live_like_up() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

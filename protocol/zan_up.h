@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class ZanUp : public Protocol {
+    class Zan_up : public Protocol {
     public:
-        ZanUp() : z(linkerProtocol::ZanUp()) {};
-        explicit ZanUp(const linkerProtocol::ZanUp &us) : z(us) {};
+        Zan_up() : z(linkerProtocol::ZanUp()) {};
+        explicit Zan_up(const linkerProtocol::ZanUp &us) : z(us) {};
         const linkerProtocol::ZanUp &get_zan_up() const { return this->z; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->z.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

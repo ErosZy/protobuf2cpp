@@ -24,10 +24,10 @@
 #include "user.h"
 
 namespace protocol {
-    class OfficialLiveStatusNotify : public Protocol {
+    class Official_live_status_notify : public Protocol {
     public:
-        OfficialLiveStatusNotify() : o(linkerProtocol::OfficialLiveStatusNotify()) {};
-        explicit OfficialLiveStatusNotify(const linkerProtocol::OfficialLiveStatusNotify &us) : o(us) {};
+        Official_live_status_notify() : o(linkerProtocol::OfficialLiveStatusNotify()) {};
+        explicit Official_live_status_notify(const linkerProtocol::OfficialLiveStatusNotify &us) : o(us) {};
         const linkerProtocol::OfficialLiveStatusNotify &get_official_live_status_notify() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -64,9 +64,9 @@ if (o.has<jsonxx::Object>("currentAnchor")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->o.set_allocated_currentanchor(_u);
 }
 
@@ -88,8 +88,8 @@ for (int32_t i = 0; i < this->o.anchorlist_size(); i++) {
 anchorlist_stream << "]";
 ss << "\"anchorList\":" << anchorlist_stream.str() << ",";
 
-User u(this->o.currentanchor());
-ss << "\"currentAnchor\":" << u.to_jsonstr();
+User u_2(this->o.currentanchor());
+ss << "\"currentAnchor\":" << u_2.to_jsonstr();
 ss << "}";
 return ss.str();
 

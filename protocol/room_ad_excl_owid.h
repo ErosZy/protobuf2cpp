@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomAdExclOwid : public Protocol {
+    class Room_ad_excl_owid : public Protocol {
     public:
-        RoomAdExclOwid() : r(linkerProtocol::RoomAdExclOwid()) {};
-        explicit RoomAdExclOwid(const linkerProtocol::RoomAdExclOwid &us) : r(us) {};
+        Room_ad_excl_owid() : r(linkerProtocol::RoomAdExclOwid()) {};
+        explicit Room_ad_excl_owid(const linkerProtocol::RoomAdExclOwid &us) : r(us) {};
         const linkerProtocol::RoomAdExclOwid &get_room_ad_excl_owid() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

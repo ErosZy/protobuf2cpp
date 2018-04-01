@@ -24,10 +24,10 @@
 #include "room_lot_gift_attr.h"
 
 namespace protocol {
-    class RoomLotResult : public Protocol {
+    class Room_lot_result : public Protocol {
     public:
-        RoomLotResult() : r(linkerProtocol::RoomLotResult()) {};
-        explicit RoomLotResult(const linkerProtocol::RoomLotResult &us) : r(us) {};
+        Room_lot_result() : r(linkerProtocol::RoomLotResult()) {};
+        explicit Room_lot_result(const linkerProtocol::RoomLotResult &us) : r(us) {};
         const linkerProtocol::RoomLotResult &get_room_lot_result() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -60,7 +60,7 @@ if (o.has<jsonxx::Array>("list")) {
 	auto rs = o.get<jsonxx::Array>("list");
 	for (size_t i = 0; i < rs.size(); i++) {
 		auto j = rs.get<jsonxx::Object>(i);
-		RoomLotWinUser k;
+		Room_lot_win_user k;
 		k.from_json(j);
 		uint8_t buf[k.get_room_lot_win_user().ByteSize()];
 		k.get_room_lot_win_user().SerializeToArray(buf, k.get_room_lot_win_user().ByteSize());
@@ -76,9 +76,9 @@ if (o.has<jsonxx::Object>("giftAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomLotGiftAttr();
-	uint8_t buf[_r.get_room_lot_gift_attr().ByteSize()];
-	_r.get_room_lot_gift_attr().SerializeToArray(buf, n.get_room_lot_gift_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_lot_gift_attr().ByteSize());
+	uint8_t buf[r.get_room_lot_gift_attr().ByteSize()];
+	r.get_room_lot_gift_attr().SerializeToArray(buf, r.get_room_lot_gift_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_lot_gift_attr().ByteSize());
 	this->r.set_allocated_giftattr(_r);
 }
 
@@ -99,7 +99,7 @@ ss << "\"shardingId\":"<< this->r.shardingid() << ",";
 std::stringstream list_stream;
 list_stream << "[";
 for (int32_t i = 0; i < this->r.list_size(); i++) {
-	list_stream << RoomLotWinUser(this->r.list(i)).to_jsonstr();
+	list_stream << Room_lot_win_user(this->r.list(i)).to_jsonstr();
 	if (i != this->r.list_size() - 1) {
 		list_stream << ",";
 	}
@@ -107,8 +107,8 @@ for (int32_t i = 0; i < this->r.list_size(); i++) {
 list_stream << "]";
 ss << "\"list\":" << list_stream.str() << ",";
 
-Room_lot_gift_attr r(this->r.giftattr());
-ss << "\"giftAttr\":" << r.to_jsonstr() << ",";
+Room_lot_gift_attr r_5(this->r.giftattr());
+ss << "\"giftAttr\":" << r_5.to_jsonstr() << ",";
 ss << "\"owid\":"<< this->r.owid();
 ss << "}";
 return ss.str();

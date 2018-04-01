@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LiveData : public Protocol {
+    class Live_data : public Protocol {
     public:
-        LiveData() : l(linkerProtocol::LiveData()) {};
-        explicit LiveData(const linkerProtocol::LiveData &us) : l(us) {};
+        Live_data() : l(linkerProtocol::LiveData()) {};
+        explicit Live_data(const linkerProtocol::LiveData &us) : l(us) {};
         const linkerProtocol::LiveData &get_live_data() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

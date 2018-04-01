@@ -24,10 +24,10 @@
 #include "blessingbag_info.h"
 
 namespace protocol {
-    class BlessingbagNotify : public Protocol {
+    class Blessingbag_notify : public Protocol {
     public:
-        BlessingbagNotify() : b(linkerProtocol::BlessingbagNotify()) {};
-        explicit BlessingbagNotify(const linkerProtocol::BlessingbagNotify &us) : b(us) {};
+        Blessingbag_notify() : b(linkerProtocol::BlessingbagNotify()) {};
+        explicit Blessingbag_notify(const linkerProtocol::BlessingbagNotify &us) : b(us) {};
         const linkerProtocol::BlessingbagNotify &get_blessingbag_notify() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -46,9 +46,9 @@ namespace protocol {
 	b.from_json(info);
 
 	auto _b = new linkerProtocol::BlessingbagInfo();
-	uint8_t buf[_b.get_blessingbag_info().ByteSize()];
-	_b.get_blessingbag_info().SerializeToArray(buf, n.get_blessingbag_info().ByteSize());
-	_b->ParseFromArray(buf, _b.get_blessingbag_info().ByteSize());
+	uint8_t buf[b.get_blessingbag_info().ByteSize()];
+	b.get_blessingbag_info().SerializeToArray(buf, b.get_blessingbag_info().ByteSize());
+	_b->ParseFromArray(buf, b.get_blessingbag_info().ByteSize());
 	this->b.set_allocated_livebag(_b);
 }
 
@@ -58,9 +58,9 @@ if (o.has<jsonxx::Object>("showBag")) {
 	b.from_json(info);
 
 	auto _b = new linkerProtocol::BlessingbagInfo();
-	uint8_t buf[_b.get_blessingbag_info().ByteSize()];
-	_b.get_blessingbag_info().SerializeToArray(buf, n.get_blessingbag_info().ByteSize());
-	_b->ParseFromArray(buf, _b.get_blessingbag_info().ByteSize());
+	uint8_t buf[b.get_blessingbag_info().ByteSize()];
+	b.get_blessingbag_info().SerializeToArray(buf, b.get_blessingbag_info().ByteSize());
+	_b->ParseFromArray(buf, b.get_blessingbag_info().ByteSize());
 	this->b.set_allocated_showbag(_b);
 }
 
@@ -82,11 +82,11 @@ if(o.has<jsonxx::String>("message")) {
             std::stringstream ss;
 ss << "{";
 
-Blessingbag_info b(this->b.livebag());
-ss << "\"liveBag\":" << b.to_jsonstr() << ",";
+Blessingbag_info b_0(this->b.livebag());
+ss << "\"liveBag\":" << b_0.to_jsonstr() << ",";
 
-Blessingbag_info b(this->b.showbag());
-ss << "\"showBag\":" << b.to_jsonstr() << ",";
+Blessingbag_info b_1(this->b.showbag());
+ss << "\"showBag\":" << b_1.to_jsonstr() << ",";
 ss << "\"owid\":"<< this->b.owid() << ",";
 ss << "\"uid\":"<< this->b.uid() << ",";
 ss << "\"message\":"<< "\"" << this->b.message() << "\"";

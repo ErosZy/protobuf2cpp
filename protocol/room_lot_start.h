@@ -23,10 +23,10 @@
 #include "room_lot_attrs.h"
 
 namespace protocol {
-    class RoomLotStart : public Protocol {
+    class Room_lot_start : public Protocol {
     public:
-        RoomLotStart() : r(linkerProtocol::RoomLotStart()) {};
-        explicit RoomLotStart(const linkerProtocol::RoomLotStart &us) : r(us) {};
+        Room_lot_start() : r(linkerProtocol::RoomLotStart()) {};
+        explicit Room_lot_start(const linkerProtocol::RoomLotStart &us) : r(us) {};
         const linkerProtocol::RoomLotStart &get_room_lot_start() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -93,9 +93,9 @@ if (o.has<jsonxx::Object>("attrs")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomLotAttrs();
-	uint8_t buf[_r.get_room_lot_attrs().ByteSize()];
-	_r.get_room_lot_attrs().SerializeToArray(buf, n.get_room_lot_attrs().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_lot_attrs().ByteSize());
+	uint8_t buf[r.get_room_lot_attrs().ByteSize()];
+	r.get_room_lot_attrs().SerializeToArray(buf, r.get_room_lot_attrs().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_lot_attrs().ByteSize());
 	this->r.set_allocated_attrs(_r);
 }
 
@@ -117,8 +117,8 @@ ss << "\"duration\":"<< this->r.duration() << ",";
 ss << "\"startTime\":"<< "\"" << this->r.starttime() << "\"" << ",";
 ss << "\"endTime\":"<< "\"" << this->r.endtime() << "\"" << ",";
 
-Room_lot_attrs r(this->r.attrs());
-ss << "\"attrs\":" << r.to_jsonstr();
+Room_lot_attrs r_12(this->r.attrs());
+ss << "\"attrs\":" << r_12.to_jsonstr();
 ss << "}";
 return ss.str();
 

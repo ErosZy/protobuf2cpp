@@ -27,10 +27,10 @@
 #include "text_attribe.h"
 
 namespace protocol {
-    class ChatNotify : public Protocol {
+    class Chat_notify : public Protocol {
     public:
-        ChatNotify() : c(linkerProtocol::ChatNotify()) {};
-        explicit ChatNotify(const linkerProtocol::ChatNotify &us) : c(us) {};
+        Chat_notify() : c(linkerProtocol::ChatNotify()) {};
+        explicit Chat_notify(const linkerProtocol::ChatNotify &us) : c(us) {};
         const linkerProtocol::ChatNotify &get_chat_notify() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -53,9 +53,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->c.set_allocated_roomattr(_r);
 }
 
@@ -65,9 +65,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->c.set_allocated_user(_u);
 }
 
@@ -103,9 +103,9 @@ if (o.has<jsonxx::Object>("retetionAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RetetionAttr();
-	uint8_t buf[_r.get_retetion_attr().ByteSize()];
-	_r.get_retetion_attr().SerializeToArray(buf, n.get_retetion_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_retetion_attr().ByteSize());
+	uint8_t buf[r.get_retetion_attr().ByteSize()];
+	r.get_retetion_attr().SerializeToArray(buf, r.get_retetion_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_retetion_attr().ByteSize());
 	this->c.set_allocated_retetionattr(_r);
 }
 
@@ -119,9 +119,9 @@ if (o.has<jsonxx::Object>("textAttr")) {
 	t.from_json(info);
 
 	auto _t = new linkerProtocol::TextAttribe();
-	uint8_t buf[_t.get_text_attribe().ByteSize()];
-	_t.get_text_attribe().SerializeToArray(buf, n.get_text_attribe().ByteSize());
-	_t->ParseFromArray(buf, _t.get_text_attribe().ByteSize());
+	uint8_t buf[t.get_text_attribe().ByteSize()];
+	t.get_text_attribe().SerializeToArray(buf, t.get_text_attribe().ByteSize());
+	_t->ParseFromArray(buf, t.get_text_attribe().ByteSize());
 	this->c.set_allocated_textattr(_t);
 }
 
@@ -140,11 +140,11 @@ if(o.has<jsonxx::String>("ver")) {
 ss << "{";
 ss << "\"owid\":"<< this->c.owid() << ",";
 
-Room_attr r(this->c.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_1(this->c.roomattr());
+ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
 
-User u(this->c.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_2(this->c.user());
+ss << "\"user\":" << u_2.to_jsonstr() << ",";
 ss << "\"type\":"<< this->c.type() << ",";
 ss << "\"txt\":"<< "\"" << this->c.txt() << "\"" << ",";
 ss << "\"color\":"<< this->c.color() << ",";
@@ -160,12 +160,12 @@ for (int32_t i = 0; i < this->c.tousers_size(); i++) {
 tousers_stream << "]";
 ss << "\"toUsers\":" << tousers_stream.str() << ",";
 
-Retetion_attr r(this->c.retetionattr());
-ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
+Retetion_attr r_7(this->c.retetionattr());
+ss << "\"retetionAttr\":" << r_7.to_jsonstr() << ",";
 ss << "\"platForm\":"<< "\"" << this->c.platform() << "\"" << ",";
 
-Text_attribe t(this->c.textattr());
-ss << "\"textAttr\":" << t.to_jsonstr() << ",";
+Text_attribe t_9(this->c.textattr());
+ss << "\"textAttr\":" << t_9.to_jsonstr() << ",";
 ss << "\"asNobleman\":"<< this->c.asnobleman() << ",";
 ss << "\"ver\":"<< "\"" << this->c.ver() << "\"";
 ss << "}";

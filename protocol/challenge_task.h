@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class ChallengeTask : public Protocol {
+    class Challenge_task : public Protocol {
     public:
-        ChallengeTask() : c(linkerProtocol::ChallengeTask()) {};
-        explicit ChallengeTask(const linkerProtocol::ChallengeTask &us) : c(us) {};
+        Challenge_task() : c(linkerProtocol::ChallengeTask()) {};
+        explicit Challenge_task(const linkerProtocol::ChallengeTask &us) : c(us) {};
         const linkerProtocol::ChallengeTask &get_challenge_task() const { return this->c; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->c.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

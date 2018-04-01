@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LinkClose : public Protocol {
+    class Link_close : public Protocol {
     public:
-        LinkClose() : l(linkerProtocol::LinkClose()) {};
-        explicit LinkClose(const linkerProtocol::LinkClose &us) : l(us) {};
+        Link_close() : l(linkerProtocol::LinkClose()) {};
+        explicit Link_close(const linkerProtocol::LinkClose &us) : l(us) {};
         const linkerProtocol::LinkClose &get_link_close() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

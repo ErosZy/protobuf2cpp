@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class UserAttrNotify : public Protocol {
+    class User_attr_notify : public Protocol {
     public:
-        UserAttrNotify() : u(linkerProtocol::UserAttrNotify()) {};
-        explicit UserAttrNotify(const linkerProtocol::UserAttrNotify &us) : u(us) {};
+        User_attr_notify() : u(linkerProtocol::UserAttrNotify()) {};
+        explicit User_attr_notify(const linkerProtocol::UserAttrNotify &us) : u(us) {};
         const linkerProtocol::UserAttrNotify &get_user_attr_notify() const { return this->u; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->u.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->u.set_allocated_user(_u);
 }
 
@@ -73,8 +73,8 @@ if(o.has<jsonxx::Number>("seed")) {
             std::stringstream ss;
 ss << "{";
 
-User u(this->u.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_0(this->u.user());
+ss << "\"user\":" << u_0.to_jsonstr() << ",";
 ss << "\"diamond\":"<< this->u.diamond() << ",";
 ss << "\"starlight\":"<< this->u.starlight() << ",";
 ss << "\"fight\":"<< this->u.fight() << ",";

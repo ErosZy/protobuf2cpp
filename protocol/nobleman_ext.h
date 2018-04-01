@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class NoblemanExt : public Protocol {
+    class Nobleman_ext : public Protocol {
     public:
-        NoblemanExt() : n(linkerProtocol::NoblemanExt()) {};
-        explicit NoblemanExt(const linkerProtocol::NoblemanExt &us) : n(us) {};
+        Nobleman_ext() : n(linkerProtocol::NoblemanExt()) {};
+        explicit Nobleman_ext(const linkerProtocol::NoblemanExt &us) : n(us) {};
         const linkerProtocol::NoblemanExt &get_nobleman_ext() const { return this->n; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->n.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

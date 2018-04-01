@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class MapEntry : public Protocol {
+    class Map_entry : public Protocol {
     public:
-        MapEntry() : m(linkerProtocol::MapEntry()) {};
-        explicit MapEntry(const linkerProtocol::MapEntry &us) : m(us) {};
+        Map_entry() : m(linkerProtocol::MapEntry()) {};
+        explicit Map_entry(const linkerProtocol::MapEntry &us) : m(us) {};
         const linkerProtocol::MapEntry &get_map_entry() const { return this->m; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->m.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

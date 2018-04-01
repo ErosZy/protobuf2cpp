@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LoginResp : public Protocol {
+    class Login_resp : public Protocol {
     public:
-        LoginResp() : l(linkerProtocol::LoginResp()) {};
-        explicit LoginResp(const linkerProtocol::LoginResp &us) : l(us) {};
+        Login_resp() : l(linkerProtocol::LoginResp()) {};
+        explicit Login_resp(const linkerProtocol::LoginResp &us) : l(us) {};
         const linkerProtocol::LoginResp &get_login_resp() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

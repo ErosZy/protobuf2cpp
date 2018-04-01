@@ -23,10 +23,10 @@
 #include "room_attr.h"
 
 namespace protocol {
-    class RoomGuardNotify : public Protocol {
+    class Room_guard_notify : public Protocol {
     public:
-        RoomGuardNotify() : r(linkerProtocol::RoomGuardNotify()) {};
-        explicit RoomGuardNotify(const linkerProtocol::RoomGuardNotify &us) : r(us) {};
+        Room_guard_notify() : r(linkerProtocol::RoomGuardNotify()) {};
+        explicit Room_guard_notify(const linkerProtocol::RoomGuardNotify &us) : r(us) {};
         const linkerProtocol::RoomGuardNotify &get_room_guard_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -49,9 +49,9 @@ if (o.has<jsonxx::Object>("roomAttr")) {
 	r.from_json(info);
 
 	auto _r = new linkerProtocol::RoomAttr();
-	uint8_t buf[_r.get_room_attr().ByteSize()];
-	_r.get_room_attr().SerializeToArray(buf, n.get_room_attr().ByteSize());
-	_r->ParseFromArray(buf, _r.get_room_attr().ByteSize());
+	uint8_t buf[r.get_room_attr().ByteSize()];
+	r.get_room_attr().SerializeToArray(buf, r.get_room_attr().ByteSize());
+	_r->ParseFromArray(buf, r.get_room_attr().ByteSize());
 	this->r.set_allocated_roomattr(_r);
 }
 
@@ -66,8 +66,8 @@ if(o.has<jsonxx::Number>("uid")) {
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
 
-Room_attr r(this->r.roomattr());
-ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+Room_attr r_1(this->r.roomattr());
+ss << "\"roomAttr\":" << r_1.to_jsonstr() << ",";
 ss << "\"uid\":"<< this->r.uid();
 ss << "}";
 return ss.str();

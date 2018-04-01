@@ -23,10 +23,10 @@
 #include "recommend_room_popup_room.h"
 
 namespace protocol {
-    class RecommendRoomPopupNotify : public Protocol {
+    class Recommend_room_popup_notify : public Protocol {
     public:
-        RecommendRoomPopupNotify() : r(linkerProtocol::RecommendRoomPopupNotify()) {};
-        explicit RecommendRoomPopupNotify(const linkerProtocol::RecommendRoomPopupNotify &us) : r(us) {};
+        Recommend_room_popup_notify() : r(linkerProtocol::RecommendRoomPopupNotify()) {};
+        explicit Recommend_room_popup_notify(const linkerProtocol::RecommendRoomPopupNotify &us) : r(us) {};
         const linkerProtocol::RecommendRoomPopupNotify &get_recommend_room_popup_notify() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -47,7 +47,7 @@ if (o.has<jsonxx::Array>("rooms")) {
 	auto rs = o.get<jsonxx::Array>("rooms");
 	for (size_t i = 0; i < rs.size(); i++) {
 		auto j = rs.get<jsonxx::Object>(i);
-		RecommendRoomPopupRoom k;
+		Recommend_room_popup_room k;
 		k.from_json(j);
 		uint8_t buf[k.get_recommend_room_popup_room().ByteSize()];
 		k.get_recommend_room_popup_room().SerializeToArray(buf, k.get_recommend_room_popup_room().ByteSize());
@@ -67,7 +67,7 @@ ss << "\"owid\":"<< this->r.owid() << ",";
 std::stringstream rooms_stream;
 rooms_stream << "[";
 for (int32_t i = 0; i < this->r.rooms_size(); i++) {
-	rooms_stream << RecommendRoomPopupRoom(this->r.rooms(i)).to_jsonstr();
+	rooms_stream << Recommend_room_popup_room(this->r.rooms(i)).to_jsonstr();
 	if (i != this->r.rooms_size() - 1) {
 		rooms_stream << ",";
 	}

@@ -27,10 +27,10 @@
 #include "anchor_live_info.h"
 
 namespace protocol {
-    class BannerNotify : public Protocol {
+    class Banner_notify : public Protocol {
     public:
-        BannerNotify() : b(linkerProtocol::BannerNotify()) {};
-        explicit BannerNotify(const linkerProtocol::BannerNotify &us) : b(us) {};
+        Banner_notify() : b(linkerProtocol::BannerNotify()) {};
+        explicit Banner_notify(const linkerProtocol::BannerNotify &us) : b(us) {};
         const linkerProtocol::BannerNotify &get_banner_notify() const { return this->b; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->b.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -53,9 +53,9 @@ if (o.has<jsonxx::Object>("user")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->b.set_allocated_user(_u);
 }
 
@@ -65,9 +65,9 @@ if (o.has<jsonxx::Object>("anchor")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->b.set_allocated_anchor(_u);
 }
 
@@ -97,9 +97,9 @@ if (o.has<jsonxx::Object>("officialRoom")) {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->b.set_allocated_officialroom(_u);
 }
 
@@ -115,7 +115,7 @@ if (o.has<jsonxx::Array>("params")) {
 	auto ms = o.get<jsonxx::Array>("params");
 	for (size_t i = 0; i < ms.size(); i++) {
 		auto j = ms.get<jsonxx::Object>(i);
-		MapEntry k;
+		Map_entry k;
 		k.from_json(j);
 		uint8_t buf[k.get_map_entry().ByteSize()];
 		k.get_map_entry().SerializeToArray(buf, k.get_map_entry().ByteSize());
@@ -131,9 +131,9 @@ if (o.has<jsonxx::Object>("liveInfo")) {
 	a.from_json(info);
 
 	auto _a = new linkerProtocol::AnchorLiveInfo();
-	uint8_t buf[_a.get_anchor_live_info().ByteSize()];
-	_a.get_anchor_live_info().SerializeToArray(buf, n.get_anchor_live_info().ByteSize());
-	_a->ParseFromArray(buf, _a.get_anchor_live_info().ByteSize());
+	uint8_t buf[a.get_anchor_live_info().ByteSize()];
+	a.get_anchor_live_info().SerializeToArray(buf, a.get_anchor_live_info().ByteSize());
+	_a->ParseFromArray(buf, a.get_anchor_live_info().ByteSize());
 	this->b.set_allocated_liveinfo(_a);
 }
 
@@ -144,26 +144,26 @@ if (o.has<jsonxx::Object>("liveInfo")) {
 ss << "{";
 ss << "\"owid\":"<< this->b.owid() << ",";
 
-User u(this->b.user());
-ss << "\"user\":" << u.to_jsonstr() << ",";
+User u_1(this->b.user());
+ss << "\"user\":" << u_1.to_jsonstr() << ",";
 
-User u(this->b.anchor());
-ss << "\"anchor\":" << u.to_jsonstr() << ",";
+User u_2(this->b.anchor());
+ss << "\"anchor\":" << u_2.to_jsonstr() << ",";
 ss << "\"templateId\":"<< this->b.templateid() << ",";
 ss << "\"gid\":"<< this->b.gid() << ",";
 ss << "\"attrId\":"<< this->b.attrid() << ",";
 ss << "\"giftCount\":"<< this->b.giftcount() << ",";
 ss << "\"txt\":"<< "\"" << this->b.txt() << "\"" << ",";
 
-User u(this->b.officialroom());
-ss << "\"officialRoom\":" << u.to_jsonstr() << ",";
+User u_8(this->b.officialroom());
+ss << "\"officialRoom\":" << u_8.to_jsonstr() << ",";
 ss << "\"landscape\":"<< this->b.landscape() << ",";
 ss << "\"luckyMulti\":"<< this->b.luckymulti() << ",";
 
 std::stringstream params_stream;
 params_stream << "[";
 for (int32_t i = 0; i < this->b.params_size(); i++) {
-	params_stream << MapEntry(this->b.params(i)).to_jsonstr();
+	params_stream << Map_entry(this->b.params(i)).to_jsonstr();
 	if (i != this->b.params_size() - 1) {
 		params_stream << ",";
 	}
@@ -171,8 +171,8 @@ for (int32_t i = 0; i < this->b.params_size(); i++) {
 params_stream << "]";
 ss << "\"params\":" << params_stream.str() << ",";
 
-Anchor_live_info a(this->b.liveinfo());
-ss << "\"liveInfo\":" << a.to_jsonstr();
+Anchor_live_info a_12(this->b.liveinfo());
+ss << "\"liveInfo\":" << a_12.to_jsonstr();
 ss << "}";
 return ss.str();
 

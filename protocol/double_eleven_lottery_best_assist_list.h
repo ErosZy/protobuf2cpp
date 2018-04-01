@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class DoubleElevenLotteryBestAssistList : public Protocol {
+    class Double_eleven_lottery_best_assist_list : public Protocol {
     public:
-        DoubleElevenLotteryBestAssistList() : d(linkerProtocol::DoubleElevenLotteryBestAssistList()) {};
-        explicit DoubleElevenLotteryBestAssistList(const linkerProtocol::DoubleElevenLotteryBestAssistList &us) : d(us) {};
+        Double_eleven_lottery_best_assist_list() : d(linkerProtocol::DoubleElevenLotteryBestAssistList()) {};
+        explicit Double_eleven_lottery_best_assist_list(const linkerProtocol::DoubleElevenLotteryBestAssistList &us) : d(us) {};
         const linkerProtocol::DoubleElevenLotteryBestAssistList &get_double_eleven_lottery_best_assist_list() const { return this->d; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

@@ -23,10 +23,10 @@
 #include "ext.h"
 
 namespace protocol {
-    class GlobalMsg : public Protocol {
+    class Global_msg : public Protocol {
     public:
-        GlobalMsg() : g(linkerProtocol::GlobalMsg()) {};
-        explicit GlobalMsg(const linkerProtocol::GlobalMsg &us) : g(us) {};
+        Global_msg() : g(linkerProtocol::GlobalMsg()) {};
+        explicit Global_msg(const linkerProtocol::GlobalMsg &us) : g(us) {};
         const linkerProtocol::GlobalMsg &get_global_msg() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

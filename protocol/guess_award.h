@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class GuessAward : public Protocol {
+    class Guess_award : public Protocol {
     public:
-        GuessAward() : g(linkerProtocol::GuessAward()) {};
-        explicit GuessAward(const linkerProtocol::GuessAward &us) : g(us) {};
+        Guess_award() : g(linkerProtocol::GuessAward()) {};
+        explicit Guess_award(const linkerProtocol::GuessAward &us) : g(us) {};
         const linkerProtocol::GuessAward &get_guess_award() const { return this->g; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->g.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

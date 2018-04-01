@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomAttr : public Protocol {
+    class Room_attr : public Protocol {
     public:
-        RoomAttr() : r(linkerProtocol::RoomAttr()) {};
-        explicit RoomAttr(const linkerProtocol::RoomAttr &us) : r(us) {};
+        Room_attr() : r(linkerProtocol::RoomAttr()) {};
+        explicit Room_attr(const linkerProtocol::RoomAttr &us) : r(us) {};
         const linkerProtocol::RoomAttr &get_room_attr() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

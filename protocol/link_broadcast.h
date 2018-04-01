@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkBroadcast : public Protocol {
+    class Link_broadcast : public Protocol {
     public:
-        LinkBroadcast() : l(linkerProtocol::LinkBroadcast()) {};
-        explicit LinkBroadcast(const linkerProtocol::LinkBroadcast &us) : l(us) {};
+        Link_broadcast() : l(linkerProtocol::LinkBroadcast()) {};
+        explicit Link_broadcast(const linkerProtocol::LinkBroadcast &us) : l(us) {};
         const linkerProtocol::LinkBroadcast &get_link_broadcast() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

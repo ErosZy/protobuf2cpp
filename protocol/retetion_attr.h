@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RetetionAttr : public Protocol {
+    class Retetion_attr : public Protocol {
     public:
-        RetetionAttr() : r(linkerProtocol::RetetionAttr()) {};
-        explicit RetetionAttr(const linkerProtocol::RetetionAttr &us) : r(us) {};
+        Retetion_attr() : r(linkerProtocol::RetetionAttr()) {};
+        explicit Retetion_attr(const linkerProtocol::RetetionAttr &us) : r(us) {};
         const linkerProtocol::RetetionAttr &get_retetion_attr() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

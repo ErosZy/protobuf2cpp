@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class HonorLevelUp : public Protocol {
+    class Honor_level_up : public Protocol {
     public:
-        HonorLevelUp() : h(linkerProtocol::HonorLevelUp()) {};
-        explicit HonorLevelUp(const linkerProtocol::HonorLevelUp &us) : h(us) {};
+        Honor_level_up() : h(linkerProtocol::HonorLevelUp()) {};
+        explicit Honor_level_up(const linkerProtocol::HonorLevelUp &us) : h(us) {};
         const linkerProtocol::HonorLevelUp &get_honor_level_up() const { return this->h; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->h.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

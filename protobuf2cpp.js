@@ -1,7 +1,11 @@
 const fs = require("fs");
 const handlebars = require("handlebars");
-const tpl = handlebars.compile(
-  fs.readFileSync("./class.tpl").toString("utf-8")
+const classTpl = handlebars.compile(
+  fs.readFileSync("./tpl/class.tpl").toString("utf-8")
+);
+
+const cmakeTpl = handlebars.compile(
+  fs.readFileSync("./tpl/cmake.tpl").toString("utf-8")
 );
 
 module.exports = class Protobuf2cpp {
@@ -18,10 +22,17 @@ module.exports = class Protobuf2cpp {
     this.messageStatements = this.expr.messageStatements;
     for (let i = 0; i < this.messageStatements.length; i++) {
       let tplInfo = this.compile(this.messageStatements[i]);
-      let filename = "./protocol/" + tplInfo.protobuf_lower_class_name + ".h";
-      let codeStr = tpl(tplInfo);
-      fs.writeFileSync(filename, codeStr);
+      let filepath = "./protocol/" + tplInfo.protobuf_lower_class_name + ".h";
+      let codeStr = classTpl(tplInfo);
+      fs.writeFileSync(filepath, codeStr);
     }
+
+    let filepath = "./protocol/CMakeLists.txt";
+    let files = this.messageStatements.map(v => {
+      return this.camel(v.messageName).toLowerCase() + ".h";
+    });
+    let codeStr = cmakeTpl({ files: files.join("\n") });
+    fs.writeFileSync(filepath, codeStr);
   }
 
   compile(message) {
@@ -36,7 +47,7 @@ module.exports = class Protobuf2cpp {
       })
     );
     tplInfo.include_header = includeHeaders.join("\n");
-    tplInfo.class_name = message.messageName;
+    tplInfo.class_name = this.camel(message.messageName);
     tplInfo.var_name = message.messageName.slice(0, 1).toLowerCase();
     tplInfo.protobuf_pkg_name = this.protobufPkgName;
     tplInfo.protobuf_class_name = message.messageName;
@@ -74,15 +85,15 @@ module.exports = class Protobuf2cpp {
           str += `\tauto _${v.dataType[0].toLowerCase()} = new ${
             this.protobufPkgName
           }::${v.dataType}();\n`;
-          str += `\tuint8_t buf[_${v.dataType[0].toLowerCase()}.get_${this.camel(
+          str += `\tuint8_t buf[${v.dataType[0].toLowerCase()}.get_${this.camel(
             v.dataType
           ).toLowerCase()}().ByteSize()];\n`;
-          str += `\t_${v.dataType[0].toLowerCase()}.get_${this.camel(
+          str += `\t${v.dataType[0].toLowerCase()}.get_${this.camel(
             v.dataType
-          ).toLowerCase()}().SerializeToArray(buf, n.get_${this.camel(
+          ).toLowerCase()}().SerializeToArray(buf, ${v.dataType[0].toLowerCase()}.get_${this.camel(
             v.dataType
           ).toLowerCase()}().ByteSize());\n`;
-          str += `\t_${v.dataType[0].toLowerCase()}->ParseFromArray(buf, _${v.dataType[0].toLowerCase()}.get_${this.camel(
+          str += `\t_${v.dataType[0].toLowerCase()}->ParseFromArray(buf, ${v.dataType[0].toLowerCase()}.get_${this.camel(
             v.dataType
           ).toLowerCase()}().ByteSize());\n`;
           str += `\tthis->${varName}.set_allocated_${v.id.toLowerCase()}(_${v.dataType[0].toLowerCase()});\n`;
@@ -102,7 +113,7 @@ module.exports = class Protobuf2cpp {
           }");\n`;
           str += `\tfor (size_t i = 0; i < ${v.dataType[0].toLowerCase()}s.size(); i++) {\n`;
           str += `\t\tauto j = ${v.dataType[0].toLowerCase()}s.get<jsonxx::Object>(i);\n`;
-          str += `\t\t${v.dataType} k;\n`;
+          str += `\t\t${this.camel(v.dataType)} k;\n`;
           str += `\t\tk.from_json(j);\n`;
           str += `\t\tuint8_t buf[k.get_${this.camel(
             v.dataType
@@ -144,10 +155,10 @@ module.exports = class Protobuf2cpp {
         } else {
           str += `\n${this.camel(
             v.dataType
-          )} ${v.dataType[0].toLowerCase()}(this->${varName}.${v.id.toLowerCase()}());\n`;
+          )} ${v.dataType[0].toLowerCase()}_${i}(this->${varName}.${v.id.toLowerCase()}());\n`;
           str += `ss << "\\"${
             v.id
-          }\\":" << ${v.dataType[0].toLowerCase()}.to_jsonstr()`;
+          }\\":" << ${v.dataType[0].toLowerCase()}_${i}.to_jsonstr()`;
         }
       } else {
         if (!isCustomDataType) {
@@ -163,17 +174,15 @@ module.exports = class Protobuf2cpp {
           str += `\nstd::stringstream ${v.id.toLowerCase()}_stream;\n`;
           str += `${v.id.toLowerCase()}_stream << "[";\n`;
           str += `for (int32_t i = 0; i < this->${varName}.${v.id.toLowerCase()}_size(); i++) {\n`;
-          str += `\t${v.id.toLowerCase()}_stream << ${
+          str += `\t${v.id.toLowerCase()}_stream << ${this.camel(
             v.dataType
-          }(this->${varName}.${v.id.toLowerCase()}(i)).to_jsonstr();\n`;
+          )}(this->${varName}.${v.id.toLowerCase()}(i)).to_jsonstr();\n`;
           str += `\tif (i != this->${varName}.${v.id.toLowerCase()}_size() - 1) {\n`;
           str += `\t\t${v.id.toLowerCase()}_stream << ",";\n`;
           str += `\t}\n`;
           str += `}\n`;
           str += `${v.id.toLowerCase()}_stream << "]";\n`;
-          str += `ss << "\\"${
-            v.id
-          }\\":" << ${v.id.toLowerCase()}_stream.str()`;
+          str += `ss << "\\"${v.id}\\":" << ${v.id.toLowerCase()}_stream.str()`;
         }
       }
 

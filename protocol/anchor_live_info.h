@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class AnchorLiveInfo : public Protocol {
+    class Anchor_live_info : public Protocol {
     public:
-        AnchorLiveInfo() : a(linkerProtocol::AnchorLiveInfo()) {};
-        explicit AnchorLiveInfo(const linkerProtocol::AnchorLiveInfo &us) : a(us) {};
+        Anchor_live_info() : a(linkerProtocol::AnchorLiveInfo()) {};
+        explicit Anchor_live_info(const linkerProtocol::AnchorLiveInfo &us) : a(us) {};
         const linkerProtocol::AnchorLiveInfo &get_anchor_live_info() const { return this->a; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->a.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

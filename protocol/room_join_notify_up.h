@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class RoomJoinNotifyUp : public Protocol {
+    class Room_join_notify_up : public Protocol {
     public:
-        RoomJoinNotifyUp() : r(linkerProtocol::RoomJoinNotifyUp()) {};
-        explicit RoomJoinNotifyUp(const linkerProtocol::RoomJoinNotifyUp &us) : r(us) {};
+        Room_join_notify_up() : r(linkerProtocol::RoomJoinNotifyUp()) {};
+        explicit Room_join_notify_up(const linkerProtocol::RoomJoinNotifyUp &us) : r(us) {};
         const linkerProtocol::RoomJoinNotifyUp &get_room_join_notify_up() const { return this->r; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->r.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

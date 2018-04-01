@@ -23,10 +23,10 @@
 #include "user.h"
 
 namespace protocol {
-    class LinkGiftPkAccept : public Protocol {
+    class Link_gift_pk_accept : public Protocol {
     public:
-        LinkGiftPkAccept() : l(linkerProtocol::LinkGiftPkAccept()) {};
-        explicit LinkGiftPkAccept(const linkerProtocol::LinkGiftPkAccept &us) : l(us) {};
+        Link_gift_pk_accept() : l(linkerProtocol::LinkGiftPkAccept()) {};
+        explicit Link_gift_pk_accept(const linkerProtocol::LinkGiftPkAccept &us) : l(us) {};
         const linkerProtocol::LinkGiftPkAccept &get_link_gift_pk_accept() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -45,9 +45,9 @@ namespace protocol {
 	u.from_json(info);
 
 	auto _u = new linkerProtocol::User();
-	uint8_t buf[_u.get_user().ByteSize()];
-	_u.get_user().SerializeToArray(buf, n.get_user().ByteSize());
-	_u->ParseFromArray(buf, _u.get_user().ByteSize());
+	uint8_t buf[u.get_user().ByteSize()];
+	u.get_user().SerializeToArray(buf, u.get_user().ByteSize());
+	_u->ParseFromArray(buf, u.get_user().ByteSize());
 	this->l.set_allocated_recipient(_u);
 }
 
@@ -57,8 +57,8 @@ namespace protocol {
             std::stringstream ss;
 ss << "{";
 
-User u(this->l.recipient());
-ss << "\"recipient\":" << u.to_jsonstr();
+User u_0(this->l.recipient());
+ss << "\"recipient\":" << u_0.to_jsonstr();
 ss << "}";
 return ss.str();
 

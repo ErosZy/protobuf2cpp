@@ -23,10 +23,10 @@
 #include "online_view2_change_notify.h"
 
 namespace protocol {
-    class OnlineView2ChangeListNotify : public Protocol {
+    class Online_view2_change_list_notify : public Protocol {
     public:
-        OnlineView2ChangeListNotify() : o(linkerProtocol::OnlineView2ChangeListNotify()) {};
-        explicit OnlineView2ChangeListNotify(const linkerProtocol::OnlineView2ChangeListNotify &us) : o(us) {};
+        Online_view2_change_list_notify() : o(linkerProtocol::OnlineView2ChangeListNotify()) {};
+        explicit Online_view2_change_list_notify(const linkerProtocol::OnlineView2ChangeListNotify &us) : o(us) {};
         const linkerProtocol::OnlineView2ChangeListNotify &get_online_view2_change_list_notify() const { return this->o; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->o.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
@@ -43,7 +43,7 @@ namespace protocol {
 	auto os = o.get<jsonxx::Array>("changeList");
 	for (size_t i = 0; i < os.size(); i++) {
 		auto j = os.get<jsonxx::Object>(i);
-		OnlineView2ChangeNotify k;
+		Online_view2_change_notify k;
 		k.from_json(j);
 		uint8_t buf[k.get_online_view2_change_notify().ByteSize()];
 		k.get_online_view2_change_notify().SerializeToArray(buf, k.get_online_view2_change_notify().ByteSize());
@@ -62,7 +62,7 @@ ss << "{";
 std::stringstream changelist_stream;
 changelist_stream << "[";
 for (int32_t i = 0; i < this->o.changelist_size(); i++) {
-	changelist_stream << OnlineView2ChangeNotify(this->o.changelist(i)).to_jsonstr();
+	changelist_stream << Online_view2_change_notify(this->o.changelist(i)).to_jsonstr();
 	if (i != this->o.changelist_size() - 1) {
 		changelist_stream << ",";
 	}

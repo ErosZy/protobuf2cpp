@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class DoubleElevenLotteryDrawList : public Protocol {
+    class Double_eleven_lottery_draw_list : public Protocol {
     public:
-        DoubleElevenLotteryDrawList() : d(linkerProtocol::DoubleElevenLotteryDrawList()) {};
-        explicit DoubleElevenLotteryDrawList(const linkerProtocol::DoubleElevenLotteryDrawList &us) : d(us) {};
+        Double_eleven_lottery_draw_list() : d(linkerProtocol::DoubleElevenLotteryDrawList()) {};
+        explicit Double_eleven_lottery_draw_list(const linkerProtocol::DoubleElevenLotteryDrawList &us) : d(us) {};
         const linkerProtocol::DoubleElevenLotteryDrawList &get_double_eleven_lottery_draw_list() const { return this->d; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->d.ParseFromArray(buf.get_buf_ptr(), buf.get_length());

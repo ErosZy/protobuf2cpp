@@ -22,10 +22,10 @@
 #include "protobuf.h"
 
 namespace protocol {
-    class LinkNotify : public Protocol {
+    class Link_notify : public Protocol {
     public:
-        LinkNotify() : l(linkerProtocol::LinkNotify()) {};
-        explicit LinkNotify(const linkerProtocol::LinkNotify &us) : l(us) {};
+        Link_notify() : l(linkerProtocol::LinkNotify()) {};
+        explicit Link_notify(const linkerProtocol::LinkNotify &us) : l(us) {};
         const linkerProtocol::LinkNotify &get_link_notify() const { return this->l; }
         virtual bool decode_from_buf(Buffer &buf) {
             return this->l.ParseFromArray(buf.get_buf_ptr(), buf.get_length());
