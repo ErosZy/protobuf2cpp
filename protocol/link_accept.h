@@ -76,8 +76,9 @@ ss << "\"owid\":"<< this->l.owid() << ",";
 ss << "\"roomName\":"<< "\"" << this->l.roomname() << "\"" << ",";
 ss << "\"token\":"<< "\"" << this->l.token() << "\"" << ",";
 ss << "\"type\":"<< this->l.type() << ",";
+
 User u(this->l.owidinfo());
-ss << ""owidInfo":" << u.to_jsonstr();
+ss << "\"owidInfo\":" << u.to_jsonstr();
 ss << "}";
 return ss.str();
 

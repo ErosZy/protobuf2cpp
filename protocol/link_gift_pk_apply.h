@@ -64,8 +64,9 @@ if(o.has<jsonxx::Number>("time")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->l.applyuser());
-ss << ""applyUser":" << u.to_jsonstr() << ",";
+ss << "\"applyUser\":" << u.to_jsonstr() << ",";
 ss << "\"title\":"<< "\"" << this->l.title() << "\"" << ",";
 ss << "\"time\":"<< this->l.time();
 ss << "}";

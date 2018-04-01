@@ -61,8 +61,9 @@ if (o.has<jsonxx::Object>("liveData")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
+
 Live_data l(this->r.livedata());
-ss << ""liveData":" << l.to_jsonstr();
+ss << "\"liveData\":" << l.to_jsonstr();
 ss << "}";
 return ss.str();
 

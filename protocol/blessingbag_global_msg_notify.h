@@ -63,6 +63,7 @@ if (o.has<jsonxx::Array>("ext")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->b.owid() << ",";
+
 std::stringstream ext_stream;
 ext_stream << "[";
 for (int32_t i = 0; i < this->b.ext_size(); i++) {
@@ -71,7 +72,8 @@ for (int32_t i = 0; i < this->b.ext_size(); i++) {
 		ext_stream << ",";
 	}
 }
-ext_stream << "]";;
+ext_stream << "]";
+ss << "\"ext\":" << ext_stream.str();
 ss << "}";
 return ss.str();
 

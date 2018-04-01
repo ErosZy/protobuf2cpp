@@ -70,8 +70,9 @@ if(o.has<jsonxx::Number>("deadtime")) {
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
 ss << "\"uid\":"<< this->n.uid() << ",";
+
 User u(this->n.oper());
-ss << ""oper":" << u.to_jsonstr() << ",";
+ss << "\"oper\":" << u.to_jsonstr() << ",";
 ss << "\"deadtime\":"<< this->n.deadtime();
 ss << "}";
 return ss.str();

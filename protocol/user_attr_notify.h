@@ -72,8 +72,9 @@ if(o.has<jsonxx::Number>("seed")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->u.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"diamond\":"<< this->u.diamond() << ",";
 ss << "\"starlight\":"<< this->u.starlight() << ",";
 ss << "\"fight\":"<< this->u.fight() << ",";

@@ -135,17 +135,20 @@ if(o.has<jsonxx::Number>("starlight")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->g.owid() << ",";
+
 Room_attr r(this->g.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->g.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"combo\":"<< this->g.combo() << ",";
 ss << "\"comboId\":"<< this->g.comboid() << ",";
 ss << "\"gid\":"<< this->g.gid() << ",";
 ss << "\"attrId\":"<< this->g.attrid() << ",";
 ss << "\"count\":"<< this->g.count() << ",";
+
 Retetion_attr r(this->g.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr() << ",";
+ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
 ss << "\"luckyMulti\":"<< this->g.luckymulti() << ",";
 ss << "\"consumeType\":"<< this->g.consumetype() << ",";
 ss << "\"newCount\":"<< this->g.newcount() << ",";

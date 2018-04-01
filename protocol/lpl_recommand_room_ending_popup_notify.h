@@ -73,6 +73,7 @@ ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
 ss << "\"title\":"<< "\"" << this->l.title() << "\"" << ",";
 ss << "\"second\":"<< this->l.second() << ",";
+
 std::stringstream rooms_stream;
 rooms_stream << "[";
 for (int32_t i = 0; i < this->l.rooms_size(); i++) {
@@ -81,7 +82,8 @@ for (int32_t i = 0; i < this->l.rooms_size(); i++) {
 		rooms_stream << ",";
 	}
 }
-rooms_stream << "]";;
+rooms_stream << "]";
+ss << "\"rooms\":" << rooms_stream.str();
 ss << "}";
 return ss.str();
 

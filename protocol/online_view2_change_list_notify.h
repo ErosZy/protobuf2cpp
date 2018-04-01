@@ -58,6 +58,7 @@ namespace protocol {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 std::stringstream changelist_stream;
 changelist_stream << "[";
 for (int32_t i = 0; i < this->o.changelist_size(); i++) {
@@ -66,7 +67,8 @@ for (int32_t i = 0; i < this->o.changelist_size(); i++) {
 		changelist_stream << ",";
 	}
 }
-changelist_stream << "]";;
+changelist_stream << "]";
+ss << "\"changeList\":" << changelist_stream.str();
 ss << "}";
 return ss.str();
 

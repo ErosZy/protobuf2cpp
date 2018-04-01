@@ -65,8 +65,9 @@ if(o.has<jsonxx::Number>("endTime")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
+
 User u(this->n.noble());
-ss << ""noble":" << u.to_jsonstr() << ",";
+ss << "\"noble\":" << u.to_jsonstr() << ",";
 ss << "\"endTime\":"<< this->n.endtime();
 ss << "}";
 return ss.str();

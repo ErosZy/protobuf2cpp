@@ -1,0 +1,1 @@
+set_target_properties(protocol PROPERTIES LINKER_LANGUAGE CXX)

@@ -94,10 +94,12 @@ if(o.has<jsonxx::String>("tips")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->u.owid() << ",";
+
 Room_attr r(this->u.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->u.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"nextLevel\":"<< this->u.nextlevel() << ",";
 ss << "\"needDiamod\":"<< this->u.needdiamod() << ",";
 ss << "\"percent\":"<< this->u.percent() << ",";

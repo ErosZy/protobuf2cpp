@@ -116,8 +116,9 @@ ss << "\"scope\":"<< this->r.scope() << ",";
 ss << "\"duration\":"<< this->r.duration() << ",";
 ss << "\"startTime\":"<< "\"" << this->r.starttime() << "\"" << ",";
 ss << "\"endTime\":"<< "\"" << this->r.endtime() << "\"" << ",";
+
 Room_lot_attrs r(this->r.attrs());
-ss << ""attrs":" << r.to_jsonstr();
+ss << "\"attrs\":" << r.to_jsonstr();
 ss << "}";
 return ss.str();
 

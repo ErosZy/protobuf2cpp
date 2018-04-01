@@ -68,8 +68,9 @@ if(o.has<jsonxx::Number>("attrId")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->b.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"txt\":"<< "\"" << this->b.txt() << "\"" << ",";
 ss << "\"color\":"<< this->b.color() << ",";
 ss << "\"attrId\":"<< this->b.attrid();

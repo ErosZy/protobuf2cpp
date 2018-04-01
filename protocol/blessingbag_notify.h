@@ -81,10 +81,12 @@ if(o.has<jsonxx::String>("message")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 Blessingbag_info b(this->b.livebag());
-ss << ""liveBag":" << b.to_jsonstr() << ",";
+ss << "\"liveBag\":" << b.to_jsonstr() << ",";
+
 Blessingbag_info b(this->b.showbag());
-ss << ""showBag":" << b.to_jsonstr() << ",";
+ss << "\"showBag\":" << b.to_jsonstr() << ",";
 ss << "\"owid\":"<< this->b.owid() << ",";
 ss << "\"uid\":"<< this->b.uid() << ",";
 ss << "\"message\":"<< "\"" << this->b.message() << "\"";

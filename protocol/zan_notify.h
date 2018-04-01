@@ -78,10 +78,12 @@ if(o.has<jsonxx::Number>("color")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->z.owid() << ",";
+
 Room_attr r(this->z.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->z.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"color\":"<< this->z.color();
 ss << "}";
 return ss.str();

@@ -89,6 +89,7 @@ if(o.has<jsonxx::Boolean>("asNobleman")) {
 ss << "{";
 ss << "\"type\":"<< this->c.type() << ",";
 ss << "\"txt\":"<< "\"" << this->c.txt() << "\"" << ",";
+
 std::stringstream tousers_stream;
 tousers_stream << "[";
 for (int32_t i = 0; i < this->c.tousers_size(); i++) {
@@ -97,10 +98,12 @@ for (int32_t i = 0; i < this->c.tousers_size(); i++) {
 		tousers_stream << ",";
 	}
 }
-tousers_stream << "]"; << ",";
+tousers_stream << "]";
+ss << "\"toUsers\":" << tousers_stream.str() << ",";
 ss << "\"color\":"<< this->c.color() << ",";
+
 Text_attribe t(this->c.textattr());
-ss << ""textAttr":" << t.to_jsonstr() << ",";
+ss << "\"textAttr\":" << t.to_jsonstr() << ",";
 ss << "\"asNobleman\":"<< this->c.asnobleman();
 ss << "}";
 return ss.str();

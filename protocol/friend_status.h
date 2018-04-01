@@ -69,10 +69,12 @@ if (o.has<jsonxx::Object>("anchor")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->f.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
+
 User u(this->f.anchor());
-ss << ""anchor":" << u.to_jsonstr();
+ss << "\"anchor\":" << u.to_jsonstr();
 ss << "}";
 return ss.str();
 

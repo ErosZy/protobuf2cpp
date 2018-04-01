@@ -56,8 +56,9 @@ namespace protocol {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->l.rejecter());
-ss << ""rejecter":" << u.to_jsonstr();
+ss << "\"rejecter\":" << u.to_jsonstr();
 ss << "}";
 return ss.str();
 

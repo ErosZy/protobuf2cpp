@@ -93,8 +93,9 @@ ss << "\"nickname\":"<< "\"" << this->f.nickname() << "\"" << ",";
 ss << "\"owid\":"<< this->f.owid() << ",";
 ss << "\"level\":"<< this->f.level() << ",";
 ss << "\"name\":"<< "\"" << this->f.name() << "\"" << ",";
+
 Client_type_map c(this->f.targetmap());
-ss << ""targetMap":" << c.to_jsonstr() << ",";
+ss << "\"targetMap\":" << c.to_jsonstr() << ",";
 ss << "\"validTime\":"<< "\"" << this->f.validtime() << "\"" << ",";
 ss << "\"number\":"<< this->f.number() << ",";
 ss << "\"owNickName\":"<< "\"" << this->f.ownickname() << "\"";

@@ -116,6 +116,7 @@ ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
 ss << "\"dateline\":"<< this->r.dateline() << ",";
 ss << "\"style\":"<< this->r.style() << ",";
+
 std::stringstream adlist_stream;
 adlist_stream << "[";
 for (int32_t i = 0; i < this->r.adlist_size(); i++) {
@@ -124,7 +125,9 @@ for (int32_t i = 0; i < this->r.adlist_size(); i++) {
 		adlist_stream << ",";
 	}
 }
-adlist_stream << "]"; << ",";
+adlist_stream << "]";
+ss << "\"adlist\":" << adlist_stream.str() << ",";
+
 std::stringstream exclroomlist_stream;
 exclroomlist_stream << "[";
 for (int32_t i = 0; i < this->r.exclroomlist_size(); i++) {
@@ -133,7 +136,9 @@ for (int32_t i = 0; i < this->r.exclroomlist_size(); i++) {
 		exclroomlist_stream << ",";
 	}
 }
-exclroomlist_stream << "]"; << ",";
+exclroomlist_stream << "]";
+ss << "\"exclroomlist\":" << exclroomlist_stream.str() << ",";
+
 std::stringstream exclcatelist_stream;
 exclcatelist_stream << "[";
 for (int32_t i = 0; i < this->r.exclcatelist_size(); i++) {
@@ -142,9 +147,11 @@ for (int32_t i = 0; i < this->r.exclcatelist_size(); i++) {
 		exclcatelist_stream << ",";
 	}
 }
-exclcatelist_stream << "]"; << ",";
+exclcatelist_stream << "]";
+ss << "\"exclcatelist\":" << exclcatelist_stream.str() << ",";
+
 Retetion_attr r(this->r.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr();
+ss << "\"retetionAttr\":" << r.to_jsonstr();
 ss << "}";
 return ss.str();
 

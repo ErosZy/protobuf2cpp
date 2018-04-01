@@ -83,6 +83,7 @@ ss << "\"title\":"<< "\"" << this->g.title() << "\"" << ",";
 ss << "\"status\":"<< this->g.status() << ",";
 ss << "\"reason\":"<< "\"" << this->g.reason() << "\"" << ",";
 ss << "\"endTime\":"<< this->g.endtime() << ",";
+
 std::stringstream items_stream;
 items_stream << "[";
 for (int32_t i = 0; i < this->g.items_size(); i++) {
@@ -91,7 +92,8 @@ for (int32_t i = 0; i < this->g.items_size(); i++) {
 		items_stream << ",";
 	}
 }
-items_stream << "]";;
+items_stream << "]";
+ss << "\"items\":" << items_stream.str();
 ss << "}";
 return ss.str();
 

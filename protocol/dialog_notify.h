@@ -88,6 +88,7 @@ ss << "{";
 ss << "\"type\":"<< this->d.type() << ",";
 ss << "\"title\":"<< "\"" << this->d.title() << "\"" << ",";
 ss << "\"content\":"<< "\"" << this->d.content() << "\"" << ",";
+
 std::stringstream buttons_stream;
 buttons_stream << "[";
 for (int32_t i = 0; i < this->d.buttons_size(); i++) {
@@ -96,7 +97,9 @@ for (int32_t i = 0; i < this->d.buttons_size(); i++) {
 		buttons_stream << ",";
 	}
 }
-buttons_stream << "]"; << ",";
+buttons_stream << "]";
+ss << "\"buttons\":" << buttons_stream.str() << ",";
+
 std::stringstream paramentries_stream;
 paramentries_stream << "[";
 for (int32_t i = 0; i < this->d.paramentries_size(); i++) {
@@ -105,7 +108,8 @@ for (int32_t i = 0; i < this->d.paramentries_size(); i++) {
 		paramentries_stream << ",";
 	}
 }
-paramentries_stream << "]";;
+paramentries_stream << "]";
+ss << "\"paramEntries\":" << paramentries_stream.str();
 ss << "}";
 return ss.str();
 

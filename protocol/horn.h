@@ -87,10 +87,12 @@ if(o.has<jsonxx::Number>("expire")) {
 ss << "{";
 ss << "\"type\":"<< this->h.type() << ",";
 ss << "\"cid\":"<< this->h.cid() << ",";
+
 User u(this->h.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
+
 User u(this->h.anchor());
-ss << ""anchor":" << u.to_jsonstr() << ",";
+ss << "\"anchor\":" << u.to_jsonstr() << ",";
 ss << "\"txt\":"<< "\"" << this->h.txt() << "\"" << ",";
 ss << "\"expire\":"<< this->h.expire();
 ss << "}";

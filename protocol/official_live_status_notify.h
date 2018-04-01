@@ -76,6 +76,7 @@ if (o.has<jsonxx::Object>("currentAnchor")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->o.owid() << ",";
+
 std::stringstream anchorlist_stream;
 anchorlist_stream << "[";
 for (int32_t i = 0; i < this->o.anchorlist_size(); i++) {
@@ -84,9 +85,11 @@ for (int32_t i = 0; i < this->o.anchorlist_size(); i++) {
 		anchorlist_stream << ",";
 	}
 }
-anchorlist_stream << "]"; << ",";
+anchorlist_stream << "]";
+ss << "\"anchorList\":" << anchorlist_stream.str() << ",";
+
 User u(this->o.currentanchor());
-ss << ""currentAnchor":" << u.to_jsonstr();
+ss << "\"currentAnchor\":" << u.to_jsonstr();
 ss << "}";
 return ss.str();
 

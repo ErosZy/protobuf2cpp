@@ -93,6 +93,7 @@ if (o.has<jsonxx::Array>("bestAssistList")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->d.owid() << ",";
+
 std::stringstream drawlist_stream;
 drawlist_stream << "[";
 for (int32_t i = 0; i < this->d.drawlist_size(); i++) {
@@ -101,7 +102,9 @@ for (int32_t i = 0; i < this->d.drawlist_size(); i++) {
 		drawlist_stream << ",";
 	}
 }
-drawlist_stream << "]"; << ",";
+drawlist_stream << "]";
+ss << "\"drawList\":" << drawlist_stream.str() << ",";
+
 std::stringstream prizelist_stream;
 prizelist_stream << "[";
 for (int32_t i = 0; i < this->d.prizelist_size(); i++) {
@@ -110,7 +113,9 @@ for (int32_t i = 0; i < this->d.prizelist_size(); i++) {
 		prizelist_stream << ",";
 	}
 }
-prizelist_stream << "]"; << ",";
+prizelist_stream << "]";
+ss << "\"prizeList\":" << prizelist_stream.str() << ",";
+
 std::stringstream bestassistlist_stream;
 bestassistlist_stream << "[";
 for (int32_t i = 0; i < this->d.bestassistlist_size(); i++) {
@@ -119,7 +124,8 @@ for (int32_t i = 0; i < this->d.bestassistlist_size(); i++) {
 		bestassistlist_stream << ",";
 	}
 }
-bestassistlist_stream << "]";;
+bestassistlist_stream << "]";
+ss << "\"bestAssistList\":" << bestassistlist_stream.str();
 ss << "}";
 return ss.str();
 

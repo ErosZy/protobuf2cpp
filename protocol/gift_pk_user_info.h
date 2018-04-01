@@ -60,8 +60,9 @@ if(o.has<jsonxx::Number>("score")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->g.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"score\":"<< this->g.score();
 ss << "}";
 return ss.str();

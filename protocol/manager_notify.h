@@ -78,10 +78,12 @@ if(o.has<jsonxx::Number>("status")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->m.owid() << ",";
+
 Room_attr r(this->m.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->m.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"status\":"<< this->m.status();
 ss << "}";
 return ss.str();

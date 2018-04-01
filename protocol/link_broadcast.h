@@ -76,6 +76,7 @@ if(o.has<jsonxx::Number>("linkersLandscape")) {
 ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
 ss << "\"status\":"<< this->l.status() << ",";
+
 std::stringstream linkers_stream;
 linkers_stream << "[";
 for (int32_t i = 0; i < this->l.linkers_size(); i++) {
@@ -84,7 +85,8 @@ for (int32_t i = 0; i < this->l.linkers_size(); i++) {
 		linkers_stream << ",";
 	}
 }
-linkers_stream << "]"; << ",";
+linkers_stream << "]";
+ss << "\"linkers\":" << linkers_stream.str() << ",";
 ss << "\"type\":"<< this->l.type() << ",";
 ss << "\"linkersLandscape\":"<< this->l.linkerslandscape();
 ss << "}";

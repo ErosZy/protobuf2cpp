@@ -95,10 +95,12 @@ if(o.has<jsonxx::Number>("seed")) {
 ss << "{";
 ss << "\"owid\":"<< this->c.owid() << ",";
 ss << "\"replayId\":"<< this->c.replayid() << ",";
+
 Room_attr r(this->c.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->c.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"source\":"<< "\"" << this->c.source() << "\"" << ",";
 ss << "\"tips\":"<< "\"" << this->c.tips() << "\"" << ",";
 ss << "\"diamond\":"<< this->c.diamond() << ",";

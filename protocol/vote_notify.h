@@ -98,6 +98,7 @@ ss << "\"status\":"<< this->v.status() << ",";
 ss << "\"isShow\":"<< this->v.isshow() << ",";
 ss << "\"startTime\":"<< this->v.starttime() << ",";
 ss << "\"endTime\":"<< this->v.endtime() << ",";
+
 std::stringstream options_stream;
 options_stream << "[";
 for (int32_t i = 0; i < this->v.options_size(); i++) {
@@ -106,7 +107,8 @@ for (int32_t i = 0; i < this->v.options_size(); i++) {
 		options_stream << ",";
 	}
 }
-options_stream << "]";;
+options_stream << "]";
+ss << "\"options\":" << options_stream.str();
 ss << "}";
 return ss.str();
 

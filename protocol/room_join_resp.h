@@ -86,10 +86,12 @@ if (o.has<jsonxx::Array>("optionalTextColors")) {
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
 ss << "\"code\":"<< this->r.code() << ",";
+
 Room_attr r(this->r.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 Live_data l(this->r.livedata());
-ss << ""liveData":" << l.to_jsonstr() << ",";
+ss << "\"liveData\":" << l.to_jsonstr() << ",";
 ss << "\"optionalTextColors\":[";
 for (int32_t i = 0; i < this->r.optionaltextcolors_size(); i++) {
 	ss << this->r.optionaltextcolors(i);
@@ -97,8 +99,7 @@ for (int32_t i = 0; i < this->r.optionaltextcolors_size(); i++) {
 		ss << ",";
 	}
 }
-ss << "]"
-;
+ss << "]";
 ss << "}";
 return ss.str();
 

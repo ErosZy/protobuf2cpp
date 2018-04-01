@@ -76,8 +76,9 @@ ss << "\"id\":"<< this->g.id() << ",";
 ss << "\"owid\":"<< this->g.owid() << ",";
 ss << "\"gid\":"<< this->g.gid() << ",";
 ss << "\"url\":"<< "\"" << this->g.url() << "\"" << ",";
+
 Retetion_attr r(this->g.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr();
+ss << "\"retetionAttr\":" << r.to_jsonstr();
 ss << "}";
 return ss.str();
 

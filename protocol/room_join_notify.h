@@ -78,10 +78,12 @@ if(o.has<jsonxx::Number>("showWeekstarCard")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
+
 Room_attr r(this->r.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->r.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"showWeekstarCard\":"<< this->r.showweekstarcard();
 ss << "}";
 return ss.str();

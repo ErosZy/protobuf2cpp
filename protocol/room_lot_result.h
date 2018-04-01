@@ -95,6 +95,7 @@ ss << "\"lotId\":"<< this->r.lotid() << ",";
 ss << "\"giftType\":"<< this->r.gifttype() << ",";
 ss << "\"shardingNum\":"<< this->r.shardingnum() << ",";
 ss << "\"shardingId\":"<< this->r.shardingid() << ",";
+
 std::stringstream list_stream;
 list_stream << "[";
 for (int32_t i = 0; i < this->r.list_size(); i++) {
@@ -103,9 +104,11 @@ for (int32_t i = 0; i < this->r.list_size(); i++) {
 		list_stream << ",";
 	}
 }
-list_stream << "]"; << ",";
+list_stream << "]";
+ss << "\"list\":" << list_stream.str() << ",";
+
 Room_lot_gift_attr r(this->r.giftattr());
-ss << ""giftAttr":" << r.to_jsonstr() << ",";
+ss << "\"giftAttr\":" << r.to_jsonstr() << ",";
 ss << "\"owid\":"<< this->r.owid();
 ss << "}";
 return ss.str();

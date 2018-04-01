@@ -63,6 +63,7 @@ if (o.has<jsonxx::Array>("rooms")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
+
 std::stringstream rooms_stream;
 rooms_stream << "[";
 for (int32_t i = 0; i < this->r.rooms_size(); i++) {
@@ -71,7 +72,8 @@ for (int32_t i = 0; i < this->r.rooms_size(); i++) {
 		rooms_stream << ",";
 	}
 }
-rooms_stream << "]";;
+rooms_stream << "]";
+ss << "\"rooms\":" << rooms_stream.str();
 ss << "}";
 return ss.str();
 

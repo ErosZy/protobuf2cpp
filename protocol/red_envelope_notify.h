@@ -111,16 +111,19 @@ if(o.has<jsonxx::Number>("boxType")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
+
 Room_attr r(this->r.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->r.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"rid\":"<< this->r.rid() << ",";
 ss << "\"type\":"<< this->r.type() << ",";
 ss << "\"amount\":"<< this->r.amount() << ",";
 ss << "\"txt\":"<< "\"" << this->r.txt() << "\"" << ",";
+
 Retetion_attr r(this->r.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr() << ",";
+ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
 ss << "\"key\":"<< this->r.key() << ",";
 ss << "\"boxType\":"<< this->r.boxtype();
 ss << "}";

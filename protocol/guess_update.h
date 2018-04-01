@@ -67,6 +67,7 @@ if(o.has<jsonxx::Number>("nowTime")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->g.owid() << ",";
+
 std::stringstream subjects_stream;
 subjects_stream << "[";
 for (int32_t i = 0; i < this->g.subjects_size(); i++) {
@@ -75,7 +76,8 @@ for (int32_t i = 0; i < this->g.subjects_size(); i++) {
 		subjects_stream << ",";
 	}
 }
-subjects_stream << "]"; << ",";
+subjects_stream << "]";
+ss << "\"subjects\":" << subjects_stream.str() << ",";
 ss << "\"nowTime\":"<< this->g.nowtime();
 ss << "}";
 return ss.str();

@@ -143,19 +143,23 @@ if (o.has<jsonxx::Object>("liveInfo")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->b.owid() << ",";
+
 User u(this->b.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
+
 User u(this->b.anchor());
-ss << ""anchor":" << u.to_jsonstr() << ",";
+ss << "\"anchor\":" << u.to_jsonstr() << ",";
 ss << "\"templateId\":"<< this->b.templateid() << ",";
 ss << "\"gid\":"<< this->b.gid() << ",";
 ss << "\"attrId\":"<< this->b.attrid() << ",";
 ss << "\"giftCount\":"<< this->b.giftcount() << ",";
 ss << "\"txt\":"<< "\"" << this->b.txt() << "\"" << ",";
+
 User u(this->b.officialroom());
-ss << ""officialRoom":" << u.to_jsonstr() << ",";
+ss << "\"officialRoom\":" << u.to_jsonstr() << ",";
 ss << "\"landscape\":"<< this->b.landscape() << ",";
 ss << "\"luckyMulti\":"<< this->b.luckymulti() << ",";
+
 std::stringstream params_stream;
 params_stream << "[";
 for (int32_t i = 0; i < this->b.params_size(); i++) {
@@ -164,9 +168,11 @@ for (int32_t i = 0; i < this->b.params_size(); i++) {
 		params_stream << ",";
 	}
 }
-params_stream << "]"; << ",";
+params_stream << "]";
+ss << "\"params\":" << params_stream.str() << ",";
+
 Anchor_live_info a(this->b.liveinfo());
-ss << ""liveInfo":" << a.to_jsonstr();
+ss << "\"liveInfo\":" << a.to_jsonstr();
 ss << "}";
 return ss.str();
 

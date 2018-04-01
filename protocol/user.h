@@ -157,16 +157,16 @@ for (int32_t i = 0; i < this->u.guardarray_size(); i++) {
 		ss << ",";
 	}
 }
-ss << "]"
- << ",";
+ss << "]" << ",";
 ss << "\"honorOwid\":"<< this->u.honorowid() << ",";
 ss << "\"honorLevel\":"<< this->u.honorlevel() << ",";
 ss << "\"honorName\":"<< "\"" << this->u.honorname() << "\"" << ",";
 ss << "\"honorOwIsGray\":"<< this->u.honorowisgray() << ",";
 ss << "\"no\":"<< this->u.no() << ",";
 ss << "\"noType\":"<< this->u.notype() << ",";
+
 Nobleman_ext n(this->u.nobleinfo());
-ss << ""nobleInfo":" << n.to_jsonstr() << ",";
+ss << "\"nobleInfo\":" << n.to_jsonstr() << ",";
 ss << "\"nickColor\":"<< "\"" << this->u.nickcolor() << "\"" << ",";
 ss << "\"cashBalance\":"<< this->u.cashbalance();
 ss << "}";

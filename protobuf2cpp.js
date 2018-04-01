@@ -18,7 +18,7 @@ module.exports = class Protobuf2cpp {
     this.messageStatements = this.expr.messageStatements;
     for (let i = 0; i < this.messageStatements.length; i++) {
       let tplInfo = this.compile(this.messageStatements[i]);
-      let filename = './protocol/' + tplInfo.protobuf_lower_class_name + ".h";
+      let filename = "./protocol/" + tplInfo.protobuf_lower_class_name + ".h";
       let codeStr = tpl(tplInfo);
       fs.writeFileSync(filename, codeStr);
     }
@@ -142,12 +142,12 @@ module.exports = class Protobuf2cpp {
             str += `<< "\\"" << this->${varName}.${v.id.toLowerCase()}() << "\\""`;
           }
         } else {
-          str += `${this.camel(
+          str += `\n${this.camel(
             v.dataType
           )} ${v.dataType[0].toLowerCase()}(this->${varName}.${v.id.toLowerCase()}());\n`;
-          str += `ss << "\"${
+          str += `ss << "\\"${
             v.id
-          }\":" << ${v.dataType[0].toLowerCase()}.to_jsonstr()`;
+          }\\":" << ${v.dataType[0].toLowerCase()}.to_jsonstr()`;
         }
       } else {
         if (!isCustomDataType) {
@@ -158,9 +158,9 @@ module.exports = class Protobuf2cpp {
           str += `\t\tss << ",";\n`;
           str += `\t}\n`;
           str += `}\n`;
-          str += `ss << "]"\n`;
+          str += `ss << "]"`;
         } else {
-          str += `std::stringstream ${v.id.toLowerCase()}_stream;\n`;
+          str += `\nstd::stringstream ${v.id.toLowerCase()}_stream;\n`;
           str += `${v.id.toLowerCase()}_stream << "[";\n`;
           str += `for (int32_t i = 0; i < this->${varName}.${v.id.toLowerCase()}_size(); i++) {\n`;
           str += `\t${v.id.toLowerCase()}_stream << ${
@@ -170,14 +170,18 @@ module.exports = class Protobuf2cpp {
           str += `\t\t${v.id.toLowerCase()}_stream << ",";\n`;
           str += `\t}\n`;
           str += `}\n`;
-          str += `${v.id.toLowerCase()}_stream << "]";`;
+          str += `${v.id.toLowerCase()}_stream << "]";\n`;
+          str += `ss << "\\"${
+            v.id
+          }\\":" << ${v.id.toLowerCase()}_stream.str()`;
         }
       }
 
       if (statements.length - 1 > i) {
-        str += ` << ","`;
+        str += ` << ",";\n`;
+      } else {
+        str += ";\n";
       }
-      str += ";\n";
       return str;
     });
     let str = `std::stringstream ss;\n`;

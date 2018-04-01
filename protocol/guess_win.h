@@ -72,6 +72,7 @@ if(o.has<jsonxx::Number>("chips")) {
 ss << "{";
 ss << "\"uid\":"<< this->g.uid() << ",";
 ss << "\"owid\":"<< this->g.owid() << ",";
+
 std::stringstream awards_stream;
 awards_stream << "[";
 for (int32_t i = 0; i < this->g.awards_size(); i++) {
@@ -80,7 +81,8 @@ for (int32_t i = 0; i < this->g.awards_size(); i++) {
 		awards_stream << ",";
 	}
 }
-awards_stream << "]"; << ",";
+awards_stream << "]";
+ss << "\"awards\":" << awards_stream.str() << ",";
 ss << "\"chips\":"<< this->g.chips();
 ss << "}";
 return ss.str();

@@ -77,12 +77,14 @@ if (o.has<jsonxx::Object>("roomAttr")) {
         virtual std::string to_jsonstr() {
             std::stringstream ss;
 ss << "{";
+
 User u(this->e.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"txt\":"<< "\"" << this->e.txt() << "\"" << ",";
 ss << "\"color\":"<< this->e.color() << ",";
+
 Room_attr r(this->e.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr();
+ss << "\"roomAttr\":" << r.to_jsonstr();
 ss << "}";
 return ss.str();
 

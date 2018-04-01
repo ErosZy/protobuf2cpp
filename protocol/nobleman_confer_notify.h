@@ -65,8 +65,9 @@ if(o.has<jsonxx::Number>("status")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
+
 User u(this->n.nobleman());
-ss << ""nobleman":" << u.to_jsonstr() << ",";
+ss << "\"nobleman\":" << u.to_jsonstr() << ",";
 ss << "\"status\":"<< this->n.status();
 ss << "}";
 return ss.str();

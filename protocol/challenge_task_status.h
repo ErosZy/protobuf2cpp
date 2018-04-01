@@ -96,6 +96,7 @@ ss << "\"replayId\":"<< this->c.replayid() << ",";
 ss << "\"startTime\":"<< this->c.starttime() << ",";
 ss << "\"times\":"<< this->c.times() << ",";
 ss << "\"status\":"<< this->c.status() << ",";
+
 std::stringstream challengetasklist_stream;
 challengetasklist_stream << "[";
 for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
@@ -104,9 +105,11 @@ for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
 		challengetasklist_stream << ",";
 	}
 }
-challengetasklist_stream << "]"; << ",";
+challengetasklist_stream << "]";
+ss << "\"ChallengeTaskList\":" << challengetasklist_stream.str() << ",";
+
 User u(this->c.user());
-ss << ""user":" << u.to_jsonstr();
+ss << "\"user\":" << u.to_jsonstr();
 ss << "}";
 return ss.str();
 

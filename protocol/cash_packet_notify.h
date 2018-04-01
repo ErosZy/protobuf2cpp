@@ -95,8 +95,9 @@ ss << "\"nickname\":"<< "\"" << this->c.nickname() << "\"" << ",";
 ss << "\"level\":"<< this->c.level() << ",";
 ss << "\"portrait\":"<< "\"" << this->c.portrait() << "\"" << ",";
 ss << "\"starttime\":"<< this->c.starttime() << ",";
+
 Retetion_attr r(this->c.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr() << ",";
+ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
 ss << "\"money\":"<< this->c.money();
 ss << "}";
 return ss.str();

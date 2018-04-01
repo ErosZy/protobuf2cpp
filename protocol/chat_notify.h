@@ -139,13 +139,16 @@ if(o.has<jsonxx::String>("ver")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->c.owid() << ",";
+
 Room_attr r(this->c.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->c.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"type\":"<< this->c.type() << ",";
 ss << "\"txt\":"<< "\"" << this->c.txt() << "\"" << ",";
 ss << "\"color\":"<< this->c.color() << ",";
+
 std::stringstream tousers_stream;
 tousers_stream << "[";
 for (int32_t i = 0; i < this->c.tousers_size(); i++) {
@@ -154,12 +157,15 @@ for (int32_t i = 0; i < this->c.tousers_size(); i++) {
 		tousers_stream << ",";
 	}
 }
-tousers_stream << "]"; << ",";
+tousers_stream << "]";
+ss << "\"toUsers\":" << tousers_stream.str() << ",";
+
 Retetion_attr r(this->c.retetionattr());
-ss << ""retetionAttr":" << r.to_jsonstr() << ",";
+ss << "\"retetionAttr\":" << r.to_jsonstr() << ",";
 ss << "\"platForm\":"<< "\"" << this->c.platform() << "\"" << ",";
+
 Text_attribe t(this->c.textattr());
-ss << ""textAttr":" << t.to_jsonstr() << ",";
+ss << "\"textAttr\":" << t.to_jsonstr() << ",";
 ss << "\"asNobleman\":"<< this->c.asnobleman() << ",";
 ss << "\"ver\":"<< "\"" << this->c.ver() << "\"";
 ss << "}";

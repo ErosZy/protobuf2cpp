@@ -75,8 +75,9 @@ ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
 ss << "\"uid\":"<< this->l.uid() << ",";
 ss << "\"applyCount\":"<< this->l.applycount() << ",";
+
 User u(this->l.applyuser());
-ss << ""applyUser":" << u.to_jsonstr() << ",";
+ss << "\"applyUser\":" << u.to_jsonstr() << ",";
 ss << "\"type\":"<< this->l.type();
 ss << "}";
 return ss.str();

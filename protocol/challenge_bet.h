@@ -93,10 +93,12 @@ if(o.has<jsonxx::Number>("combo")) {
 ss << "{";
 ss << "\"owid\":"<< this->c.owid() << ",";
 ss << "\"replayId\":"<< this->c.replayid() << ",";
+
 User u(this->c.user());
-ss << ""User":" << u.to_jsonstr() << ",";
+ss << "\"User\":" << u.to_jsonstr() << ",";
 ss << "\"amount\":"<< this->c.amount() << ",";
 ss << "\"taskId\":"<< this->c.taskid() << ",";
+
 std::stringstream challengetasklist_stream;
 challengetasklist_stream << "[";
 for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
@@ -105,7 +107,8 @@ for (int32_t i = 0; i < this->c.challengetasklist_size(); i++) {
 		challengetasklist_stream << ",";
 	}
 }
-challengetasklist_stream << "]"; << ",";
+challengetasklist_stream << "]";
+ss << "\"ChallengeTaskList\":" << challengetasklist_stream.str() << ",";
 ss << "\"combo\":"<< this->c.combo();
 ss << "}";
 return ss.str();

@@ -72,6 +72,7 @@ if(o.has<jsonxx::Number>("ts")) {
 ss << "{";
 ss << "\"owid\":"<< this->n.owid() << ",";
 ss << "\"noblemanCount\":"<< this->n.noblemancount() << ",";
+
 std::stringstream noblemanlist_stream;
 noblemanlist_stream << "[";
 for (int32_t i = 0; i < this->n.noblemanlist_size(); i++) {
@@ -80,7 +81,8 @@ for (int32_t i = 0; i < this->n.noblemanlist_size(); i++) {
 		noblemanlist_stream << ",";
 	}
 }
-noblemanlist_stream << "]"; << ",";
+noblemanlist_stream << "]";
+ss << "\"noblemanList\":" << noblemanlist_stream.str() << ",";
 ss << "\"ts\":"<< this->n.ts();
 ss << "}";
 return ss.str();

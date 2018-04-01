@@ -90,10 +90,12 @@ if(o.has<jsonxx::Number>("endTime")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->l.owid() << ",";
+
 Gift_pk_user_info g(this->l.winner());
-ss << ""winner":" << g.to_jsonstr() << ",";
+ss << "\"winner\":" << g.to_jsonstr() << ",";
+
 Gift_pk_user_info g(this->l.loser());
-ss << ""loser":" << g.to_jsonstr() << ",";
+ss << "\"loser\":" << g.to_jsonstr() << ",";
 ss << "\"type\":"<< this->l.type() << ",";
 ss << "\"punishment\":"<< "\"" << this->l.punishment() << "\"" << ",";
 ss << "\"startTime\":"<< this->l.starttime() << ",";

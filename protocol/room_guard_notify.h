@@ -65,8 +65,9 @@ if(o.has<jsonxx::Number>("uid")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->r.owid() << ",";
+
 Room_attr r(this->r.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
 ss << "\"uid\":"<< this->r.uid();
 ss << "}";
 return ss.str();

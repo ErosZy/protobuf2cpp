@@ -82,10 +82,12 @@ if(o.has<jsonxx::String>("tips")) {
             std::stringstream ss;
 ss << "{";
 ss << "\"owid\":"<< this->s.owid() << ",";
+
 Room_attr r(this->s.roomattr());
-ss << ""roomAttr":" << r.to_jsonstr() << ",";
+ss << "\"roomAttr\":" << r.to_jsonstr() << ",";
+
 User u(this->s.user());
-ss << ""user":" << u.to_jsonstr() << ",";
+ss << "\"user\":" << u.to_jsonstr() << ",";
 ss << "\"type\":"<< "\"" << this->s.type() << "\"" << ",";
 ss << "\"tips\":"<< "\"" << this->s.tips() << "\"";
 ss << "}";
